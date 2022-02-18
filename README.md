@@ -1,5 +1,7 @@
 # mdTogether
 
+![mdTogether Logo](/logo.png)
+
 ## Team Members
 - Zhaohang Yan (Martin)
 (📮: zhaohang.yan@mail.utoronto.ca)
