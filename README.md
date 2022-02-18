@@ -1,9 +1,5 @@
 # mdTogether
 
-## Table of Contents
-
-[TOC]
-
 ## Team Members
 - Zhaohang Yan (Martin)
 (📮: zhaohang.yan@mail.utoronto.ca)
