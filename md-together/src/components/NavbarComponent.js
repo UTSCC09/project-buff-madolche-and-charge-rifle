@@ -1,7 +1,8 @@
-// This component is built taking App Bar, Account menu, Basic menu examples in MUI documentation
+// This component is built taking App Bar, Account menu, Basic menu, Transition modal examples in MUI documentation
 // https://mui.com/components/app-bar/#app-bar-with-responsive-menu
 // https://mui.com/components/menus/#account-menu
 // https://mui.com/components/menus/#basic-menu
+// https://mui.com/components/modal/#transitions
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -18,6 +19,10 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import Logout from '@mui/icons-material/Logout';
+import Backdrop from '@mui/material/Backdrop';
+import Modal from '@mui/material/Modal';
+import Fade from '@mui/material/Fade';
+import LoginComponent from './LoginComponent';
 
 const NavbarComponent = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -70,8 +75,58 @@ const NavbarComponent = () => {
     setAnchorElUser(null);
   };
 
+  // from Transition modal example in MUI documentation
+  // https://mui.com/components/modal/#transitions
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    bgcolor: 'background.paper',
+    border: '1px solid #888',
+    borderRadius: 3,
+    boxShadow: 24,
+    p: 4,
+    width: {xs: "90vw", md: "36vw"}
+  };  
+
+  const [modalOpen, setModalOpen] = React.useState(false);
+  const handleModalOpen = () => setModalOpen(true);
+  const handleModalClose = () => setModalOpen(false);
+
+  // from Transition modal example in MUI documentation
+  // https://mui.com/components/modal/#transitions
+  function TransitionsModal() {
+    return (
+      <div>
+        <Button onClick={handleModalOpen} sx={{color: "white", mr: 1}}>Log in / Sign up</Button>
+        <Modal
+          aria-labelledby="transition-modal-title"
+          aria-describedby="transition-modal-description"
+          open={modalOpen}
+          onClose={handleModalClose}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}
+        >
+          <Fade in={modalOpen}>
+            <Box sx={style}>
+              <LoginComponent />
+            </Box>
+          </Fade>
+        </Modal>
+      </div>
+    );
+  }
+
   return (
-    <AppBar position="static">
+    <AppBar 
+      position="static"
+      // We may change UI theme here
+      sx = {{background: "#8268c9"}}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -211,7 +266,7 @@ const NavbarComponent = () => {
                 aria-haspopup="true"
                 aria-expanded={shareOpen ? 'true' : undefined}
                 onClick={handleShareClick}
-                sx={{ my: 2, mx: 3, color: 'white', display: 'block' }}
+                sx={{ my: 1, mx: 3, color: 'white', display: 'block' }}
               >
                 Share
               </Button>
@@ -235,7 +290,7 @@ const NavbarComponent = () => {
                 aria-haspopup="true"
                 aria-expanded={exportOpen ? 'true' : undefined}
                 onClick={handleExportClick}
-                sx={{ my: 2, mx: 3, color: 'white', display: 'block' }}
+                sx={{ my: 1, mx: 3, color: 'white', display: 'block' }}
               >
                 Export
               </Button>
@@ -260,7 +315,7 @@ const NavbarComponent = () => {
                 aria-haspopup="true"
                 aria-expanded={themeOpen ? 'true' : undefined}
                 onClick={handleThemeClick}
-                sx={{ my: 2, mx: 3, color: 'white', display: 'block' }}
+                sx={{ my: 1, mx: 3, color: 'white', display: 'block' }}
               >
                 Theme
               </Button>
@@ -282,6 +337,8 @@ const NavbarComponent = () => {
               </Menu>
             </div>
           </Box>
+          
+          <TransitionsModal />
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open User Account Menu">
