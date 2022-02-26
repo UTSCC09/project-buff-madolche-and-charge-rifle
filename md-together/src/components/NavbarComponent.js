@@ -23,6 +23,7 @@ import Backdrop from '@mui/material/Backdrop';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import LoginComponent from './LoginComponent';
+import UserSpaceComponent from './UserSpaceComponent';
 
 const NavbarComponent = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -77,7 +78,7 @@ const NavbarComponent = () => {
 
   // from Transition modal example in MUI documentation
   // https://mui.com/components/modal/#transitions
-  const style = {
+  const loginModalStyle = {
     position: 'absolute',
     top: '50%',
     left: '50%',
@@ -90,30 +91,78 @@ const NavbarComponent = () => {
     width: {xs: "90vw", md: "36vw"}
   };  
 
-  const [modalOpen, setModalOpen] = React.useState(false);
-  const handleModalOpen = () => setModalOpen(true);
-  const handleModalClose = () => setModalOpen(false);
+  const [loginModalOpen, setLoginModalOpen] = React.useState(false);
+  const handleLoginModalOpen = () => setLoginModalOpen(true);
+  const handleLoginModalClose = () => setLoginModalOpen(false);
 
   // from Transition modal example in MUI documentation
   // https://mui.com/components/modal/#transitions
-  function TransitionsModal() {
+  function TransitionsLoginModal() {
     return (
       <div>
-        <Button onClick={handleModalOpen} sx={{color: "white", mr: 1}}>Log in / Sign up</Button>
+        <Button onClick={handleLoginModalOpen} sx={{color: "white", mr: 1, textTransform: "capitalize"}}>Log in / Sign up</Button>
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
-          open={modalOpen}
-          onClose={handleModalClose}
+          open={loginModalOpen}
+          onClose={handleLoginModalClose}
           closeAfterTransition
           BackdropComponent={Backdrop}
           BackdropProps={{
             timeout: 500,
           }}
         >
-          <Fade in={modalOpen}>
-            <Box sx={style}>
+          <Fade in={loginModalOpen}>
+            <Box sx={loginModalStyle}>
               <LoginComponent />
+            </Box>
+          </Fade>
+        </Modal>
+      </div>
+    );
+  }
+
+  // from Transition modal example in MUI documentation
+  // https://mui.com/components/modal/#transitions
+  const userSpaceStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    bgcolor: 'background.paper',
+    border: '1px solid #888',
+    boxShadow: 24,
+    p: 4,
+    width: {xs: "78vw", md: "80vw"},
+    borderRadius: 3,
+    paddingX: { xs: 2, md: 4 },
+    paddingY: { xs: 4, md: 7 }
+  };  
+
+  const [usModalOpen, setUSModalOpen] = React.useState(false);
+  const handleUSModalOpen = () => setUSModalOpen(true);
+  const handleUSModalClose = () => setUSModalOpen(false);
+
+  // from Transition modal example in MUI documentation
+  // https://mui.com/components/modal/#transitions
+  function TransitionsUSModal() {
+    return (
+      <div>
+        <div onClick={handleUSModalOpen} sx={{ color: "#000000DE", textTransform: "capitalize" }}>User Space</div>
+        <Modal
+          aria-labelledby="transition-modal-title"
+          aria-describedby="transition-modal-description"
+          open={usModalOpen}
+          onClose={handleUSModalClose}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}
+        >
+          <Fade in={usModalOpen}>
+            <Box sx={userSpaceStyle}>
+              <UserSpaceComponent />
             </Box>
           </Fade>
         </Modal>
@@ -135,7 +184,9 @@ const NavbarComponent = () => {
             component="div"
             sx={{ mr: 2, display: { xs: 'none', md: 'flex' }, fontWeight: "bold" }}
           >
-            <a href="/" style={{textDecoration: "none", color: "white"}}>mdTogether</a>
+            {/* Do we need to put a link in the logo? it might cause users to lose changes accidentally click on it */}
+            {/* <a href="/" style={{textDecoration: "none", color: "white"}}>mdTogether</a> */}
+            mdTogether
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -176,7 +227,7 @@ const NavbarComponent = () => {
                   aria-haspopup="true"
                   aria-expanded={shareOpen ? 'true' : undefined}
                   onClick={handleShareClick}
-                  sx={{ my: 1, px: 3, color: 'black', display: 'block', textAlign: "center", width: "100%" }}
+                  sx={{ my: 1, px: 3, color: 'black', display: 'block', textAlign: "center", width: "100%", textTransform: "capitalize" }}
                 >
                   Share
                 </Button>
@@ -200,7 +251,7 @@ const NavbarComponent = () => {
                   aria-haspopup="true"
                   aria-expanded={exportOpen ? 'true' : undefined}
                   onClick={handleExportClick}
-                  sx={{ my: 1, px: 3, color: 'black', display: 'block', textAlign: "center", width: "100%" }}
+                  sx={{ my: 1, px: 3, color: 'black', display: 'block', textAlign: "center", width: "100%", textTransform: "capitalize" }}
                 >
                   Export
                 </Button>
@@ -225,7 +276,7 @@ const NavbarComponent = () => {
                   aria-haspopup="true"
                   aria-expanded={themeOpen ? 'true' : undefined}
                   onClick={handleThemeClick}
-                  sx={{ my: 1, px: 3, color: 'black', display: 'block', textAlign: "center", width: "100%" }}
+                  sx={{ my: 1, px: 3, color: 'black', display: 'block', textAlign: "center", width: "100%", textTransform: "capitalize" }}
                 >
                   Theme
                 </Button>
@@ -266,7 +317,7 @@ const NavbarComponent = () => {
                 aria-haspopup="true"
                 aria-expanded={shareOpen ? 'true' : undefined}
                 onClick={handleShareClick}
-                sx={{ my: 1, mx: 3, color: 'white', display: 'block' }}
+                sx={{ my: 1, mx: 3, color: 'white', display: 'block', textTransform: "capitalize" }}
               >
                 Share
               </Button>
@@ -290,7 +341,7 @@ const NavbarComponent = () => {
                 aria-haspopup="true"
                 aria-expanded={exportOpen ? 'true' : undefined}
                 onClick={handleExportClick}
-                sx={{ my: 1, mx: 3, color: 'white', display: 'block' }}
+                sx={{ my: 1, mx: 3, color: 'white', display: 'block', textTransform: "capitalize" }}
               >
                 Export
               </Button>
@@ -315,7 +366,7 @@ const NavbarComponent = () => {
                 aria-haspopup="true"
                 aria-expanded={themeOpen ? 'true' : undefined}
                 onClick={handleThemeClick}
-                sx={{ my: 1, mx: 3, color: 'white', display: 'block' }}
+                sx={{ my: 1, mx: 3, color: 'white', display: 'block', textTransform: "capitalize" }}
               >
                 Theme
               </Button>
@@ -338,7 +389,7 @@ const NavbarComponent = () => {
             </div>
           </Box>
           
-          <TransitionsModal />
+          <TransitionsLoginModal />
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open User Account Menu">
@@ -393,10 +444,8 @@ const NavbarComponent = () => {
               }}
             >
               <MenuItem>
-                <Avatar /> User Space
-              </MenuItem>
-              <MenuItem>
-                <Avatar /> Profile
+                <Avatar />
+                <TransitionsUSModal />
               </MenuItem>
               <Divider />
               <MenuItem>
