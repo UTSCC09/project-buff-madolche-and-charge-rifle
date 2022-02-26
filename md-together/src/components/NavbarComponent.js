@@ -148,7 +148,10 @@ const NavbarComponent = () => {
   function TransitionsUSModal() {
     return (
       <div>
-        <div onClick={handleUSModalOpen} sx={{ color: "#000000DE", textTransform: "capitalize" }}>User Space</div>
+        <MenuItem onClick={handleUSModalOpen}>
+          <Avatar />
+          <div sx={{ color: "#000000DE", textTransform: "capitalize" }}>User Space</div>
+        </MenuItem>
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
@@ -443,11 +446,8 @@ const NavbarComponent = () => {
                 },
               }}
             >
-              <MenuItem>
-                <Avatar />
-                <TransitionsUSModal />
-              </MenuItem>
-              <Divider />
+              <TransitionsUSModal />
+              <Divider sx={{paddingTop: 1, marginBottom: 1}} />
               <MenuItem>
                 <ListItemIcon>
                   <Logout />
