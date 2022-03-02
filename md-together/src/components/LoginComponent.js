@@ -17,17 +17,20 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+import { connect } from 'react-redux';
+import { signUp, signIn } from '../store/actions/userAction'
 
 const theme = createTheme();
 
 
 // Taking from Sign in example in Free React Template under MUI documentation
 // https://github.com/mui/material-ui/blob/master/docs/data/material/getting-started/templates/sign-in/SignIn.js
-function SignIn() {
+function SignIn(prop) {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
+    prop.prop.signIn(data.get('email'),data.get('password'));
     console.log({
       email: data.get('email'),
       password: data.get('password'),
@@ -94,15 +97,12 @@ function SignIn() {
 
 // Taking from Sign up example in Free React Template under MUI documentation
 // https://github.com/mui/material-ui/blob/master/docs/data/material/getting-started/templates/sign-up/SignUp.js
-function SignUp() {
+function SignUp(prop) {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    prop.prop.signUp(data.get('firstName'),data.get('lastName'),data.get('email'),data.get('password'));
   };
 
   return (
@@ -183,10 +183,10 @@ function SignUp() {
   );
 }
 
-export default function LoginComponent() {
+ function LoginComponent(prop) {
   const [modalValue, setModalValue] = React.useState(0);
 
-  let CurrModal = modalValue === 0 ? <SignIn/> : <SignUp/>;
+  let CurrModal = modalValue === 0 ? <SignIn prop={prop}/> : <SignUp prop={prop}/>;
 
   const handleModalValueChange = (event, newValue) => {
     setModalValue(newValue);
@@ -204,3 +204,15 @@ export default function LoginComponent() {
     </div>
   );
 }
+const mapStateToProp = (state) => {
+  return {
+    signUp: state.signUp.user
+  }
+}
+const mapDispatchToProp = (dispatch) =>{
+  return{
+    signUp: (firstName, lastName, email, password) => dispatch(signUp(firstName, lastName, email, password)),
+    signIn: (email, password) => dispatch(signIn(email, password))
+  }
+}
+export default connect(null, mapDispatchToProp)(LoginComponent)
