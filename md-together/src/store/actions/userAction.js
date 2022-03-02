@@ -1,29 +1,24 @@
 import fbConfig from "../../config/fbConfig";
-import { getFirestore, collection, getDocs, addDoc } from "firebase/firestore";
+import { getFirestore, collection, getDocs, doc, setDoc, addDoc } from "firebase/firestore";
 export const signUp = (firstName, lastName, email, password) =>{
     return (dispatch, getState, {getFirebase, getFireStore}) =>{
         try{
-        const add = await addDoc(collection(fbConfig, "User"),{
-            firstName,
-            lastName,
-            email,
-            password
-        });
-        console.log("SignUp yes!");
-    }catch(e){
-        console.log(e);
-    }
-        // fbConfig().collection("User").add({
-        //    console.log(fbConfig);
-        //     firstName,
-        //     lastName,
-        //     email,
-        //     password
-        // }).then(() => {
-        //     dispatch({type: 'signUp', firstName,lastName, email, password});
-        // }).catch((err) =>{
-        //     dispatch({type: 'signUpErr', err});
-        // })
+
+        
+        async function newUser(){
+            const user = collection(fbConfig,'User');
+            const data={
+                firstName,
+                lastName,
+                email,
+                password
+            };
+            return await addDoc(user, data);
+        }
+        console.log(newUser().path);
+        }catch(e){
+            console.log(e);
+        }
     }
 };
 export const signIn = (email, password) =>{

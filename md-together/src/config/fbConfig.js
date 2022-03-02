@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { getFirestore, collection, getDocs, doc, setDoc, addDoc } from "firebase/firestore";
 // import firebase from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -23,6 +23,16 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const fbConfig = getFirestore(app);
+// const user = collection(fbConfig,'User');
+// const data={
+//   firstName:"Y",
+//   lastName:"Z",
+//   email:"admin",
+//   password:"pass"
+// };
+// addDoc(user,data);
+
+
 
 // firebase.firestore().settings({timestampInSnapshots:true});
 export default fbConfig
