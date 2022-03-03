@@ -2,7 +2,8 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore, collection, getDocs, doc, setDoc, addDoc } from "firebase/firestore";
-// import firebase from "firebase/app";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -20,17 +21,9 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const fbConfig = getFirestore(app);
-// const user = collection(fbConfig,'User');
-// const data={
-//   firstName:"Y",
-//   lastName:"Z",
-//   email:"admin",
-//   password:"pass"
-// };
-// addDoc(user,data);
+//firebase.initializeApp(firebaseConfig);
+//const analytics = getAnalytics(app);
+const fbConfig = firebase.initializeApp(firebaseConfig).firestore();
 
 
 

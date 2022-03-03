@@ -16,13 +16,44 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import RsvpIcon from '@mui/icons-material/Rsvp';
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
+import { connect } from 'react-redux';
+import Cookies from 'universal-cookie';
+import {getUserSpace} from '../store/actions/userAction';
+import fbConfig from '../config/fbConfig';
 
-function SelectedListItem() {
+function SelectedListItem(prop) {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
   };
+  let cookie = new Cookies();
+  let userId = cookie.get('userId');
+  console.log("inside user space component");
+  async function getUserSpace() {
+    return await fbConfig.collection("userSpace").where("user","==", userId).get()
+  } 
+        getUserSpace()
+        .then(function(data){
+          console.log("then");
+          data.forEach(doc => {
+            console.log(doc.id, "=>", doc.data());
+          })
+        }).catch(function(err){
+            console.log(err);
+        });
+  // async function getUserSpace(){
+  //   return await prop.prop.getUserSpace();
+  // }
+  // getUserSpace().then(function(data){
+    // data.forEach(doc =>{
+    //   console.log(doc.id, "=>", doc.data());
+    // };
+  // }).catch(function(err){
+  //   console.log("inside user space component");
+  //   console.log(err);
+  // })
+
 
   // This component is built taking Selected ListItem as an example in MUI documentation
   // https://mui.com/components/lists/#selected-listitem
@@ -222,10 +253,25 @@ function SelectedListItem() {
   );
 }
 
-export default function UserSpaceComponent() {
+function UserSpaceComponent(prop) {
   return (
     <div>
-      <SelectedListItem />
+      <SelectedListItem prop={prop}/>
     </div>
   );
 }
+
+const mapStateToProp = (state) => {
+  console.log(state);
+  const cookie = new Cookies();
+  return {
+   // userSpace : state.firestore.where({collection:'userSpace', where:['user','==',cookie.get('userId')]})
+   userSpace: state.firestore.storeget({collection:'userSpace'})
+  }
+}
+const mapDispatchToProp = (dispatch) =>{
+  return{
+    getUserSpace: () => dispatch(getUserSpace())
+  }
+}
+export default connect(null, mapDispatchToProp)(UserSpaceComponent)
