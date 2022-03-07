@@ -17,17 +17,33 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+import { InvertColorsOff } from '@mui/icons-material';
 
+//import db from './server/db';
+//const { MongoClient } = require('mongodb');
+const MongoDB = require('./server/mongo');
 const theme = createTheme();
 
 
 // Taking from Sign in example in Free React Template under MUI documentation
 // https://github.com/mui/material-ui/blob/master/docs/data/material/getting-started/templates/sign-in/SignIn.js
-function SignIn() {
+async function SignIn() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
+    MongoDB.connectDB('user', (err) =>{
+      if (err) throw err;
+      const db = MongoDB.getDB();
+      const users = db.collection('user');
+      try{
+        const newUser =  await users.insertOne({firstName:data.get('firstName'), password:data.get('password')}).ops[0];
+        console.log(newUser);
+      } catch(e){
+        throw e;
+      } 
+      MongoDB.disconnectDB();
+    })
     console.log({
       email: data.get('email'),
       password: data.get('password'),
@@ -183,7 +199,7 @@ function SignUp() {
   );
 }
 
-export default function LoginComponent() {
+export default async function LoginComponent() {
   const [modalValue, setModalValue] = React.useState(0);
 
   let CurrModal = modalValue === 0 ? <SignIn/> : <SignUp/>;
