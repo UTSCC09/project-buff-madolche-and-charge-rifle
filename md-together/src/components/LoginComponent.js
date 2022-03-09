@@ -18,10 +18,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { InvertColorsOff } from '@mui/icons-material';
+const validator = require("validator");
 
-//import db from './server/db';
-//const { MongoClient } = require('mongodb');
-const MongoDB = require('./server/mongo');
 const theme = createTheme();
 
 
@@ -32,22 +30,12 @@ async function SignIn() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
-    MongoDB.connectDB('user', (err) =>{
-      if (err) throw err;
-      const db = MongoDB.getDB();
-      const users = db.collection('user');
-      try{
-        const newUser =  await users.insertOne({firstName:data.get('firstName'), password:data.get('password')}).ops[0];
-        console.log(newUser);
-      } catch(e){
-        throw e;
-      } 
-      MongoDB.disconnectDB();
-    })
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    let email= data.get('email');
+    let password= data.get('password')
+    if(!validator.isEmail(email) || !validator.isAlphanumeric(password)){
+      console.log("Wrong format of email or password");
+    }
+    
   };
 
   return (
