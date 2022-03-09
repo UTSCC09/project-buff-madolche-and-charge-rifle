@@ -8,6 +8,16 @@ const myResolver = require("./graphql/resolver/index");
 const auth = require("./middleware/auth");
 let app = Express();
 app.use(BodyParser.json());
+app.use((req,res,next) =>{
+    //console.log(req);
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods',"POST,GET,OPTIONS");
+    res.setHeader('Access-Control-Allow-Headers',"Content-Type, Authorization");
+    if(req.method === 'OPTIONS'){
+        return res.sendStatus(200);
+    }
+    next();
+});
 app.use(auth);
 //cannot change the name "schema" but can change name "RootQuery" "RootMutation"
 //[user!]! means it must return an array(maybe empty array) and the element inside array must be user if we have element

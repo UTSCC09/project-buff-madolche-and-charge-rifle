@@ -17,7 +17,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import { InvertColorsOff } from '@mui/icons-material';
+import ReactSession from 'react-client-session/dist/ReactSession';
 const validator = require("validator");
 
 const theme = createTheme();
@@ -25,17 +25,48 @@ const theme = createTheme();
 
 // Taking from Sign in example in Free React Template under MUI documentation
 // https://github.com/mui/material-ui/blob/master/docs/data/material/getting-started/templates/sign-in/SignIn.js
-async function SignIn() {
+function SignIn() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
     let email= data.get('email');
-    let password= data.get('password')
+    let password= data.get('password');
     if(!validator.isEmail(email) || !validator.isAlphanumeric(password)){
       console.log("Wrong format of email or password");
+      return;
     }
-    
+    const body = {
+      query:`
+      query {
+        emailLogin(email:"${email}", password:"${password}"){
+          userId
+          token
+        }
+      }
+      `
+    }
+    fetch("http://localhost:3001/graphql", {
+    method: 'POST',
+    body: JSON.stringify(body),
+    headers:{
+      "Content-Type": 'application/json'
+    }
+    })
+    .then(res =>{
+      if(res.status !== 200 && res.status !== 201){
+        console.log("Failed");
+      }
+      return res.json();
+    })
+    .then(data =>{
+      ReactSession.set('userId',data.data.emailLogin.userId);
+      ReactSession.set('token',data.data.emailLogin.token);
+    })
+    .catch(err =>{
+      console.log(err)
+    });
+
   };
 
   return (
@@ -103,9 +134,73 @@ function SignUp() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+    let email= data.get('email');
+    let password= data.get('password');
+    let firstName = data.get('firstName');
+    let lastName = data.get('lastName');
+    if(!validator.isEmail(email) 
+    || !validator.isAlphanumeric(password) 
+    || !validator.isAlpha(firstName) 
+    || !validator.isAlpha(lastName)){
+      console.log("Wrong format of email or password");
+    }
+    const body = {
+      query:`
+      mutation{
+        createUser(UserInput:{firstName:"${firstName}", lastName:"${lastName}", email:"${email}",password:"${password}"}){
+          _id
+          firstName
+          lastName
+          email
+          password
+        }
+      }
+      `
+    }
+    fetch("http://localhost:3001/graphql", {
+    method: 'POST',
+    body: JSON.stringify(body),
+    headers:{
+      "Content-Type": 'application/json'
+    }
+    })
+    .then(res =>{
+      if(res.status !== 200 && res.status !== 201){
+        throw new Error('Failed');
+      }
+      return res.json();
+    })
+    .then(data =>{
+      const signin = {
+        query:`
+        query {
+          emailLogin(email:"${email}", password:"${password}"){
+            userId
+            token
+          }
+        }
+        `
+      }
+      return fetch("http://localhost:3001/graphql", {
+      method: 'POST',
+      body: JSON.stringify(signin),
+      headers:{
+        "Content-Type": 'application/json'
+      }
+      })
+    })
+    .then(res =>{
+      if(res.status !== 200 && res.status !== 201){
+        console.log("Failed");
+      }
+      return res.json();
+    })
+    .then(data =>{
+      ReactSession.set('userId',data.data.emailLogin.userId);
+      ReactSession.set('token',data.data.emailLogin.token);
+    })
+    .catch(err =>{
+      console.log(err)
     });
   };
 
@@ -187,7 +282,7 @@ function SignUp() {
   );
 }
 
-export default async function LoginComponent() {
+export default function LoginComponent() {
   const [modalValue, setModalValue] = React.useState(0);
 
   let CurrModal = modalValue === 0 ? <SignIn/> : <SignUp/>;
