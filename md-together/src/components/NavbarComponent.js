@@ -24,103 +24,20 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import LoginComponent from './LoginComponent';
 import UserSpaceComponent from './UserSpaceComponent';
+import ReactSession from 'react-client-session/dist/ReactSession';
 
-const NavbarComponent = () => {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
+// Derived from React official example about conditional rendering
+// https://reactjs.org/docs/conditional-rendering.html
+function UserLogInCorner(props) {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-  // basic menu example in MUI documentation
-  // https://mui.com/components/menus/#basic-menu
-  const [anchorElShare, setAnchorElShare] = React.useState(null);
-  const shareOpen = Boolean(anchorElShare);
-
-  const handleShareClick = (event) => {
-    setAnchorElShare(event.currentTarget);
-  };
-  const handleShareClose = () => {
-    setAnchorElShare(null);
-  };
-
-  const [anchorElExport, setAnchorElExport] = React.useState(null);
-  const exportOpen = Boolean(anchorElExport);
-
-  const handleExportClick = (event) => {
-    setAnchorElExport(event.currentTarget);
-  };
-  const handleExportClose = () => {
-    setAnchorElExport(null);
-  };
-
-  const [anchorElTheme, setAnchorElTheme] = React.useState(null);
-  const themeOpen = Boolean(anchorElTheme);
-
-  const handleThemeClick = (event) => {
-    setAnchorElTheme(event.currentTarget);
-  };
-  const handleThemeClose = () => {
-    setAnchorElTheme(null);
-  };
-
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
   };
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-
-  // from Transition modal example in MUI documentation
-  // https://mui.com/components/modal/#transitions
-  const loginModalStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    bgcolor: 'background.paper',
-    border: '1px solid #888',
-    borderRadius: 3,
-    boxShadow: 24,
-    p: 4,
-    width: {xs: "90vw", md: "36vw"}
-  };  
-
-  const [loginModalOpen, setLoginModalOpen] = React.useState(false);
-  const handleLoginModalOpen = () => setLoginModalOpen(true);
-  const handleLoginModalClose = () => setLoginModalOpen(false);
-
-  // from Transition modal example in MUI documentation
-  // https://mui.com/components/modal/#transitions
-  function TransitionsLoginModal() {
-    return (
-      <div>
-        <Button onClick={handleLoginModalOpen} sx={{color: "white", mr: 1, textTransform: "capitalize"}}>Log in / Sign up</Button>
-        <Modal
-          aria-labelledby="transition-modal-title"
-          aria-describedby="transition-modal-description"
-          open={loginModalOpen}
-          onClose={handleLoginModalClose}
-          closeAfterTransition
-          BackdropComponent={Backdrop}
-          BackdropProps={{
-            timeout: 500,
-          }}
-        >
-          <Fade in={loginModalOpen}>
-            <Box sx={loginModalStyle}>
-              <LoginComponent />
-            </Box>
-          </Fade>
-        </Modal>
-      </div>
-    );
-  }
 
   // from Transition modal example in MUI documentation
   // https://mui.com/components/modal/#transitions
@@ -172,6 +89,198 @@ const NavbarComponent = () => {
       </div>
     );
   }
+
+  function handleLogOut(event) {
+    event.preventDefault();
+    ReactSession.set('userId', null);
+    ReactSession.set('token', null);
+    window.location.reload();
+  }
+
+  return (
+    <Box sx={{ flexGrow: 0 }}>
+      <Tooltip title="Open User Account Menu">
+        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+          <Avatar />
+        </IconButton>
+      </Tooltip>
+
+      {/* Account menu examples in MUI documentation */}
+      {/* // https://mui.com/components/menus/#account-menu */}
+      <Menu
+        sx={{ mt: '45px' }}
+        id="menu-appbar"
+        anchorEl={anchorElUser}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        keepMounted
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        open={Boolean(anchorElUser)}
+        onClose={handleCloseUserMenu}
+        onClick={handleCloseUserMenu}
+        PaperProps={{
+          elevation: 0,
+          sx: {
+            overflow: 'visible',
+            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+            mt: 1.5,
+            '& .MuiAvatar-root': {
+              width: 32,
+              height: 32,
+              ml: -0.5,
+              mr: 1,
+            },
+            '&:before': {
+              content: '""',
+              display: 'block',
+              position: 'absolute',
+              top: 0,
+              right: 14,
+              width: 10,
+              height: 10,
+              bgcolor: 'background.paper',
+              transform: 'translateY(-50%) rotate(45deg)',
+              zIndex: 0,
+            },
+          },
+        }}
+      >
+        <TransitionsUSModal />
+        <Divider sx={{paddingTop: 1, marginBottom: 1}} />
+        <MenuItem onClick={handleLogOut}>
+          <ListItemIcon>
+            <Logout />
+          </ListItemIcon>
+          Log Out
+        </MenuItem>
+      </Menu>
+    </Box>
+  );
+}
+
+function GuestLogInCorner(props) {
+  // from Transition modal example in MUI documentation
+  // https://mui.com/components/modal/#transitions
+  const loginModalStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    bgcolor: 'background.paper',
+    border: '1px solid #888',
+    borderRadius: 3,
+    boxShadow: 24,
+    p: 4,
+    width: {xs: "90vw", md: "36vw"}
+  };  
+
+  const [loginModalOpen, setLoginModalOpen] = React.useState(false);
+  const handleLoginModalOpen = () => setLoginModalOpen(true);
+  const handleLoginModalClose = () => setLoginModalOpen(false);
+
+  // from Transition modal example in MUI documentation
+  // https://mui.com/components/modal/#transitions
+  // function TransitionsLoginModal() {
+  return (
+    <div>
+      <Button onClick={handleLoginModalOpen} sx={{color: "white", mr: 1, textTransform: "capitalize"}}>Log in / Sign up</Button>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={loginModalOpen}
+        onClose={handleLoginModalClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={loginModalOpen}>
+          <Box sx={loginModalStyle}>
+            <LoginComponent />
+          </Box>
+        </Fade>
+      </Modal>
+    </div>
+  );
+  // }
+}
+
+function LogInCorner(props) {
+  const isLoggedIn = props.isLoggedIn;
+  if (isLoggedIn) {
+    return <UserLogInCorner />;
+  } else {
+    return <GuestLogInCorner />;
+  }
+}
+
+const NavbarComponent = () => {
+
+  let isLoggedIn = false;
+
+  // example derived from w3schools example
+  // https://www.w3schools.blog/get-cookie-by-name-javascript-js
+  let cookie = {};
+  document.cookie.split(";").forEach(function(elmt) {
+    let [key, value] = elmt.split("=");
+    cookie[key.trim()] = value;
+  })
+
+  if (cookie["__react_session__"] && ReactSession.get("userId") !== null && ReactSession.get("userId") !== undefined) {
+    isLoggedIn = true;
+  } else {
+    ReactSession.set('userId', null);
+    ReactSession.set('token', null);
+    isLoggedIn = false;
+  }
+  const [anchorElNav, setAnchorElNav] = React.useState(null);
+
+  // basic menu example in MUI documentation
+  // https://mui.com/components/menus/#basic-menu
+  const [anchorElShare, setAnchorElShare] = React.useState(null);
+  const shareOpen = Boolean(anchorElShare);
+
+  const handleShareClick = (event) => {
+    setAnchorElShare(event.currentTarget);
+  };
+  const handleShareClose = () => {
+    setAnchorElShare(null);
+  };
+
+  const [anchorElExport, setAnchorElExport] = React.useState(null);
+  const exportOpen = Boolean(anchorElExport);
+
+  const handleExportClick = (event) => {
+    setAnchorElExport(event.currentTarget);
+  };
+  const handleExportClose = () => {
+    setAnchorElExport(null);
+  };
+
+  const [anchorElTheme, setAnchorElTheme] = React.useState(null);
+  const themeOpen = Boolean(anchorElTheme);
+
+  const handleThemeClick = (event) => {
+    setAnchorElTheme(event.currentTarget);
+  };
+  const handleThemeClose = () => {
+    setAnchorElTheme(null);
+  };
+
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget);
+  };
+
+
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
 
   return (
     <AppBar 
@@ -392,70 +501,8 @@ const NavbarComponent = () => {
             </div>
           </Box>
           
-          <TransitionsLoginModal />
-
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open User Account Menu">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar />
-              </IconButton>
-            </Tooltip>
-
-            {/* Account menu examples in MUI documentation */}
-            {/* // https://mui.com/components/menus/#account-menu */}
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-              onClick={handleCloseUserMenu}
-              PaperProps={{
-                elevation: 0,
-                sx: {
-                  overflow: 'visible',
-                  filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                  mt: 1.5,
-                  '& .MuiAvatar-root': {
-                    width: 32,
-                    height: 32,
-                    ml: -0.5,
-                    mr: 1,
-                  },
-                  '&:before': {
-                    content: '""',
-                    display: 'block',
-                    position: 'absolute',
-                    top: 0,
-                    right: 14,
-                    width: 10,
-                    height: 10,
-                    bgcolor: 'background.paper',
-                    transform: 'translateY(-50%) rotate(45deg)',
-                    zIndex: 0,
-                  },
-                },
-              }}
-            >
-              <TransitionsUSModal />
-              <Divider sx={{paddingTop: 1, marginBottom: 1}} />
-              <MenuItem>
-                <ListItemIcon>
-                  <Logout />
-                </ListItemIcon>
-                Log Out
-              </MenuItem>
-            </Menu>
-          </Box>
+          <LogInCorner isLoggedIn={isLoggedIn} />
+          
         </Toolbar>
       </Container>
     </AppBar>

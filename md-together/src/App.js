@@ -2,12 +2,11 @@ import './App.css';
 import EditorComponent from './components/EditorComponent';
 import NavbarComponent from './components/NavbarComponent';
 import FooterComponent from './components/FooterComponent';
-import { BrowserRouter, Route } from "react-router-dom";
+// import { BrowserRouter, Route } from "react-router-dom";
 import ReactSession from 'react-client-session/dist/ReactSession';
+
 function App() {
   ReactSession.setStoreType('cookie');
-  ReactSession.set("userId", null);
-  ReactSession.set("token",null);
   return (
     //<BrowserRouter>
     <div className="App">

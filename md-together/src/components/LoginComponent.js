@@ -7,8 +7,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -33,9 +31,11 @@ function SignIn() {
     let email= data.get('email');
     let password= data.get('password');
     if(!validator.isEmail(email) || !validator.isAlphanumeric(password)){
-      console.log("Wrong format of email or password");
+      document.getElementById("Log In Error Box").innerHTML = "** Wrong format of email or password. **";
+      // console.log("Wrong format of email or password");
       return;
     }
+    event.currentTarget.reset();
     const body = {
       query:`
       query {
@@ -55,8 +55,12 @@ function SignIn() {
     })
     .then(res =>{
       if(res.status !== 200 && res.status !== 201){
-        console.log("Failed");
+        // need to change this to actual error messages
+        document.getElementById("Log In Error Box").innerHTML = res.statusText;
+        // console.log("Failed");
+        return res.json();
       }
+      window.location.reload();
       return res.json();
     })
     .then(data =>{
@@ -64,10 +68,15 @@ function SignIn() {
       ReactSession.set('token',data.data.emailLogin.token);
     })
     .catch(err =>{
+      // need to change this to actual error messages
+      // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
       console.log(err)
     });
-
   };
+
+  function handleFormChange() {
+    document.getElementById("Log In Error Box").innerHTML = "";
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -87,7 +96,7 @@ function SignIn() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }} onChange={handleFormChange}>
             <TextField
               margin="normal"
               required
@@ -108,15 +117,12 @@ function SignIn() {
               id="password"
               autoComplete="current-password"
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
+            <div id="Log In Error Box" className='error-box'></div>
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 4, mb: 2 }}
             >
               Sign In
             </Button>
@@ -142,8 +148,11 @@ function SignUp() {
     || !validator.isAlphanumeric(password) 
     || !validator.isAlpha(firstName) 
     || !validator.isAlpha(lastName)){
-      console.log("Wrong format of email or password");
+      document.getElementById("Sign Up Error Box").innerHTML = "** Wrong format of email or password. **";
+      // console.log("Wrong format of email or password");
+      return;
     }
+    event.currentTarget.reset();
     const body = {
       query:`
       mutation{
@@ -166,6 +175,8 @@ function SignUp() {
     })
     .then(res =>{
       if(res.status !== 200 && res.status !== 201){
+        // need to change this to actual error messages
+        document.getElementById("Sign Up Error Box").innerHTML = res.statusText;
         throw new Error('Failed');
       }
       return res.json();
@@ -182,17 +193,21 @@ function SignUp() {
         `
       }
       return fetch("http://localhost:3001/graphql", {
-      method: 'POST',
-      body: JSON.stringify(signin),
-      headers:{
-        "Content-Type": 'application/json'
-      }
+        method: 'POST',
+        body: JSON.stringify(signin),
+        headers:{
+          "Content-Type": 'application/json'
+        }
       })
     })
     .then(res =>{
-      if(res.status !== 200 && res.status !== 201){
-        console.log("Failed");
+      if(res.status !== 200 && res.status !== 201) {
+        // need to change this to actual error messages
+        document.getElementById("Sign Up Error Box").innerHTML = res.statusText;
+        // console.log("Failed");
+        return res.json();
       }
+      window.location.reload();
       return res.json();
     })
     .then(data =>{
@@ -200,9 +215,15 @@ function SignUp() {
       ReactSession.set('token',data.data.emailLogin.token);
     })
     .catch(err =>{
+      // need to change this to actual error messages
+      // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
       console.log(err)
     });
   };
+
+  function handleFormChange() {
+    document.getElementById("Sign Up Error Box").innerHTML = "";
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -222,7 +243,7 @@ function SignUp() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }} onChange={handleFormChange}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -267,6 +288,7 @@ function SignUp() {
                 />
               </Grid>
             </Grid>
+            <div id="Sign Up Error Box" className='error-box'></div>
             <Button
               type="submit"
               fullWidth
