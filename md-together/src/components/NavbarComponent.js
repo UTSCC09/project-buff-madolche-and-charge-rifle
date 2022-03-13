@@ -94,6 +94,7 @@ function UserLogInCorner(props) {
     event.preventDefault();
     ReactSession.set('userId', null);
     ReactSession.set('token', null);
+    ReactSession.set('email', null);
     window.location.reload();
   }
 

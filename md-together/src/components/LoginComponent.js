@@ -41,11 +41,14 @@ function SignIn() {
       query {
         emailLogin(email:"${email}", password:"${password}"){
           userId
+          email
           token
         }
       }
       `
     }
+    let err = false;
+    let backenderr = false;
     fetch("http://localhost:3001/graphql", {
     method: 'POST',
     body: JSON.stringify(body),
@@ -56,16 +59,27 @@ function SignIn() {
     .then(res =>{
       if(res.status !== 200 && res.status !== 201){
         // need to change this to actual error messages
-        document.getElementById("Log In Error Box").innerHTML = res.statusText;
+        err = true;
+        if(res.status === 400){
+          backenderr = true;
+        }
         // console.log("Failed");
-        return res.json();
       }
-      window.location.reload();
       return res.json();
     })
     .then(data =>{
-      ReactSession.set('userId',data.data.emailLogin.userId);
-      ReactSession.set('token',data.data.emailLogin.token);
+      if(err){
+        if(backenderr){
+          document.getElementById("Log In Error Box").innerHTML = "Something wrong with server, please contact to admin";
+        }else{
+          document.getElementById("Log In Error Box").innerHTML = data.errors[0].message;
+        }
+      }else{
+        ReactSession.set('userId',data.data.emailLogin.userId);
+        ReactSession.set('email',data.data.emailLogin.email);
+        ReactSession.set('token',data.data.emailLogin.token);
+        window.location.reload();
+      }
     })
     .catch(err =>{
       // need to change this to actual error messages
@@ -148,7 +162,7 @@ function SignUp() {
     || !validator.isAlphanumeric(password) 
     || !validator.isAlpha(firstName) 
     || !validator.isAlpha(lastName)){
-      document.getElementById("Sign Up Error Box").innerHTML = "** Wrong format of email or password. **";
+      document.getElementById("Sign Up Error Box").innerHTML = "** Wrong format of one of email, password, first/last name. **";
       // console.log("Wrong format of email or password");
       return;
     }
@@ -157,15 +171,15 @@ function SignUp() {
       query:`
       mutation{
         createUser(UserInput:{firstName:"${firstName}", lastName:"${lastName}", email:"${email}",password:"${password}"}){
-          _id
-          firstName
-          lastName
+          userId
           email
-          password
+          token
         }
       }
       `
     }
+    let err = false;
+    let backenderr  =true;
     fetch("http://localhost:3001/graphql", {
     method: 'POST',
     body: JSON.stringify(body),
@@ -176,49 +190,71 @@ function SignUp() {
     .then(res =>{
       if(res.status !== 200 && res.status !== 201){
         // need to change this to actual error messages
-        document.getElementById("Sign Up Error Box").innerHTML = res.statusText;
-        throw new Error('Failed');
-      }
-      return res.json();
-    })
-    .then(data =>{
-      const signin = {
-        query:`
-        query {
-          emailLogin(email:"${email}", password:"${password}"){
-            userId
-            token
-          }
+        err = true;
+        if(res.status === 400){
+          backenderr = true;
         }
-        `
-      }
-      return fetch("http://localhost:3001/graphql", {
-        method: 'POST',
-        body: JSON.stringify(signin),
-        headers:{
-          "Content-Type": 'application/json'
-        }
-      })
-    })
-    .then(res =>{
-      if(res.status !== 200 && res.status !== 201) {
-        // need to change this to actual error messages
-        document.getElementById("Sign Up Error Box").innerHTML = res.statusText;
         // console.log("Failed");
-        return res.json();
       }
-      window.location.reload();
       return res.json();
     })
     .then(data =>{
-      ReactSession.set('userId',data.data.emailLogin.userId);
-      ReactSession.set('token',data.data.emailLogin.token);
+      if(err){
+        if(backenderr){
+          document.getElementById("Sign Up Error Box").innerHTML ="Something wrong with server, please contact to admin";
+        }else{
+          document.getElementById("Sign Up Error Box").innerHTML = data.errors[0].message;
+        }
+      }else{
+        ReactSession.set('userId',data.data.createUser.userId);
+        ReactSession.set('email',data.data.createUser.email);
+        ReactSession.set('token',data.data.createUser.token);
+        window.location.reload();
+      }
     })
     .catch(err =>{
       // need to change this to actual error messages
       // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
       console.log(err)
     });
+    // .then(data =>{
+    //   const signin = {
+    //     query:`
+    //     query {
+    //       emailLogin(email:"${email}", password:"${password}"){
+    //         userId
+    //         token
+    //       }
+    //     }
+    //     `
+    //   }
+    //   return fetch("http://localhost:3001/graphql", {
+    //     method: 'POST',
+    //     body: JSON.stringify(signin),
+    //     headers:{
+    //       "Content-Type": 'application/json'
+    //     }
+    //   })
+    // })
+    // .then(res =>{
+    //   if(res.status !== 200 && res.status !== 201) {
+    //     // need to change this to actual error messages
+    //     document.getElementById("Sign Up Error Box").innerHTML = res.statusText;
+    //     // console.log("Failed");
+    //     return res.json();
+    //   }
+    //   window.location.reload();
+    //   return res.json();
+    // })
+    // .then(data =>{
+    //   ReactSession.set('userId',data.data.emailLogin.userId);
+    //   ReactSession.set('token',data.data.emailLogin.token);
+    // })
+    // .catch(err =>{
+    //   // need to change this to actual error messages
+    //   // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
+    //   console.log(err)
+    // });
   };
 
   function handleFormChange() {

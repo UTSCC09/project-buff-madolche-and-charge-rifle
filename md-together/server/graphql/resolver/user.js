@@ -54,7 +54,16 @@ module.exports = {
             });
             const result = await newUser.save();
             //console.log(result._doc);
-            return { ...result._doc, _id: result.id, password: null };
+            const token = jwt.sign({userId: result.id, email:result.email}, 'my token secret', {
+                expiresIn:'1h'
+            });
+            return {
+                userId: result.id,
+                email: result.email,
+                token: token,
+                tokenExpiration: 1 //time in hour
+            }
+            //return { ...result._doc, _id: result.id, password: null };
         } catch (err) {
             //console.log(err);
             throw err;
@@ -74,6 +83,7 @@ module.exports = {
         });
         return {
             userId: user.id,
+            email: user.email,
             token: token,
             tokenExpiration: 1 //time in hour
         }

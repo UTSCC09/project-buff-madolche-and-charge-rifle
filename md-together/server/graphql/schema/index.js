@@ -12,6 +12,7 @@ type user {
 }
 type Authdata{
     userId: ID!
+    email: String!
     token: String!
     tokenExpiration: Int! 
 }
@@ -43,7 +44,7 @@ type RootQuery {
     emailLogin(email: String!, password: String!): Authdata!
 }
 type RootMutation {
-    createUser(UserInput: userInput!): user!
+    createUser(UserInput: userInput!): Authdata!
     createProject(ProjectInput: projectInput!): project!
 }
 schema {
