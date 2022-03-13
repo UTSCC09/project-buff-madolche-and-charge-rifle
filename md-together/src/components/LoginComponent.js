@@ -72,7 +72,7 @@ function SignIn() {
         if(backenderr){
           document.getElementById("Log In Error Box").innerHTML = "Something wrong with server, please contact to admin";
         }else{
-          document.getElementById("Log In Error Box").innerHTML = data.errors[0].message;
+          document.getElementById("Log In Error Box").innerHTML = "** " + data.errors[0].message + " **";
         }
       }else{
         ReactSession.set('userId',data.data.emailLogin.userId);
@@ -179,7 +179,7 @@ function SignUp() {
       `
     }
     let err = false;
-    let backenderr  =true;
+    let backenderr = false;
     fetch("http://localhost:3001/graphql", {
     method: 'POST',
     body: JSON.stringify(body),
@@ -203,7 +203,7 @@ function SignUp() {
         if(backenderr){
           document.getElementById("Sign Up Error Box").innerHTML ="Something wrong with server, please contact to admin";
         }else{
-          document.getElementById("Sign Up Error Box").innerHTML = data.errors[0].message;
+          document.getElementById("Sign Up Error Box").innerHTML = "** " + data.errors[0].message + " **";
         }
       }else{
         ReactSession.set('userId',data.data.createUser.userId);

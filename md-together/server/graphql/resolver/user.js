@@ -34,7 +34,7 @@ module.exports = {
         try {
             const user = await User.findOne({ email: args.UserInput.email });
             if (user) {
-                throw new Error("User email "+ args.UserInput.email+" already exists");
+                throw new Error("User with email "+ args.UserInput.email+" already exists");
             }
             if(args.UserInput.otherId){
                 const otherUser = await User.findOne({ otherId: args.UserInput.otherId });
@@ -72,7 +72,7 @@ module.exports = {
     emailLogin: async args =>{
         const user = await User.findOne({email:args.email});
         if(!user){
-            throw new Error("User email "+args.email+" not exits");
+            throw new Error("User with email "+args.email+" does not exist");
         }
         const equal = await bcrypt.compare(args.password,user.password);
         if(!equal){
