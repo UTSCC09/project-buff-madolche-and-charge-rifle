@@ -35,15 +35,3 @@ mongoose.connect("mongodb+srv://mdTogether:mdTogether@cluster0.sjsbm.mongodb.net
 })
 .catch(err => console.error(err));
 
-// const{
-//     GraphQLID,
-//     GraphQLString,
-//     GraphQLList,
-//     GraphQLType,
-//     GraphQLSchema,
-//     GraphQLNonNull,
-//     GraphQLObjectType,
-
-// } = require("graphql");
-// let cors = require("cors");
-// //const { default: Context } = require("@mui/base/TabsUnstyled/TabsContext");

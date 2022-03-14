@@ -30,6 +30,17 @@ const userSchema = new Schema({
             type: String,
             required: true
     },
-}]
+}],
+invited:[{
+    _id:{
+    type: Schema.Types.ObjectId,
+    ref:'Project',
+    required: true
+},
+    name:{
+        type: String,
+        required: true
+},
+}],
 });
 module.exports = mongoose.model('User', userSchema);

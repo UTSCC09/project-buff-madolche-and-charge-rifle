@@ -10,18 +10,22 @@ module.exports = (req,res,next) =>{
         req.isAuth = false;
         return next();
     }
+    //console.log(token);
     let Token;
     try{
         Token = jwt.verify(token, 'my token secret');
     }catch (err){
         req.isAuth = false;
+        //console.log(err);
         return next();
     }
     if(!Token){
         req.isAuth = false;
         return next();
     }
+    //console.log(Token.userId);
     req.isAuth = true;
     req.userId = Token.userId;
+    //console.log(req.isAuth);
     next();
 }

@@ -10,10 +10,6 @@ const projectSchema = new Schema({
         ref:'User',
         required: true,
     },
-    editor:[{
-        type:Schema.Types.ObjectId,
-        ref:'User',
-    }],
     content:{
         type: String,
         required:true

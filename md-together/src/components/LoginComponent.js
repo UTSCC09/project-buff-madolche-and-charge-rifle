@@ -79,6 +79,7 @@ function SignIn() {
         ReactSession.set('email',data.data.emailLogin.email);
         ReactSession.set('token',data.data.emailLogin.token);
         window.location.reload();
+        //console.log(data);
       }
     })
     .catch(err =>{

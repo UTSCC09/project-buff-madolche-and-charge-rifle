@@ -2,6 +2,7 @@ const User = require("../../models/user");
 const bcrypt = require('bcryptjs');
 const {user, projects, transformProject} = require("./populate");
 const jwt = require('jsonwebtoken');
+const { UsbRounded } = require("@mui/icons-material");
 module.exports = {
 
     // getprojct:() =>{
@@ -15,21 +16,21 @@ module.exports = {
     //         })
     //     })
     // }
-    users: async () => {
-        try {
-            const results = await User.find();
-            return results.map(result => {
-                return {
-                    ...result._doc, password: null, _id: result.id, 
-                    project: result._doc.project.map(pro => {
-                        return { ...pro._doc, _id: pro.id };
-                    })
-                };
-            });
-        } catch (err) {
-            throw err;
-        }
-    },
+    // users: async () => {
+    //     try {
+    //         const results = await User.find();
+    //         return results.map(result => {
+    //             return {
+    //                 ...result._doc, password: null, _id: result.id, 
+    //                 project: result._doc.project.map(pro => {
+    //                     return { ...pro._doc, _id: pro.id };
+    //                 })
+    //             };
+    //         });
+    //     } catch (err) {
+    //         throw err;
+    //     }
+    // },
     createUser: async args => {
         try {
             const user = await User.findOne({ email: args.UserInput.email });
@@ -87,5 +88,5 @@ module.exports = {
             token: token,
             tokenExpiration: 1 //time in hour
         }
-    }
+    },
 }

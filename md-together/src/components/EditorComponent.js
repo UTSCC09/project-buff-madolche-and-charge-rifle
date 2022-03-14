@@ -49,6 +49,7 @@ export default function EditorComponent() {
   // const [currMediaConn, setCurrMediaConn] = useState(mediaConn);
 
   // console.log(currConn);
+  // I write get/save content in the backend, please provide corresponding button in the frontend
 
   peer.on('open', (id) => {
     setCurrId(id);
