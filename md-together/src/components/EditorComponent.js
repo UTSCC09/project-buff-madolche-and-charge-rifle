@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import MDEditor from '@uiw/react-md-editor';
 // Use Peer.js to realize Web real time communication
 import Peer from 'peerjs';
@@ -23,9 +23,6 @@ let defaultWelcome = `# Welcome to mdTogether!
 // https://blog.logrocket.com/getting-started-peerjs/
 const peer = new Peer();
 let dataConn;
-
-// codes derived from peer.js video/audio call example
-// https://blog.logrocket.com/getting-started-peerjs/
 let mediaConn;
 
 // using react-md-editor as the markdown editor
@@ -46,7 +43,7 @@ export default function EditorComponent() {
   const [mediaConnId, setMediaConnId] = useState("");
   const [currId, setCurrId] = useState("");
   const [currDataConn, setCurrDataConn] = useState(dataConn);
-  // const [currMediaConn, setCurrMediaConn] = useState(mediaConn);
+  const [currMediaConn, setCurrMediaConn] = useState(mediaConn);
 
   // console.log(currConn);
   // I write get/save content in the backend, please provide corresponding button in the frontend
@@ -57,10 +54,10 @@ export default function EditorComponent() {
 
   const handleDataSubmit = (e) => {
     e.preventDefault();
-    const dataConn = peer.connect(dataConnId);
-    setCurrDataConn(dataConn);
+    const dc = peer.connect(dataConnId);
+    setCurrDataConn(dc);
     console.log("im caller");
-    dataConn.on('data', (data) => {
+    dc.on('data', (data) => {
       setValue(data);
     });
     setDataConnId("");
@@ -69,10 +66,10 @@ export default function EditorComponent() {
   React.useEffect(() => {
     dataConn = currDataConn;
 
-    peer.on('connection', (dataConn) => {
+    peer.on('connection', (dc) => {
       console.log("im callee");
-      setCurrDataConn(dataConn);
-      dataConn.on('data', (data) => {
+      setCurrDataConn(dc);
+      dc.on('data', (data) => {
         setValue(data);
       });
     });
@@ -86,12 +83,16 @@ export default function EditorComponent() {
 
   const handleMediaSubmit = (e) => {
     e.preventDefault();
-    let mediaConn = peer.connect(mediaConnId);
+    // peer.connect(mediaConnId);
     // setCurrMediaConn(mediaConn);
     // console.log(mediaConn);
     navigator.mediaDevices.getUserMedia({video: true, audio: true})
       .then((stream) => {
         let call = peer.call(mediaConnId, stream);
+        setCurrMediaConn(call);
+        peerVideo = document.getElementById("peer_video");
+        peerVideo.setAttribute("width", "200");
+        peerVideo.setAttribute("height", "200");
         call.on('stream', showVideo);
       })
       .catch((err) => {
@@ -103,7 +104,11 @@ export default function EditorComponent() {
   
   React.useEffect(() => {
     peerVideo = document.getElementById("peer_video");
+    mediaConn = currMediaConn;
     peer.on('call', (call) => {
+      setCurrMediaConn(call);
+      peerVideo.setAttribute("width", "200");
+      peerVideo.setAttribute("height", "200");
       navigator.mediaDevices.getUserMedia({video: true, audio: true})
         .then((stream) => {
           call.answer(stream); // Answer the call with an A/V stream.
@@ -141,10 +146,26 @@ export default function EditorComponent() {
     isLoggedIn = false;
   }
 
-  function DataPeerForm() {
-    return (
-      <div>
-        <label>Your Current Peer ID is: {currId}</label>
+  let dataIsConnected = currDataConn ? true : false;
+  let mediaIsConnected = currMediaConn ? true : false;
+
+  const disconnectData = useCallback(() => {
+    currDataConn.close();
+    setCurrDataConn(undefined);
+  }, [currDataConn]);
+
+  function DataForm(props) {
+    const isConnected = props.dataIsConnected;
+    if (isConnected) {
+      return (
+        <div>
+          <label>You are currently collaborating with: {currDataConn.peer} </label>
+          <button onClick={disconnectData}>Disconnect</button>
+        </div>
+
+      );
+    } else {
+      return (
         <form onSubmit={handleDataSubmit}>
           <label>Enter the peer id to collaborate on writing:
             &nbsp;
@@ -153,6 +174,30 @@ export default function EditorComponent() {
           </label>
           <input type="submit"></input>
         </form>
+      );
+      
+    }
+  }
+
+  const disconnectMedia = useCallback(() => {
+    currMediaConn.close();
+    peerVideo = document.getElementById("peer_video");
+    peerVideo.setAttribute("width", "0");
+    peerVideo.setAttribute("height", "0");
+    setCurrMediaConn(undefined);
+  }, [currMediaConn]);
+
+  function MediaForm(props) {
+    const isConnected = props.mediaIsConnected;
+    if (isConnected) {
+      return (
+        <div>
+          <label>You are currently calling with: {currMediaConn.peer} </label>
+          <button onClick={disconnectMedia}>Hang up</button>
+        </div>
+      );
+    } else {
+      return (
         <form onSubmit={handleMediaSubmit}>
           <label>Enter the peer id to call:
               &nbsp;
@@ -161,6 +206,16 @@ export default function EditorComponent() {
             </label>
           <input type="submit"></input>
         </form>
+      );
+    }
+  }
+  
+  function PeerForm() {
+    return (
+      <div>
+        <label>Your Current Peer ID is: {currId}</label>
+        <DataForm dataIsConnected={dataIsConnected} />
+        <MediaForm mediaIsConnected={mediaIsConnected} />
       </div>
     );
   }
@@ -168,7 +223,7 @@ export default function EditorComponent() {
   function PeerSection(props) {
     const isLoggedIn = props.isLoggedIn;
     if (isLoggedIn) {
-      return <DataPeerForm />;
+      return <PeerForm />;
     } else {
       return (<div>Please sign in first.</div>);
     }
@@ -177,7 +232,7 @@ export default function EditorComponent() {
   return (
     <div>
       <PeerSection isLoggedIn={isLoggedIn} />
-      <video id="peer_video" width={200} height={200} autoPlay />
+      <video id="peer_video" width={0} height={0} autoPlay />
 
       <MDEditor
         value={value}

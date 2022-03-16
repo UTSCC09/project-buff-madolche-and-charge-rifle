@@ -1,4 +1,4 @@
-const { async } = require("jshint/src/prod-params");
+// const { async } = require("jshint/src/prod-params");
 const Project = require("../../models/project");
 const User = require("../../models/user");
 const {user, projects, transformProject} = require("./populate");
