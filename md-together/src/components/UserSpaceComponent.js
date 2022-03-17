@@ -9,6 +9,9 @@ import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import { IconButton } from '@mui/material';
+import Backdrop from '@mui/material/Backdrop';
+import Modal from '@mui/material/Modal';
+import Fade from '@mui/material/Fade';
 // icons imported from MUI Material icons
 // https://mui.com/components/material-icons/
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
@@ -20,6 +23,9 @@ import ReactSession from 'react-client-session/dist/ReactSession';
 
 function SelectedListItem() {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
+  // user's projects and the shared projects
+  const [ownProjects, setOwnProjects] = React.useState(null);
+  const [sharedProjects, setSharedProjects] = React.useState(null);
   //in restrict mode the following fetch will be sent twice, so I comment restrict mode in index.js
   //or we can write a handle and put the following fetch inside handle
   //I also write create/accpet/reject invitation and create/delete/ownerdelete project in the backend, 
@@ -64,6 +70,7 @@ function SelectedListItem() {
         console.log(data.errors[0].message)      }
     }else{
       projects = data.data.project;
+      setOwnProjects(projects);
       console.log(projects);
       //projects has format[{_id:"",name:""}]
     }
@@ -76,6 +83,187 @@ function SelectedListItem() {
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
   };
+
+  // from Transition modal example in MUI documentation
+  // https://mui.com/components/modal/#transitions
+  const SubModalStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    bgcolor: 'background.paper',
+    border: '1px solid #888',
+    boxShadow: 24,
+    p: 4,
+    width: {xs: "58vw", md: "60vw"},
+    borderRadius: 3,
+    paddingX: { xs: 2, md: 4 },
+    paddingY: { xs: 4, md: 7 }
+  }; 
+
+  const [createModalOpen, setCreateModalOpen] = React.useState(false);
+  const handleCreateModalOpen = () => setCreateModalOpen(true);
+  const handleCreateModalClose = () => setCreateModalOpen(false);
+
+  function handleCreateSubmit(e) {
+    // create form submit
+    e.preventDefault();
+  }
+
+  // from Transition modal example in MUI documentation
+  // https://mui.com/components/modal/#transitions
+  function CreateProjectModal() {
+    return (
+      <div>
+        <button onClick={handleCreateModalOpen}>
+          <div sx={{ color: "#000000DE", textTransform: "capitalize" }}>Create New Doc</div>
+        </button>
+        <Modal
+          aria-labelledby="transition-modal-title"
+          aria-describedby="transition-modal-description"
+          open={createModalOpen}
+          onClose={handleCreateModalClose}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}
+        >
+          <Fade in={createModalOpen}>
+            <Box sx={SubModalStyle}>
+              <form onSubmit={handleCreateSubmit}>
+                <label>Document Name:
+                    &nbsp;
+                    <input id="create_doc_name" type="text"></input>
+                    &nbsp;
+                  </label>
+                <input type="submit" value="Create"></input>
+              </form>
+            </Box>
+          </Fade>
+        </Modal>
+      </div>
+    );
+  }
+
+  const [inviteModalOpen, setInviteModalOpen] = React.useState(false);
+  const handleInviteModalOpen = () => setInviteModalOpen(true);
+  const handleInviteModalClose = () => setInviteModalOpen(false);
+
+  function handleInviteSubmit(e) {
+    // invite form submit
+    e.preventDefault();
+  }
+
+  // from Transition modal example in MUI documentation
+  // https://mui.com/components/modal/#transitions
+  function CreateInvModal() {
+    return (
+      <div>
+        <button onClick={handleInviteModalOpen}>
+          <div sx={{ color: "#000000DE", textTransform: "capitalize" }}>Invite User</div>
+        </button>
+        <Modal
+          aria-labelledby="transition-modal-title"
+          aria-describedby="transition-modal-description"
+          open={inviteModalOpen}
+          onClose={handleInviteModalClose}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}
+        >
+          <Fade in={inviteModalOpen}>
+            <Box sx={SubModalStyle}>
+              <form onSubmit={handleInviteSubmit}>
+                <label>Invitee Email:
+                    &nbsp;
+                    <input id="invitee_email" type="text"></input>
+                    &nbsp;
+                  </label>
+                <input type="submit" value="Invite"></input>
+              </form>
+            </Box>
+          </Fade>
+        </Modal>
+      </div>
+    );
+  }
+
+  function OwnProjectList() {
+    if (ownProjects !== null) {
+      return (
+        <div>
+          {
+            ownProjects.map((project, i) => (
+              <ListItemButton
+                selected={selectedIndex === i}
+                onClick={(event) => handleListItemClick(event, i)}
+              >
+                <ListItemIcon>
+                  <InsertDriveFileIcon />
+                </ListItemIcon>
+                <ListItemText primary={project.name} />
+                <IconButton>
+                  <DeleteIcon onClick={handleProjectDelete} />
+                </IconButton>
+              </ListItemButton>
+            ))
+          }
+        </div>
+      );
+    } else {
+      return <div></div>;
+    }
+  }
+
+  function handleAccInv(e) {
+    // accept the invitation
+    e.preventDefault();
+  }
+
+  function handleDelInv(e) {
+    // decline the invitation
+    e.preventDefault();
+  }
+
+  function InvitationList() {
+    // get all invitations of current user and use forEach to list them
+    // if (invitations !== null) {
+    //   return (
+    //     <div>
+    //       {
+    //         invitations.forEach((invitation) => (
+    //           <div>
+    //             <ListItemIcon>
+    //               <RsvpIcon />
+    //             </ListItemIcon>
+    //             <ListItemText primary={invitation.name} />
+    //             <IconButton sx={{ mr: 3 }}>
+    //               <CheckIcon onClick={handleAccInv} />
+    //             </IconButton>
+    //             <IconButton>
+    //               <ClearIcon onClick={handleDelInv} />
+    //             </IconButton>
+    //           </div>
+    //         ))
+    //       }
+    //     </div>
+    //   );
+    // } else {
+    //   return <div></div>;
+    // }
+
+    // temporary, just to escape errors
+    return <div></div>
+  }
+
+  function handleProjectDelete(e) {
+    // onclick function for project deletion
+    e.preventDefault();
+
+  }
 
   // This component is built taking Selected ListItem as an example in MUI documentation
   // https://mui.com/components/lists/#selected-listitem
@@ -98,103 +286,9 @@ function SelectedListItem() {
       >
         Your .md Docs
       </Typography>
+      <CreateProjectModal />
       <List component="nav" aria-label="files own by the user">
-        <ListItemButton
-          selected={selectedIndex === 0}
-          onClick={(event) => handleListItemClick(event, 0)}
-        >
-          <ListItemIcon>
-            <InsertDriveFileIcon />
-          </ListItemIcon>
-          <ListItemText primary="File 1" />
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </ListItemButton>
-        <ListItemButton
-          selected={selectedIndex === 1}
-          onClick={(event) => handleListItemClick(event, 1)}
-        >
-          <ListItemIcon>
-            <InsertDriveFileIcon />
-          </ListItemIcon>
-          <ListItemText primary="File 2" />
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </ListItemButton>
-        <ListItemButton
-          selected={selectedIndex === 2}
-          onClick={(event) => handleListItemClick(event, 2)}
-        >
-          <ListItemIcon>
-            <InsertDriveFileIcon />
-          </ListItemIcon>
-          <ListItemText primary="File 3" />
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </ListItemButton>
-        <ListItemButton
-          selected={selectedIndex === 3}
-          onClick={(event) => handleListItemClick(event, 3)}
-        >
-          <ListItemIcon>
-            <InsertDriveFileIcon />
-          </ListItemIcon>
-          <ListItemText primary="File 4" />
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </ListItemButton>
-        <ListItemButton
-          selected={selectedIndex === 4}
-          onClick={(event) => handleListItemClick(event, 4)}
-        >
-          <ListItemIcon>
-            <InsertDriveFileIcon />
-          </ListItemIcon>
-          <ListItemText primary="File 5" />
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </ListItemButton>
-        <ListItemButton
-          selected={selectedIndex === 5}
-          onClick={(event) => handleListItemClick(event, 5)}
-        >
-          <ListItemIcon>
-            <InsertDriveFileIcon />
-          </ListItemIcon>
-          <ListItemText primary="File 6" />
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </ListItemButton>
-        <ListItemButton
-          selected={selectedIndex === 6}
-          onClick={(event) => handleListItemClick(event, 6)}
-        >
-          <ListItemIcon>
-            <InsertDriveFileIcon />
-          </ListItemIcon>
-          <ListItemText primary="File 7" />
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </ListItemButton>
-        <ListItemButton
-          selected={selectedIndex === 7}
-          onClick={(event) => handleListItemClick(event, 7)}
-        >
-          <ListItemIcon>
-            <InsertDriveFileIcon />
-          </ListItemIcon>
-          <ListItemText primary="File 8" />
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </ListItemButton>
+        <OwnProjectList />
       </List>
 
       <Divider />
@@ -209,7 +303,7 @@ function SelectedListItem() {
         .md Together With You
       </Typography>
       <List component="nav" aria-label="secondary mailbox folder">
-        <ListItemButton
+        {/* <ListItemButton
           selected={selectedIndex === 8}
           onClick={(event) => handleListItemClick(event, 8)}
         >
@@ -217,16 +311,7 @@ function SelectedListItem() {
             <InsertDriveFileIcon />
           </ListItemIcon>
           <ListItemText primary="File 9" />
-        </ListItemButton>
-        <ListItemButton
-          selected={selectedIndex === 9}
-          onClick={(event) => handleListItemClick(event, 9)}
-        >
-          <ListItemIcon>
-            <InsertDriveFileIcon />
-          </ListItemIcon>
-          <ListItemText primary="File 10" />
-        </ListItemButton>
+        </ListItemButton> */}
       </List>
 
       <Divider />
@@ -240,37 +325,9 @@ function SelectedListItem() {
       > 
         Pending Invitation
       </Typography>
+      <CreateInvModal />
       <List component="nav" aria-label="secondary mailbox folder">
-        <ListItemButton
-          selected={selectedIndex === 10}
-          onClick={(event) => handleListItemClick(event, 10)}
-        >
-          <ListItemIcon>
-            <RsvpIcon />
-          </ListItemIcon>
-          <ListItemText primary="Invitation From Alice" />
-          <IconButton sx={{ mr: 3 }}>
-            <CheckIcon />
-          </IconButton>
-          <IconButton>
-            <ClearIcon />
-          </IconButton>
-        </ListItemButton>
-        <ListItemButton
-          selected={selectedIndex === 11}
-          onClick={(event) => handleListItemClick(event, 11)}
-        >
-          <ListItemIcon>
-            <RsvpIcon />
-          </ListItemIcon>
-          <ListItemText primary="Invitation From Bob" />
-          <IconButton sx={{ mr: 3 }}>
-            <CheckIcon />
-          </IconButton>
-          <IconButton>
-            <ClearIcon />
-          </IconButton>
-        </ListItemButton>
+        <InvitationList />
       </List>
     </Box>
   );

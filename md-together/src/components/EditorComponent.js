@@ -14,7 +14,7 @@ let defaultWelcome = `# Welcome to mdTogether!
 - In **User Space**, manage your own markdown files, collaborations, and invitations.
 - Invite users by clicking the **Invite** button under **Share** tab in the navbar above.
 - You can also **Export** current markdown files into data format you want!
-- Change the **Theme** that best fit your mood today!
+- Change the **Theme** that best fits your mood today!
 `
 
 // let currEmail = ReactSession.get("email");
@@ -46,7 +46,6 @@ export default function EditorComponent() {
   const [currMediaConn, setCurrMediaConn] = useState(mediaConn);
 
   // console.log(currConn);
-  // I write get/save content in the backend, please provide corresponding button in the frontend
 
   peer.on('open', (id) => {
     setCurrId(id);
@@ -229,11 +228,18 @@ export default function EditorComponent() {
     }
   }
 
+  function handleSave(e) {
+    e.preventDefault();
+    // Save button call
+  }
+
   return (
     <div>
       <PeerSection isLoggedIn={isLoggedIn} />
       <video id="peer_video" width={0} height={0} autoPlay />
-
+      <div>
+        <button onClick={handleSave}>Save</button>
+      </div>
       <MDEditor
         value={value}
         onChange={handleEditorChange}
