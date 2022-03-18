@@ -31,7 +31,7 @@ function ProjectList(props) {
           props.projects.map((project) => (
             <ListItemButton
               selected={props.selectedIndex === ReactSession.get("projectId")}
-              onClick={(event) => props.handleListItemClick(event, project._id)}
+              onClick={(event) => props.handleListItemClick(event, project._id,props.type)}
             >
               <ListItemIcon>
                 <InsertDriveFileIcon />
@@ -265,16 +265,18 @@ function SelectedListItem() {
     });
   }, []);
 
-  const handleListItemClick = (event, projectId) => {
+  const handleListItemClick = (event, projectId,type) => {
     event.preventDefault();
     setSelectedIndex(projectId);
-    console.log(projectId);
-
+    ReactSession.set("projectId",projectId);
+    ReactSession.set("type",type);
+    window.location.reload();
   };
 
   function handleOwnedProjectDelete(e) {
     // onclick function for project deletion
     e.preventDefault();
+
 
   }
 
@@ -413,7 +415,7 @@ function SelectedListItem() {
       </Typography>
       <CreateProjectModal />
       <List component="nav" aria-label="files own by the user">
-        <ProjectList projects={ownProjects} selectedIndex={selectedIndex} handleListItemClick={handleListItemClick} handleProjectDelete={handleOwnedProjectDelete} />
+        <ProjectList type={"owned"} projects={ownProjects} selectedIndex={selectedIndex} handleListItemClick={handleListItemClick} handleProjectDelete={handleOwnedProjectDelete} />
       </List>
 
       <Divider />
@@ -427,7 +429,7 @@ function SelectedListItem() {
       > 
         .md Together With You
       </Typography>
-      <ProjectList projects={sharedProjects} selectedIndex={selectedIndex} handleListItemClick={handleListItemClick} handleProjectDelete={handleSharedProjectDelete} />
+      <ProjectList type={"shared"} projects={sharedProjects} selectedIndex={selectedIndex} handleListItemClick={handleListItemClick} handleProjectDelete={handleSharedProjectDelete} />
       <List component="nav" aria-label="secondary mailbox folder">
         {/* shared projects */}
       </List>

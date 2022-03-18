@@ -1,4 +1,5 @@
 // const { async } = require("jshint/src/prod-params");
+const { RequestPage } = require("@mui/icons-material");
 const Project = require("../../models/project");
 const User = require("../../models/user");
 const {user, projects, transformProject} = require("./populate");
@@ -58,16 +59,21 @@ module.exports = {
         }
     },
     getContent: async (args,req) =>{
+        if(!req.isAuth){
+            throw new Error("User not authenticated");
+        }
         try{
-            let user = await User.findById(args.userId);
+            let user = await User.findById(req.userId);
             if(!user){
                 throw new Error("User not found");
             }
             let project;
+            console.log(user);
             if(args.type === "owned"){
-                project = [...user.owned];
+                console.log("owned");
+                project = Array.from([...user.owned]);
             }else if (args.type === "shared"){
-                project = [...user.shared];
+                project = Array.from([...user.shared]);
             }   
             let exist = project.find(pro => pro.id === args.projectId);
             if(!exist){
@@ -84,16 +90,19 @@ module.exports = {
         }
     },
     saveContent: async (args,req) =>{
+        if(!req.isAuth){
+            throw new Error("User not authenticated");
+        }
         try{
-            let user = await User.findById(args.userId);
+            let user = await User.findById(req.userId);
             if(!user){
                 throw new Error("User not found");
             }
             let project;
             if(args.type === "owned"){
-                project = [...user.owned];
+                project = Array.from([...user.owned]);
             }else if (args.type === "shared"){
-                project = [...user.shared];
+                project = Array.from([...user.shared]);
             }
             let exist = project.find(pro => pro.id === args.projectId);
             if(!exist){
@@ -115,17 +124,18 @@ module.exports = {
         }
     },
     createInv: async (args, req) =>{
+        if(!req.isAuth){
+            throw new Error("User not authenticated");
+        }
         try{
-            let user = await User.findById(args.owner);
+            let user = await User.findById(req.userId);
             let invited = await User.findOne({email:args.email});
             if(!user || !invited){
                 throw new Error("user not found");
             }
             let project = Array.from([...user.owned].concat([...user.shared]));
             let exist = project.find(pro => pro.id === args.projectId);
-            let projectshared = [...user.shared];
-            let existshared = projectshared.find(pro => pro.id === args.projectId);
-            if(!exist && !existshared){
+            if(!exist){
                 throw new Error("Project not found in your user space");
             }
             project = await Project.findById(args.projectId);
@@ -151,8 +161,11 @@ module.exports = {
         }
     },
     deleteProject: async (args, req) =>{
+        if(!req.isAuth){
+            throw new Error("User not authenticated");
+        }
         try{
-            let user = await User.findById(args.userId);
+            let user = await User.findById(req.userId);
             if(!user){
                 throw new Error("User not found");
             }
@@ -162,21 +175,24 @@ module.exports = {
                 throw new Error("You don't have the project in user space");
             }
             await User.updateOne(
-                {_id: args.userId},
+                {_id: req.userId},
                 {
                     $pull:{shared:{_id:same.id}}
                 }
 
             );
-            user = await User.findById(args.userId)
+            user = await User.findById(req.userId)
             return user.shared;
         }catch(err){
             throw err;
         }
     },
     ownerDelPro: async (args, req) =>{
+        if(!req.isAuth){
+            throw new Error("User not authenticated");
+        }
         try{
-            let user = await User.findById(args.userId);
+            let user = await User.findById(req.userId);
             if(!user){
                 throw new Error("User not found");
             }
@@ -199,15 +215,18 @@ module.exports = {
             await Project.deleteOne(
                 {_id:same.id},
             );
-            user = await User.findById(args.userId)
+            user = await User.findById(req.userId)
             return user.owned;
         }catch(err){
             throw err;
         }
     },
     acceptInv: async (args,req) =>{
+        if(!req.isAuth){
+            throw new Error("User not authenticated");
+        }
         try{
-            let invited = await User.findById(args.userId);
+            let invited = await User.findById(req.userId);
             if(!invited){
                 throw new Error("User not found");
             }
@@ -221,22 +240,25 @@ module.exports = {
                 throw new Error("project not exist/may be deleted, please contact to the project owner");
             }
             await User.updateMany(
-                {_id: args.userId},
+                {_id: req.userId},
                 {
                     $pull:{invited:{_id:sameinv.id}},
                     $push:{shared: sameinv},
                 }
 
             );
-            invited = await User.findById(args.userId)
+            invited = await User.findById(req.userId)
             return invited.shared;
         }catch(err){
             throw err;
         }
     },
     rejectInv: async (args,req) =>{
+        if(!req.isAuth){
+            throw new Error("User not authenticated");
+        }
         try{
-            let invited = await User.findById(args.userId);
+            let invited = await User.findById(req.userId);
             if(!invited){
                 throw new Error("User not found");
             }
@@ -246,13 +268,13 @@ module.exports = {
                 throw new Error("You don't have the invitation");
             }
             await User.updateMany(
-                {_id: args.userId},
+                {_id: req.userId},
                 {
                     $pull:{invited:{_id:sameinv.id}}
                 }
 
             );
-            invited = await User.findById(args.userId)
+            invited = await User.findById(req.userId)
             return invited.invited;
         }catch(err){
             throw err;
@@ -260,9 +282,9 @@ module.exports = {
     },
     // "6227f6c796810c0a56f8b0c3"
     createProject: async (args,req)=>{
-        // if(!req.isAuth){
-        //     throw new Error("User not authenticated");
-        // }
+        if(!req.isAuth){
+            throw new Error("User not authenticated");
+        }
         try{
             let user = await User.findById(args.ProjectInput.owner);
             if(!user){
@@ -270,8 +292,8 @@ module.exports = {
             } 
             const project = Project({
                 name:args.ProjectInput.name, 
-                //owner:req.userId,
-                owner:args.ProjectInput.owner,
+                owner:req.userId,
+                //owner:args.ProjectInput.owner,
                 content:"Hello world",
              });
             await project.save();

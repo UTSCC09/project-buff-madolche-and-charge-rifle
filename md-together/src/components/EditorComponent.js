@@ -74,6 +74,54 @@ export default function EditorComponent() {
         setValue(data);
       });
     });
+    const body = {
+      query:`
+      query{
+        getContent(projectId:"${ReactSession.get("projectId")}",userId:"",type:"${ReactSession.get("type")}")
+      }
+      `
+    }
+    let content_err = false;
+    let content_backenderr = false;
+    let content;
+    fetch("http://localhost:3001/graphql", {
+    method: 'POST',
+    body: JSON.stringify(body),
+    headers:{
+      "Content-Type": 'application/json',
+      "Authorization":'asda '+ ReactSession.get('token')
+    }
+    })
+    .then(res =>{
+      if(res.status !== 200 && res.status !== 201){
+        // need to change this to actual error messages
+        content_err = true;
+        if(res.status === 400){
+          content_backenderr = true;
+        }
+        // console.log("Failed");
+      }
+      return res.json();
+    })
+    .then(data =>{
+      if(content_err){
+        if(content_backenderr){
+          console.log(data.errors[0].message)
+        }else{
+          console.log(data.errors[0].message)      }
+      }else{
+        content = data.data.getContent;
+        setValue(content);
+        console.log(content);
+        // console.log(data);
+        //projects has format[{_id:"",name:""}]
+      }
+    })
+    .catch(err =>{
+      // need to change this to actual error messages
+      // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
+      console.log(err)
+    });
   });
 
   // codes derived from peer.js video/audio call example
@@ -233,7 +281,53 @@ export default function EditorComponent() {
   function handleSave(e) {
     e.preventDefault();
     // Save button call
-    //fetch()
+    const body = {
+      query:`
+      mutation{
+        saveContent(userId:"",projectId:"${ReactSession.get("projectId")}",content:"${value}",type:"${ReactSession.get("type")}")
+      }
+      `
+    }
+    let content_err = false;
+    let content_backenderr = false;
+    let content;
+    fetch("http://localhost:3001/graphql", {
+    method: 'POST',
+    body: JSON.stringify(body),
+    headers:{
+      "Content-Type": 'application/json',
+      "Authorization":'asda '+ ReactSession.get('token')
+    }
+    })
+    .then(res =>{
+      if(res.status !== 200 && res.status !== 201){
+        // need to change this to actual error messages
+        content_err = true;
+        if(res.status === 400){
+          content_backenderr = true;
+        }
+        // console.log("Failed");
+      }
+      return res.json();
+    })
+    .then(data =>{
+      if(content_err){
+        if(content_backenderr){
+          console.log(data.errors[0].message)
+        }else{
+          console.log(data.errors[0].message)      }
+      }else{
+        content = data.data.saveContent;
+        console.log(content);
+        // console.log(data);
+        //projects has format[{_id:"",name:""}]
+      }
+    })
+    .catch(err =>{
+      // need to change this to actual error messages
+      // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
+      console.log(err)
+    });
   }
 
   return (
