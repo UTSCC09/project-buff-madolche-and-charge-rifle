@@ -25,6 +25,7 @@ import Fade from '@mui/material/Fade';
 import LoginComponent from './LoginComponent';
 import UserSpaceComponent from './UserSpaceComponent';
 import ReactSession from 'react-client-session/dist/ReactSession';
+import navbarLogo from '../navbar_logo.png';
 
 // Derived from React official example about conditional rendering
 // https://reactjs.org/docs/conditional-rendering.html
@@ -299,7 +300,8 @@ const NavbarComponent = () => {
           >
             {/* Do we need to put a link in the logo? it might cause users to lose changes accidentally click on it */}
             {/* <a href="/" style={{textDecoration: "none", color: "white"}}>mdTogether</a> */}
-            mdTogether
+            {/* mdTogether */}
+            <img style={{height: "40px"}} src={navbarLogo} alt="mdTogether logo" />
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -333,7 +335,7 @@ const NavbarComponent = () => {
             >
               {/* basic menu example in MUI documentation
               https://mui.com/components/menus/#basic-menu */}
-              <div>
+              {/* <div>
                 <Button
                   id="basic-button-share"
                   aria-controls={shareOpen ? 'basic-menu-share' : undefined}
@@ -356,7 +358,7 @@ const NavbarComponent = () => {
                   <MenuItem onClick={handleShareClose}>Link</MenuItem>
                   <MenuItem onClick={handleShareClose}>Invite</MenuItem>
                 </Menu>
-              </div>
+              </div> */}
               <div>
                 <Button
                   id="basic-button-export"
@@ -418,12 +420,13 @@ const NavbarComponent = () => {
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }, fontWeight: "bold" }}
           >
-            mdTogether
+            {/* mdTogether */}
+            <img style={{height: "25px"}} src={navbarLogo} alt="mdTogether logo" />
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {/* basic menu example in MUI documentation
             https://mui.com/components/menus/#basic-menu */}
-            <div>
+            {/* <div>
               <Button
                 id="basic-button-share"
                 aria-controls={shareOpen ? 'basic-menu-share' : undefined}
@@ -446,7 +449,7 @@ const NavbarComponent = () => {
                 <MenuItem onClick={handleShareClose}>Link</MenuItem>
                 <MenuItem onClick={handleShareClose}>Invite</MenuItem>
               </Menu>
-            </div>
+            </div> */}
             <div>
               <Button
                 id="basic-button-export"
