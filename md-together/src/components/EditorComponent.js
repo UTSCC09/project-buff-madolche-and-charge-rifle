@@ -74,6 +74,10 @@ export default function EditorComponent() {
         setValue(data);
       });
     });
+
+  });
+
+  React.useEffect(() => {
     const body = {
       query:`
       query{
@@ -112,7 +116,7 @@ export default function EditorComponent() {
       }else{
         content = data.data.getContent;
         setValue(content);
-        console.log(content);
+        // console.log(content);
         // console.log(data);
         //projects has format[{_id:"",name:""}]
       }
@@ -122,7 +126,7 @@ export default function EditorComponent() {
       // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
       console.log(err)
     });
-  });
+  }, []);
 
   // codes derived from peer.js video/audio call example
   // https://blog.logrocket.com/getting-started-peerjs/
@@ -290,7 +294,7 @@ export default function EditorComponent() {
     }
     let content_err = false;
     let content_backenderr = false;
-    let content;
+    // let content;
     fetch("http://localhost:3001/graphql", {
     method: 'POST',
     body: JSON.stringify(body),
@@ -317,8 +321,8 @@ export default function EditorComponent() {
         }else{
           console.log(data.errors[0].message)      }
       }else{
-        content = data.data.saveContent;
-        console.log(content);
+        // content = data.data.saveContent;
+        // console.log(content);
         // console.log(data);
         //projects has format[{_id:"",name:""}]
       }
@@ -330,6 +334,8 @@ export default function EditorComponent() {
     });
   }
 
+  let editorVisible = ReactSession.get("projectId") !== null;
+    
   return (
     <div>
       <PeerSection isLoggedIn={isLoggedIn} />
@@ -337,13 +343,15 @@ export default function EditorComponent() {
       <div>
         <button onClick={handleSave}>Save</button>
       </div>
-      <MDEditor
+      {editorVisible && <MDEditor
         value={value}
         onChange={handleEditorChange}
         visiableDragbar={false}
         height={"90vh"}
-      />
-      {/* <MDEditor.Markdown source={value} /> */}
+      />}
+      {!editorVisible && <div id="default_renders">
+        <MDEditor.Markdown source={defaultWelcome} />
+      </div>}
     </div>
   );
 }

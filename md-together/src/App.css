@@ -9,3 +9,14 @@
   text-align: center;
   font-weight: bold;
 }
+
+#default_renders {
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#default_renders div {
+  margin: 0;
+}

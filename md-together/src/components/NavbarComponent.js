@@ -96,6 +96,8 @@ function UserLogInCorner(props) {
     ReactSession.set('userId', null);
     ReactSession.set('token', null);
     ReactSession.set('email', null);
+    ReactSession.set('projectId', null);
+    ReactSession.set('type', null);
     window.location.reload();
   }
 

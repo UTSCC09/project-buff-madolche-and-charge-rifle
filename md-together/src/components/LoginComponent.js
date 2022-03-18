@@ -78,6 +78,8 @@ function SignIn() {
         ReactSession.set('userId',data.data.emailLogin.userId);
         ReactSession.set('email',data.data.emailLogin.email);
         ReactSession.set('token',data.data.emailLogin.token);
+        ReactSession.set('projectId', null);
+        ReactSession.set('type', null);
         window.location.reload();
         //console.log(data);
       }
