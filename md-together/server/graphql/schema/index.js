@@ -38,12 +38,12 @@ type liteProject{
 }
 input projectInput{
     name: String!
-    content: String!
     owner: ID
 }
 type RootQuery {
     owned(userId: ID!): [liteProject!]
     shared(userId: ID!): [liteProject!]
+    invited(userId: ID!): [liteProject!]
     emailLogin(email: String!, password: String!): Authdata!
     getContent(projectId:ID!, userId:ID!, type: String!): String!
 }

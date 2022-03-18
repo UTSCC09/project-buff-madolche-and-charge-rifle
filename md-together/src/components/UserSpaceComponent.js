@@ -21,118 +21,267 @@ import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
 import ReactSession from 'react-client-session/dist/ReactSession';
 
+// render owned and shared projects
+function ProjectList(props) {
+
+  if (props.projects !== null) {
+    return (
+      <div>
+        {
+          props.projects.map((project) => (
+            <ListItemButton
+              selected={props.selectedIndex === ReactSession.get("projectId")}
+              onClick={(event) => props.handleListItemClick(event, project._id)}
+            >
+              <ListItemIcon>
+                <InsertDriveFileIcon />
+              </ListItemIcon>
+              <ListItemText primary={project.name} />
+              <IconButton>
+                <DeleteIcon onClick={props.handleProjectDelete} />
+              </IconButton>
+            </ListItemButton>
+          ))
+        }
+      </div>
+    );
+  } else {
+    return <div></div>;
+  }
+}
+
+// render invitations
+function InvitationList(props) {
+
+  function handleAccInv(e) {
+    // accept the invitation
+    e.preventDefault();
+    
+  }
+
+  function handleDelInv(e) {
+    // decline the invitation
+    e.preventDefault();
+
+  }
+
+  if (props.invitations !== null) {
+    return (
+      <div>
+        {
+          props.invitations.map((invitation) => (
+            <ListItemButton>
+              <ListItemIcon>
+                <RsvpIcon />
+              </ListItemIcon>
+              <ListItemText primary={invitation.name} />
+              <IconButton sx={{ mr: 3 }}>
+                <CheckIcon onClick={handleAccInv} />
+              </IconButton>
+              <IconButton>
+                <ClearIcon onClick={handleDelInv} />
+              </IconButton>
+            </ListItemButton>
+          ))
+        }
+      </div>
+    );
+  } else {
+    return <div></div>;
+  }
+}
+
 function SelectedListItem() {
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
-  // user's projects and the shared projects
-  const [ownProjects, setOwnProjects] = React.useState(null);
-  let sharedProjects = null;
   //in restrict mode the following fetch will be sent twice, so I comment restrict mode in index.js
   //or we can write a handle and put the following fetch inside handle
   //I also write create/accpet/reject invitation and create/delete/ownerdelete project in the backend, 
   //please provide the corresponding button(I can see the button right now but there is no js function) in frontend
-  const ownedbody = {
-    query:`
-    query{
-      owned(userId:"${ReactSession.get("userId")}"){
-        _id
-        name
+  const [ownProjects, setOwnProjects] = React.useState(null);
+  const [sharedProjects, setSharedProjects] = React.useState(null);
+  const [invitations, setInvitations] = React.useState(null);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+
+  React.useEffect(() => {
+    // fetch own projects
+    const ownedbody = {
+      query:`
+      query{
+        owned(userId:"${ReactSession.get("userId")}"){
+          _id
+          name
+        }
       }
+      `
     }
-    `
-  }
-  const sharedbody = {
-    query:`
-    query{
-      shared(userId:"${ReactSession.get("userId")}"){
-        _id
-        name
+    let own_err = false;
+    let own_backenderr = false;
+    let own_projects;
+    fetch("http://localhost:3001/graphql", {
+    method: 'POST',
+    body: JSON.stringify(ownedbody),
+    headers:{
+      "Content-Type": 'application/json',
+      "Authorization":'asda '+ ReactSession.get('token')
+    }
+    })
+    .then(res =>{
+      if(res.status !== 200 && res.status !== 201){
+        // need to change this to actual error messages
+        own_err = true;
+        if(res.status === 400){
+          own_backenderr = true;
+        }
+        // console.log("Failed");
       }
-    }
-    `
-  }
-  let err = false;
-  let backenderr = false;
-  let projects;
-  fetch("http://localhost:3001/graphql", {
-  method: 'POST',
-  body: JSON.stringify(ownedbody),
-  headers:{
-    "Content-Type": 'application/json',
-    "Authorization":'asda '+ ReactSession.get('token')
-  }
-  })
-  .then(res =>{
-    if(res.status !== 200 && res.status !== 201){
-      // need to change this to actual error messages
-      err = true;
-      if(res.status === 400){
-        backenderr = true;
-      }
-      // console.log("Failed");
-    }
-    return res.json();
-  })
-  .then(data =>{
-    if(err){
-      if(backenderr){
-        console.log(data.errors[0].message)
+      return res.json();
+    })
+    .then(data =>{
+      if(own_err){
+        if(own_backenderr){
+          console.log(data.errors[0].message)
+        }else{
+          console.log(data.errors[0].message)      }
       }else{
-        console.log(data.errors[0].message)      }
-    }else{
-      projects = data.data.owned;
-      setOwnProjects(projects);
-      console.log(ownProjects);
-      // console.log(data);
-      //projects has format[{_id:"",name:""}]
-    }
-  })
-  .catch(err =>{
-    // need to change this to actual error messages
-    // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
-    console.log(err)
-  });
-  fetch("http://localhost:3001/graphql", {
-  method: 'POST',
-  body: JSON.stringify(sharedbody),
-  headers:{
-    "Content-Type": 'application/json',
-    "Authorization":'asda '+ ReactSession.get('token')
-  }
-  })
-  .then(res =>{
-    if(res.status !== 200 && res.status !== 201){
-      // need to change this to actual error messages
-      err = true;
-      if(res.status === 400){
-        backenderr = true;
+        own_projects = data.data.owned;
+        setOwnProjects(own_projects);
+        console.log(own_projects);
+        // console.log(data);
+        //projects has format[{_id:"",name:""}]
       }
-      // console.log("Failed");
+    })
+    .catch(own_err =>{
+      // need to change this to actual error messages
+      // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
+      console.log(own_err)
+    });
+
+    // fetch shared projects
+    const sharedbody = {
+      query:`
+      query{
+        shared(userId:"${ReactSession.get("userId")}"){
+          _id
+          name
+        }
+      }
+      `
     }
-    return res.json();
-  })
-  .then(data =>{
-    if(err){
-      if(backenderr){
-        console.log(data.errors[0].message)
+    let share_err = false;
+    let share_backenderr = false;
+    let share_projects;
+    
+    fetch("http://localhost:3001/graphql", {
+    method: 'POST',
+    body: JSON.stringify(sharedbody),
+    headers:{
+      "Content-Type": 'application/json',
+      "Authorization":'asda '+ ReactSession.get('token')
+    }
+    })
+    .then(res =>{
+      if(res.status !== 200 && res.status !== 201){
+        // need to change this to actual error messages
+        share_err = true;
+        if(res.status === 400){
+          share_backenderr = true;
+        }
+        // console.log("Failed");
+      }
+      return res.json();
+    })
+    .then(data =>{
+      if(share_err){
+        if(share_backenderr){
+          console.log(data.errors[0].message)
+        }else{
+          console.log(data.errors[0].message)      }
       }else{
-        console.log(data.errors[0].message)      }
-    }else{
-      projects = data.data.shared;
-      sharedProjects = projects;
-      console.log(sharedProjects);
-      // console.log(data);
-      //projects has format[{_id:"",name:""}]
+        share_projects = data.data.shared;
+        setSharedProjects(share_projects);
+        console.log(share_projects);
+        // console.log(data);
+        //projects has format[{_id:"",name:""}]
+      }
+    })
+    .catch(share_err =>{
+      // need to change this to actual error messages
+      // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
+      console.log(share_err)
+    });
+
+
+    // fetch invitations
+    const invitationbody = {
+      query:`
+      query{
+        invited(userId:"${ReactSession.get("userId")}"){
+          _id
+          name
+        }
+      }
+      `
     }
-  })
-  .catch(err =>{
-    // need to change this to actual error messages
-    // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
-    console.log(err)
-  });
-  const handleListItemClick = (event, index) => {
-    //setSelectedIndex(index);
+    let inv_err = false;
+    let inv_backenderr = false;
+    let fetched_inv;
+    
+    fetch("http://localhost:3001/graphql", {
+    method: 'POST',
+    body: JSON.stringify(invitationbody),
+    headers:{
+      "Content-Type": 'application/json',
+      "Authorization":'asda '+ ReactSession.get('token')
+    }
+    })
+    .then(res =>{
+      if(res.status !== 200 && res.status !== 201){
+        // need to change this to actual error messages
+        inv_err = true;
+        if(res.status === 400){
+          inv_backenderr = true;
+        }
+        // console.log("Failed");
+      }
+      return res.json();
+    })
+    .then(data =>{
+      if(inv_err){
+        if(inv_backenderr){
+          console.log(data.errors[0].message)
+        }else{
+          console.log(data.errors[0].message)      }
+      }else{
+        fetched_inv = data.data.invited;
+        setInvitations(fetched_inv);
+        console.log(fetched_inv);
+        // console.log(data);
+        //projects has format[{_id:"",name:""}]
+      }
+    })
+    .catch(inv_err =>{
+      // need to change this to actual error messages
+      // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
+      console.log(inv_err)
+    });
+  }, []);
+
+  const handleListItemClick = (event, projectId) => {
+    event.preventDefault();
+    setSelectedIndex(projectId);
+    console.log(projectId);
 
   };
+
+  function handleOwnedProjectDelete(e) {
+    // onclick function for project deletion
+    e.preventDefault();
+
+  }
+
+  function handleSharedProjectDelete(e) {
+    // onclick function for project deletion
+    e.preventDefault();
+  }
 
   // from Transition modal example in MUI documentation
   // https://mui.com/components/modal/#transitions
@@ -241,81 +390,6 @@ function SelectedListItem() {
     );
   }
 
-  function OwnProjectList(props) {
-    console.log(props.ownProjects);
-    if (props.ownProjects !== null) {
-      return (
-        <div>
-          {
-            props.ownProjects.map((project, i) => (
-              <ListItemButton
-                selected={selectedIndex === i}
-                onClick={(event) => handleListItemClick(event, i)}
-              >
-                <ListItemIcon>
-                  <InsertDriveFileIcon />
-                </ListItemIcon>
-                <ListItemText primary={project.name} />
-                <IconButton>
-                  <DeleteIcon onClick={handleProjectDelete} />
-                </IconButton>
-              </ListItemButton>
-            ))
-          }
-        </div>
-      );
-    } else {
-      return <div></div>;
-    }
-  }
-
-  function handleAccInv(e) {
-    // accept the invitation
-    e.preventDefault();
-  }
-
-  function handleDelInv(e) {
-    // decline the invitation
-    e.preventDefault();
-  }
-
-  function InvitationList() {
-    // get all invitations of current user and use forEach to list them
-    // if (invitations !== null) {
-    //   return (
-    //     <div>
-    //       {
-    //         invitations.forEach((invitation) => (
-    //           <div>
-    //             <ListItemIcon>
-    //               <RsvpIcon />
-    //             </ListItemIcon>
-    //             <ListItemText primary={invitation.name} />
-    //             <IconButton sx={{ mr: 3 }}>
-    //               <CheckIcon onClick={handleAccInv} />
-    //             </IconButton>
-    //             <IconButton>
-    //               <ClearIcon onClick={handleDelInv} />
-    //             </IconButton>
-    //           </div>
-    //         ))
-    //       }
-    //     </div>
-    //   );
-    // } else {
-    //   return <div></div>;
-    // }
-
-    // temporary, just to escape errors
-    return <div></div>
-  }
-
-  function handleProjectDelete(e) {
-    // onclick function for project deletion
-    e.preventDefault();
-
-  }
-
   // This component is built taking Selected ListItem as an example in MUI documentation
   // https://mui.com/components/lists/#selected-listitem
   return (
@@ -339,7 +413,7 @@ function SelectedListItem() {
       </Typography>
       <CreateProjectModal />
       <List component="nav" aria-label="files own by the user">
-        <OwnProjectList ownProjects = {ownProjects}/>
+        <ProjectList projects={ownProjects} selectedIndex={selectedIndex} handleListItemClick={handleListItemClick} handleProjectDelete={handleOwnedProjectDelete} />
       </List>
 
       <Divider />
@@ -353,16 +427,9 @@ function SelectedListItem() {
       > 
         .md Together With You
       </Typography>
+      <ProjectList projects={sharedProjects} selectedIndex={selectedIndex} handleListItemClick={handleListItemClick} handleProjectDelete={handleSharedProjectDelete} />
       <List component="nav" aria-label="secondary mailbox folder">
-        {/* <ListItemButton
-          selected={selectedIndex === 8}
-          onClick={(event) => handleListItemClick(event, 8)}
-        >
-          <ListItemIcon>
-            <InsertDriveFileIcon />
-          </ListItemIcon>
-          <ListItemText primary="File 9" />
-        </ListItemButton> */}
+        {/* shared projects */}
       </List>
 
       <Divider />
@@ -378,7 +445,7 @@ function SelectedListItem() {
       </Typography>
       <CreateInvModal />
       <List component="nav" aria-label="secondary mailbox folder">
-        <InvitationList />
+        <InvitationList invitations={invitations} />
       </List>
     </Box>
   );
