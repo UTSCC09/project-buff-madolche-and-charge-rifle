@@ -43,6 +43,20 @@ module.exports = {
             throw err;
         }
     },
+    invited: async (args,req)=>{
+        if(!req.isAuth){
+            throw new Error("User not authenticated");
+        }
+        try {
+            const user = await User.findById(req.userId);
+            if (!user) {
+                throw new Error(req.userId + " not found");
+            }
+            return user.invited;
+        } catch (err) {
+            throw err;
+        }
+    },
     getContent: async (args,req) =>{
         try{
             let user = await User.findById(args.userId);
@@ -107,18 +121,18 @@ module.exports = {
             if(!user || !invited){
                 throw new Error("user not found");
             }
-            let project = [...user.owned];
+            let project = Array.from([...user.owned].concat([...user.shared]));
             let exist = project.find(pro => pro.id === args.projectId);
-            let projectshared = [...user.shared];
-            let existshared = projectshared.find(pro => pro.id === args.projectId);
-            if(!exist && !existshared){
+            // let projectshared = [...user.shared];
+            // let existshared = projectshared.find(pro => pro.id === args.projectId);
+            if(!exist){
                 throw new Error("Project not found in your user space");
             }
             project = await Project.findById(args.projectId);
             if(!project){
                 throw new Error("project not exist/may be deleted, please contact to the project owner");
             }
-            project = [...invited.owned];
+            project = Array.from([...invited.owned].concat([...invited.shared]));
             let samepro = project.find(pro => pro.id === args.projectId);
             if(samepro){
                 throw new Error(invited.email +" has already in the project");
@@ -258,7 +272,7 @@ module.exports = {
                 name:args.ProjectInput.name, 
                 //owner:req.userId,
                 owner:args.ProjectInput.owner,
-                content:args.ProjectInput.content,
+                content:"Hello world",
              });
             await project.save();
             const liteProject = {
