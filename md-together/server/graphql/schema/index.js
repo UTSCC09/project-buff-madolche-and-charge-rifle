@@ -8,7 +8,8 @@ type user {
     email: String!
     password: String
     otherId: String
-    project: [liteProject!]
+    owned: [liteProject!]
+    shared: [liteProject!]
     invited: [liteProject!]
 }
 type Authdata{
@@ -41,9 +42,10 @@ input projectInput{
     owner: ID
 }
 type RootQuery {
-    project(userId: String!): [liteProject!]
+    owned(userId: ID!): [liteProject!]
+    shared(userId: ID!): [liteProject!]
     emailLogin(email: String!, password: String!): Authdata!
-    getContent(projectId:ID!, userId:ID!): String!
+    getContent(projectId:ID!, userId:ID!, type: String!): String!
 }
 type RootMutation {
     createUser(UserInput: userInput!): Authdata!
@@ -51,7 +53,7 @@ type RootMutation {
     createInv(owner: ID!, email: String!, projectId: ID!): [liteProject!]
     acceptInv(userId: ID!, projectId: ID!): [liteProject!]
     rejectInv(userId: ID!, projectId: ID!): [liteProject!]
-    saveContent(userId: ID!, projectId: ID!, content: String!): String!
+    saveContent(userId: ID!, projectId: ID!, content: String!, type: String!): String!
     deleteProject(userId: ID!, projectId:ID!): [liteProject!]
     ownerDelPro(userId: ID!, projectId:ID!): [liteProject!]
 }

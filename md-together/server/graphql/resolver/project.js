@@ -15,7 +15,7 @@ module.exports = {
     //         })
     //     })
     // }
-    project: async (args,req)=>{
+    owned: async (args,req)=>{
         if(!req.isAuth){
             throw new Error("User not authenticated");
         }
@@ -24,7 +24,21 @@ module.exports = {
             if (!user) {
                 throw new Error(req.userId + " not found");
             }
-            return user.project;
+            return user.owned;
+        } catch (err) {
+            throw err;
+        }
+    },
+    shared: async (args,req)=>{
+        if(!req.isAuth){
+            throw new Error("User not authenticated");
+        }
+        try {
+            const user = await User.findById(req.userId);
+            if (!user) {
+                throw new Error(req.userId + " not found");
+            }
+            return user.shared;
         } catch (err) {
             throw err;
         }
@@ -35,7 +49,12 @@ module.exports = {
             if(!user){
                 throw new Error("User not found");
             }
-            let project = [...user.project];
+            let project;
+            if(args.type === "owned"){
+                project = [...user.owned];
+            }else if (args.type === "shared"){
+                project = [...user.shared];
+            }   
             let exist = project.find(pro => pro.id === args.projectId);
             if(!exist){
                 throw new Error("Project not found in your user space");
@@ -56,7 +75,12 @@ module.exports = {
             if(!user){
                 throw new Error("User not found");
             }
-            let project = [...user.project];
+            let project;
+            if(args.type === "owned"){
+                project = [...user.owned];
+            }else if (args.type === "shared"){
+                project = [...user.shared];
+            }
             let exist = project.find(pro => pro.id === args.projectId);
             if(!exist){
                 throw new Error("Project not found in your user space");
@@ -83,16 +107,18 @@ module.exports = {
             if(!user || !invited){
                 throw new Error("user not found");
             }
-            let project = [...user.project];
+            let project = [...user.owned];
             let exist = project.find(pro => pro.id === args.projectId);
-            if(!exist){
+            let projectshared = [...user.shared];
+            let existshared = projectshared.find(pro => pro.id === args.projectId);
+            if(!exist && !existshared){
                 throw new Error("Project not found in your user space");
             }
             project = await Project.findById(args.projectId);
             if(!project){
                 throw new Error("project not exist/may be deleted, please contact to the project owner");
             }
-            project = [...invited.project];
+            project = [...invited.owned];
             let samepro = project.find(pro => pro.id === args.projectId);
             if(samepro){
                 throw new Error(invited.email +" has already in the project");
@@ -116,7 +142,7 @@ module.exports = {
             if(!user){
                 throw new Error("User not found");
             }
-            let projects = [...user.project];
+            let projects = [...user.shared];
             let same = projects.find(pro => pro.id === args.projectId);
             if(!same){
                 throw new Error("You don't have the project in user space");
@@ -124,12 +150,12 @@ module.exports = {
             await User.updateOne(
                 {_id: args.userId},
                 {
-                    $pull:{project:{_id:same.id}}
+                    $pull:{shared:{_id:same.id}}
                 }
 
             );
             user = await User.findById(args.userId)
-            return user.project;
+            return user.shared;
         }catch(err){
             throw err;
         }
@@ -140,7 +166,7 @@ module.exports = {
             if(!user){
                 throw new Error("User not found");
             }
-            let projects = [...user.project];
+            let projects = [...user.owned];
             let same = projects.find(pro => pro.id === args.projectId);
             if(!same){
                 throw new Error("You don't have the project in user space");
@@ -152,7 +178,7 @@ module.exports = {
             await User.updateMany(
                 {},
                 {
-                    $pull:{project:{_id:same.id}, invited:{_id:same.id}}
+                    $pull:{owned:{_id:same.id}, shared:{_id:same.id},invited:{_id:same.id}}
                 }
 
             );
@@ -160,7 +186,7 @@ module.exports = {
                 {_id:same.id},
             );
             user = await User.findById(args.userId)
-            return user.project;
+            return user.owned;
         }catch(err){
             throw err;
         }
@@ -184,12 +210,12 @@ module.exports = {
                 {_id: args.userId},
                 {
                     $pull:{invited:{_id:sameinv.id}},
-                    $push:{project: sameinv},
+                    $push:{shared: sameinv},
                 }
 
             );
             invited = await User.findById(args.userId)
-            return invited.project;
+            return invited.shared;
         }catch(err){
             throw err;
         }
@@ -239,7 +265,7 @@ module.exports = {
                 _id: project.id,
                 name:project.name,
             }
-            await user.project.push(liteProject);
+            await user.owned.push(liteProject);
             await user.save();
             return project;
 

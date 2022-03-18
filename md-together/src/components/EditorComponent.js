@@ -34,6 +34,8 @@ export default function EditorComponent() {
 
   // The Current State of Markdown File
   const [value, setValue] = React.useState(defaultWelcome);
+  //get cookie
+  //fetch().then(setValue(content))
   // console.log(value);
   // console.log(peer);
   
@@ -231,6 +233,7 @@ export default function EditorComponent() {
   function handleSave(e) {
     e.preventDefault();
     // Save button call
+    //fetch()
   }
 
   return (

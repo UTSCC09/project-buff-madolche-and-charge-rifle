@@ -20,7 +20,7 @@ const userSchema = new Schema({
     otherId:{
         type:String,   
     },
-    project:[{
+    owned:[{
         _id:{
         type: Schema.Types.ObjectId,
         ref:'Project',
@@ -30,6 +30,19 @@ const userSchema = new Schema({
             type: String,
             required: true
     },
+    
+    }],
+    shared:[{
+        _id:{
+        type: Schema.Types.ObjectId,
+        ref:'Project',
+        required: true
+    },
+        name:{
+            type: String,
+            required: true
+    },
+    
 }],
 invited:[{
     _id:{

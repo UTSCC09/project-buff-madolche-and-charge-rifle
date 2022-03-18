@@ -51,7 +51,8 @@ module.exports = {
                 email: args.UserInput.email,
                 password: pass,
                 otherId: args.UserInput.otherId,
-                project: [],
+                owned: [],
+                shared: [],
             });
             const result = await newUser.save();
             //console.log(result._doc);

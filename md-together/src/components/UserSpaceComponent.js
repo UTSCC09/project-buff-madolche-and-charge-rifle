@@ -25,15 +25,25 @@ function SelectedListItem() {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   // user's projects and the shared projects
   const [ownProjects, setOwnProjects] = React.useState(null);
-  const [sharedProjects, setSharedProjects] = React.useState(null);
+  let sharedProjects = null;
   //in restrict mode the following fetch will be sent twice, so I comment restrict mode in index.js
   //or we can write a handle and put the following fetch inside handle
   //I also write create/accpet/reject invitation and create/delete/ownerdelete project in the backend, 
   //please provide the corresponding button(I can see the button right now but there is no js function) in frontend
-  const body = {
+  const ownedbody = {
     query:`
     query{
-      project(userId:""){
+      owned(userId:"${ReactSession.get("userId")}"){
+        _id
+        name
+      }
+    }
+    `
+  }
+  const sharedbody = {
+    query:`
+    query{
+      shared(userId:"${ReactSession.get("userId")}"){
         _id
         name
       }
@@ -45,7 +55,7 @@ function SelectedListItem() {
   let projects;
   fetch("http://localhost:3001/graphql", {
   method: 'POST',
-  body: JSON.stringify(body),
+  body: JSON.stringify(ownedbody),
   headers:{
     "Content-Type": 'application/json',
     "Authorization":'asda '+ ReactSession.get('token')
@@ -69,9 +79,48 @@ function SelectedListItem() {
       }else{
         console.log(data.errors[0].message)      }
     }else{
-      projects = data.data.project;
+      projects = data.data.owned;
       setOwnProjects(projects);
-      console.log(projects);
+      console.log(ownProjects);
+      // console.log(data);
+      //projects has format[{_id:"",name:""}]
+    }
+  })
+  .catch(err =>{
+    // need to change this to actual error messages
+    // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
+    console.log(err)
+  });
+  fetch("http://localhost:3001/graphql", {
+  method: 'POST',
+  body: JSON.stringify(sharedbody),
+  headers:{
+    "Content-Type": 'application/json',
+    "Authorization":'asda '+ ReactSession.get('token')
+  }
+  })
+  .then(res =>{
+    if(res.status !== 200 && res.status !== 201){
+      // need to change this to actual error messages
+      err = true;
+      if(res.status === 400){
+        backenderr = true;
+      }
+      // console.log("Failed");
+    }
+    return res.json();
+  })
+  .then(data =>{
+    if(err){
+      if(backenderr){
+        console.log(data.errors[0].message)
+      }else{
+        console.log(data.errors[0].message)      }
+    }else{
+      projects = data.data.shared;
+      sharedProjects = projects;
+      console.log(sharedProjects);
+      // console.log(data);
       //projects has format[{_id:"",name:""}]
     }
   })
@@ -81,7 +130,8 @@ function SelectedListItem() {
     console.log(err)
   });
   const handleListItemClick = (event, index) => {
-    setSelectedIndex(index);
+    //setSelectedIndex(index);
+
   };
 
   // from Transition modal example in MUI documentation
@@ -191,12 +241,13 @@ function SelectedListItem() {
     );
   }
 
-  function OwnProjectList() {
-    if (ownProjects !== null) {
+  function OwnProjectList(props) {
+    console.log(props.ownProjects);
+    if (props.ownProjects !== null) {
       return (
         <div>
           {
-            ownProjects.map((project, i) => (
+            props.ownProjects.map((project, i) => (
               <ListItemButton
                 selected={selectedIndex === i}
                 onClick={(event) => handleListItemClick(event, i)}
@@ -288,7 +339,7 @@ function SelectedListItem() {
       </Typography>
       <CreateProjectModal />
       <List component="nav" aria-label="files own by the user">
-        <OwnProjectList />
+        <OwnProjectList ownProjects = {ownProjects}/>
       </List>
 
       <Divider />
