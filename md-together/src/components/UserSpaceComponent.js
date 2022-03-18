@@ -38,7 +38,7 @@ function ProjectList(props) {
               </ListItemIcon>
               <ListItemText primary={project.name} />
               <IconButton>
-                <DeleteIcon onClick={props.handleProjectDelete} />
+                <DeleteIcon onClick={(event) =>props.handleProjectDelete(event,project._id,props.type)} />
               </IconButton>
             </ListItemButton>
           ))
@@ -53,15 +53,111 @@ function ProjectList(props) {
 // render invitations
 function InvitationList(props) {
 
-  function handleAccInv(e) {
+  function handleAccInv(e, projectId) {
     // accept the invitation
     e.preventDefault();
+    const body = {
+      query:`
+      mutation{
+        acceptInv(userId:"", projectId:"${projectId}"){
+          _id
+        }
+      }
+      `
+    }
+    let err = false;
+    let backenderr = false;
+    let proId;
+    fetch("http://localhost:3001/graphql", {
+    method: 'POST',
+    body: JSON.stringify(body),
+    headers:{
+      "Content-Type": 'application/json',
+      "Authorization":'asda '+ ReactSession.get('token')
+    }
+    })
+    .then(res =>{
+      if(res.status !== 200 && res.status !== 201){
+        // need to change this to actual error messages
+        err = true;
+        if(res.status === 400){
+          backenderr = true;
+        }
+        // console.log("Failed");
+      }
+      return res.json();
+    })
+    .then(data =>{
+      if(err){
+        if(backenderr){
+          console.log(data.errors[0].message)
+        }else{
+          console.log(data.errors[0].message)      }
+      }else{
+        proId = data.data.acceptInv;
+        console.log(proId);
+        //projects has format[{_id:"",name:""}]
+      }
+    })
+    .catch(err =>{
+      // need to change this to actual error messages
+      // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
+      console.log(err)
+    });
     
   }
 
-  function handleDelInv(e) {
+  function handleDelInv(e, projectId) {
     // decline the invitation
     e.preventDefault();
+    const body = {
+      query:`
+      mutation{
+        rejectInv(userId:"", projectId:"${projectId}"){
+          _id
+        }
+      }
+      `
+    }
+    let err = false;
+    let backenderr = false;
+    let proId;
+    fetch("http://localhost:3001/graphql", {
+    method: 'POST',
+    body: JSON.stringify(body),
+    headers:{
+      "Content-Type": 'application/json',
+      "Authorization":'asda '+ ReactSession.get('token')
+    }
+    })
+    .then(res =>{
+      if(res.status !== 200 && res.status !== 201){
+        // need to change this to actual error messages
+        err = true;
+        if(res.status === 400){
+          backenderr = true;
+        }
+        // console.log("Failed");
+      }
+      return res.json();
+    })
+    .then(data =>{
+      if(err){
+        if(backenderr){
+          console.log(data.errors[0].message)
+        }else{
+          console.log(data.errors[0].message)      }
+      }else{
+        proId = data.data.rejectInv;
+        console.log(proId);
+        //projects has format[{_id:"",name:""}]
+      }
+    })
+    .catch(err =>{
+      // need to change this to actual error messages
+      // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
+      console.log(err)
+    });
 
   }
 
@@ -76,10 +172,10 @@ function InvitationList(props) {
               </ListItemIcon>
               <ListItemText primary={invitation.name} />
               <IconButton sx={{ mr: 3 }}>
-                <CheckIcon onClick={handleAccInv} />
+                <CheckIcon onClick={(event) => handleAccInv(event,invitation._id)} />
               </IconButton>
               <IconButton>
-                <ClearIcon onClick={handleDelInv} />
+                <ClearIcon onClick={(event) => handleDelInv(event, invitation._id)} />
               </IconButton>
             </ListItemButton>
           ))
@@ -144,7 +240,6 @@ function SelectedListItem() {
       }else{
         own_projects = data.data.owned;
         setOwnProjects(own_projects);
-        console.log(own_projects);
         // console.log(data);
         //projects has format[{_id:"",name:""}]
       }
@@ -198,7 +293,6 @@ function SelectedListItem() {
       }else{
         share_projects = data.data.shared;
         setSharedProjects(share_projects);
-        console.log(share_projects);
         // console.log(data);
         //projects has format[{_id:"",name:""}]
       }
@@ -273,16 +367,112 @@ function SelectedListItem() {
     window.location.reload();
   };
 
-  function handleOwnedProjectDelete(e) {
+  function handleOwnedProjectDelete(e, projectId,type) {
     // onclick function for project deletion
     e.preventDefault();
+    const body = {
+      query:`
+      mutation{
+        ownerDelPro(userId:"",projectId:"${projectId}"){
+          _id
+        }
+      }
+      `
+    }
+    let err = false;
+    let backenderr = false;
+    let proId;
+    fetch("http://localhost:3001/graphql", {
+    method: 'POST',
+    body: JSON.stringify(body),
+    headers:{
+      "Content-Type": 'application/json',
+      "Authorization":'asda '+ ReactSession.get('token')
+    }
+    })
+    .then(res =>{
+      if(res.status !== 200 && res.status !== 201){
+        // need to change this to actual error messages
+        err = true;
+        if(res.status === 400){
+          backenderr = true;
+        }
+        // console.log("Failed");
+      }
+      return res.json();
+    })
+    .then(data =>{
+      if(err){
+        if(backenderr){
+          console.log(data.errors[0].message)
+        }else{
+          console.log(data.errors[0].message)      }
+      }else{
+        proId = data.data.ownerDelPro;
+        console.log(proId);
+        //projects has format[{_id:"",name:""}]
+      }
+    })
+    .catch(err =>{
+      // need to change this to actual error messages
+      // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
+      console.log(err)
+    });
 
 
   }
 
-  function handleSharedProjectDelete(e) {
+  function handleSharedProjectDelete(e, projectId,type) {
     // onclick function for project deletion
     e.preventDefault();
+    const body = {
+      query:`
+      mutation{
+        deleteProject(userId:"",projectId:"${projectId}"){
+          _id
+        }
+      }
+      `
+    }
+    let err = false;
+    let backenderr = false;
+    let proId;
+    fetch("http://localhost:3001/graphql", {
+    method: 'POST',
+    body: JSON.stringify(body),
+    headers:{
+      "Content-Type": 'application/json',
+      "Authorization":'asda '+ ReactSession.get('token')
+    }
+    })
+    .then(res =>{
+      if(res.status !== 200 && res.status !== 201){
+        // need to change this to actual error messages
+        err = true;
+        if(res.status === 400){
+          backenderr = true;
+        }
+        // console.log("Failed");
+      }
+      return res.json();
+    })
+    .then(data =>{
+      if(err){
+        if(backenderr){
+          console.log(data.errors[0].message)
+        }else{
+          console.log(data.errors[0].message)      }
+      }else{
+        proId = data.data.deleteProject;
+        console.log(proId);
+        //projects has format[{_id:"",name:""}]
+      }
+    })
+    .catch(err =>{
+      // need to change this to actual error messages
+      // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
+      console.log(err)
+    });
   }
 
   // from Transition modal example in MUI documentation
@@ -309,6 +499,59 @@ function SelectedListItem() {
   function handleCreateSubmit(e) {
     // create form submit
     e.preventDefault();
+    // eslint-disable-next-line no-console
+    let name= document.getElementById("create_doc_name").value;
+    const body = {
+      query:`
+      mutation{
+        createProject(ProjectInput:{owner:"", name:"${name}"}){
+          _id
+        }
+      }
+      `
+    }
+    let err = false;
+    let backenderr = false;
+    let proId;
+    fetch("http://localhost:3001/graphql", {
+    method: 'POST',
+    body: JSON.stringify(body),
+    headers:{
+      "Content-Type": 'application/json',
+      "Authorization":'asda '+ ReactSession.get('token')
+    }
+    })
+    .then(res =>{
+      if(res.status !== 200 && res.status !== 201){
+        // need to change this to actual error messages
+        err = true;
+        if(res.status === 400){
+          backenderr = true;
+        }
+        // console.log("Failed");
+      }
+      return res.json();
+    })
+    .then(data =>{
+      if(err){
+        if(backenderr){
+          console.log(data.errors[0].message)
+        }else{
+          console.log(data.errors[0].message)      }
+      }else{
+        proId = data.data.createProject._id;
+        ReactSession.set("projectId",proId);
+        ReactSession.set("type","owned");
+        window.location.reload();
+        //projects has format[{_id:"",name:""}]
+      }
+    })
+    .catch(err =>{
+      // need to change this to actual error messages
+      // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
+      console.log(err)
+    });
+
   }
 
   // from Transition modal example in MUI documentation
@@ -354,6 +597,55 @@ function SelectedListItem() {
   function handleInviteSubmit(e) {
     // invite form submit
     e.preventDefault();
+    let email= document.getElementById("invitee_email").value;
+    const body = {
+      query:`
+      mutation{
+        createInv(owner:"",email:"${email}", projectId:"${ReactSession.get("projectId")}"){
+          _id
+        }
+      }
+      `
+    }
+    let err = false;
+    let backenderr = false;
+    let proId;
+    fetch("http://localhost:3001/graphql", {
+    method: 'POST',
+    body: JSON.stringify(body),
+    headers:{
+      "Content-Type": 'application/json',
+      "Authorization":'asda '+ ReactSession.get('token')
+    }
+    })
+    .then(res =>{
+      if(res.status !== 200 && res.status !== 201){
+        // need to change this to actual error messages
+        err = true;
+        if(res.status === 400){
+          backenderr = true;
+        }
+        // console.log("Failed");
+      }
+      return res.json();
+    })
+    .then(data =>{
+      if(err){
+        if(backenderr){
+          console.log(data.errors[0].message)
+        }else{
+          console.log(data.errors[0].message)      }
+      }else{
+        proId = data.data.createInv;
+        console.log(proId);
+        //projects has format[{_id:"",name:""}]
+      }
+    })
+    .catch(err =>{
+      // need to change this to actual error messages
+      // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
+      console.log(err)
+    });
   }
 
   // from Transition modal example in MUI documentation

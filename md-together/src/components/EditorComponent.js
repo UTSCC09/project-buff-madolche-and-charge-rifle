@@ -122,7 +122,7 @@ export default function EditorComponent() {
       // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
       console.log(err)
     });
-  });
+  },[]);
 
   // codes derived from peer.js video/audio call example
   // https://blog.logrocket.com/getting-started-peerjs/
@@ -284,7 +284,7 @@ export default function EditorComponent() {
     const body = {
       query:`
       mutation{
-        saveContent(userId:"",projectId:"${ReactSession.get("projectId")}",content:"${value}",type:"${ReactSession.get("type")}")
+        saveContent(userId:"",projectId:"${ReactSession.get("projectId")}",content:"""${value}""",type:"${ReactSession.get("type")}")
       }
       `
     }

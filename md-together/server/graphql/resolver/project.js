@@ -68,9 +68,7 @@ module.exports = {
                 throw new Error("User not found");
             }
             let project;
-            console.log(user);
             if(args.type === "owned"){
-                console.log("owned");
                 project = Array.from([...user.owned]);
             }else if (args.type === "shared"){
                 project = Array.from([...user.shared]);
@@ -286,7 +284,7 @@ module.exports = {
             throw new Error("User not authenticated");
         }
         try{
-            let user = await User.findById(args.ProjectInput.owner);
+            let user = await User.findById(req.userId);
             if(!user){
                 throw new Error("User not found");
             } 
