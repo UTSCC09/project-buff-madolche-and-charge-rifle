@@ -288,7 +288,7 @@ export default function EditorComponent() {
     const body = {
       query:`
       mutation{
-        saveContent(userId:"",projectId:"${ReactSession.get("projectId")}",content:"${value}",type:"${ReactSession.get("type")}")
+        saveContent(userId:"",projectId:"${ReactSession.get("projectId")}",content:"""${value}""",type:"${ReactSession.get("type")}")
       }
       `
     }

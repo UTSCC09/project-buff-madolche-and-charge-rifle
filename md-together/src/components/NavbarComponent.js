@@ -241,6 +241,9 @@ const NavbarComponent = () => {
   } else {
     ReactSession.set('userId', null);
     ReactSession.set('token', null);
+    ReactSession.set('projectId', null);
+    ReactSession.set('email', null);
+    ReactSession.set('type', null);
     isLoggedIn = false;
   }
   const [anchorElNav, setAnchorElNav] = React.useState(null);
