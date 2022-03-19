@@ -20,6 +20,7 @@ import RsvpIcon from '@mui/icons-material/Rsvp';
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
 import ReactSession from 'react-client-session/dist/ReactSession';
+import Button from '@mui/material/Button';
 
 // render owned and shared projects
 function ProjectList(props) {
@@ -570,9 +571,7 @@ function SelectedListItem() {
   function CreateProjectModal() {
     return (
       <div>
-        <button onClick={handleCreateModalOpen}>
-          <div sx={{ color: "#000000DE", textTransform: "capitalize" }}>Create New Doc</div>
-        </button>
+        <Button onClick={handleCreateModalOpen} variant="contained" sx={{textTransform: "capitalize"}} className="save-button">Create new doc</Button>
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
@@ -586,13 +585,14 @@ function SelectedListItem() {
         >
           <Fade in={createModalOpen}>
             <Box sx={SubModalStyle}>
-              <form onSubmit={handleCreateSubmit}>
+              <form>
                 <label>Document Name:
-                    &nbsp;
-                    <input id="create_doc_name" type="text"></input>
-                    &nbsp;
-                  </label>
-                <input type="submit" value="Create"></input>
+                  &nbsp;
+                  <input id="create_doc_name" type="text" className='input-box change-font'></input>
+                  &nbsp;
+                </label>
+                <Button variant="contained" className="save-button" onClick={handleCreateSubmit} sx={{textTransform: "capitalize"}}>Create</Button>
+                {/* <input type="submit" value="Create"></input> */}
               </form>
             </Box>
           </Fade>
@@ -665,9 +665,10 @@ function SelectedListItem() {
   function CreateInvModal() {
     return (
       <div>
-        <button onClick={handleInviteModalOpen}>
+        <Button onClick={handleInviteModalOpen} variant="contained" sx={{textTransform: "capitalize"}} className="save-button">Invite User</Button>
+        {/* <button onClick={handleInviteModalOpen}>
           <div sx={{ color: "#000000DE", textTransform: "capitalize" }}>Invite User</div>
-        </button>
+        </button> */}
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
@@ -681,13 +682,14 @@ function SelectedListItem() {
         >
           <Fade in={inviteModalOpen}>
             <Box sx={SubModalStyle}>
-              <form onSubmit={handleInviteSubmit}>
+              <form>
                 <label>Invitee Email:
-                    &nbsp;
-                    <input id="invitee_email" type="text"></input>
-                    &nbsp;
-                  </label>
-                <input type="submit" value="Invite"></input>
+                  &nbsp;
+                  <input id="invitee_email" type="text" className='change-font input-box'></input>
+                  &nbsp;
+                </label>
+                <Button variant="contained" className="save-button" onClick={handleInviteSubmit} sx={{textTransform: "capitalize"}}>Invite</Button>
+                {/* <input type="submit" value="Invite"></input> */}
               </form>
             </Box>
           </Fade>
@@ -712,6 +714,7 @@ function SelectedListItem() {
       <Typography
         variant="h6"
         noWrap
+        className='change-font'
         component="div"
         sx={{ mr: 2, display: 'flex', fontWeight: "bold" }}
       >
@@ -728,6 +731,7 @@ function SelectedListItem() {
       <Typography
         variant="h6"
         noWrap
+        className='change-font'
         component="div"
         sx={{ mr: 2, display: 'flex', fontWeight: "bold" }}
       > 
@@ -744,6 +748,7 @@ function SelectedListItem() {
       <Typography
         variant="h6"
         noWrap
+        className='change-font'
         component="div"
         sx={{ mr: 2, display: 'flex', fontWeight: "bold" }}
       > 

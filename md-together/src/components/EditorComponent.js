@@ -76,7 +76,7 @@ export default function EditorComponent() {
       });
     });
 
-  }, []);
+  });
 
   // codes derived from peer.js video/audio call example
   // https://blog.logrocket.com/getting-started-peerjs/
@@ -232,7 +232,7 @@ export default function EditorComponent() {
             <input id="dataConnId" type="text" className="input-box change-font" value={dataConnId} onChange={(e) => setDataConnId(e.target.value)}></input>
             &nbsp;
           </label>
-          <Button variant="contained" className="save-button" onClick={handleDataSubmit}>Connect</Button>
+          <Button variant="contained" className="save-button" onClick={handleDataSubmit} sx={{textTransform: "capitalize"}}>Connect</Button>
           {/* <input type="submit"></input> */}
         </form>
       );
@@ -255,7 +255,7 @@ export default function EditorComponent() {
       return (
         <div style={{marginTop: "18px"}}>
           <label>You are currently calling with: {currMediaConn.peer} </label>
-          <Button variant="contained" className="save-button" onClick={disconnectMedia} style={{marginLeft: "7px"}}>hang up</Button>
+          <Button variant="contained" className="save-button" onClick={disconnectMedia} style={{marginLeft: "7px"}} sx={{textTransform: "capitalize"}}>hang up</Button>
           {/* <button onClick={disconnectMedia}>Hang up</button> */}
         </div>
       );
@@ -267,7 +267,7 @@ export default function EditorComponent() {
             <input id="mediaConnId" type="text" className="input-box change-font" value={mediaConnId} onChange={(e) => setMediaConnId(e.target.value)}></input>
             &nbsp;
           </label>
-          <Button variant="contained" className="save-button" onClick={handleMediaSubmit}>Call</Button>
+          <Button variant="contained" className="save-button" onClick={handleMediaSubmit} sx={{textTransform: "capitalize"}}>Call</Button>
           {/* <input type="submit"></input> */}
         </form>
       );
@@ -359,7 +359,7 @@ export default function EditorComponent() {
 
       {editorVisible && 
         <div className="save-button-div">
-          <Button variant="contained" className="save-button" onClick={handleSave}>Save Change</Button>
+          <Button variant="contained" className="save-button" onClick={handleSave} sx={{textTransform: "capitalize"}}>Save Change</Button>
           {/* <button className="save-button" onClick={handleSave}>Save</button> */}
         </div>
       }

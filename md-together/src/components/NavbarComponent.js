@@ -68,7 +68,7 @@ function UserLogInCorner(props) {
       <div>
         <MenuItem onClick={handleUSModalOpen}>
           <Avatar />
-          <div sx={{ color: "#000000DE", textTransform: "capitalize" }}>User Space</div>
+          <div sx={{ color: "#000000DE", textTransform: "capitalize" }} className='change-font'>User Space</div>
         </MenuItem>
         <Modal
           aria-labelledby="transition-modal-title"
@@ -156,7 +156,7 @@ function UserLogInCorner(props) {
       >
         <TransitionsUSModal />
         <Divider sx={{paddingTop: 1, marginBottom: 1}} />
-        <MenuItem onClick={handleLogOut}>
+        <MenuItem onClick={handleLogOut} className='change-font'>
           <ListItemIcon>
             <Logout />
           </ListItemIcon>
@@ -192,7 +192,7 @@ function GuestLogInCorner(props) {
   // function TransitionsLoginModal() {
   return (
     <div>
-      <Button onClick={handleLoginModalOpen} sx={{color: "white", mr: 1, textTransform: "capitalize"}}>Log in / Sign up</Button>
+      <Button onClick={handleLoginModalOpen} sx={{color: "white", mr: 1, textTransform: "capitalize"}} className="change-font">Log in / Sign up</Button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -250,15 +250,15 @@ const NavbarComponent = () => {
 
   // basic menu example in MUI documentation
   // https://mui.com/components/menus/#basic-menu
-  const [anchorElShare, setAnchorElShare] = React.useState(null);
-  const shareOpen = Boolean(anchorElShare);
+  // const [anchorElShare, setAnchorElShare] = React.useState(null);
+  // const shareOpen = Boolean(anchorElShare);
 
-  const handleShareClick = (event) => {
-    setAnchorElShare(event.currentTarget);
-  };
-  const handleShareClose = () => {
-    setAnchorElShare(null);
-  };
+  // const handleShareClick = (event) => {
+  //   setAnchorElShare(event.currentTarget);
+  // };
+  // const handleShareClose = () => {
+  //   setAnchorElShare(null);
+  // };
 
   const [anchorElExport, setAnchorElExport] = React.useState(null);
   const exportOpen = Boolean(anchorElExport);
@@ -369,6 +369,7 @@ const NavbarComponent = () => {
                   id="basic-button-export"
                   aria-controls={exportOpen ? 'basic-menu-export' : undefined}
                   aria-haspopup="true"
+                  className='change-font'
                   aria-expanded={exportOpen ? 'true' : undefined}
                   onClick={handleExportClick}
                   sx={{ my: 1, px: 3, color: 'black', display: 'block', textAlign: "center", width: "100%", textTransform: "capitalize" }}
@@ -394,6 +395,7 @@ const NavbarComponent = () => {
                   id="basic-button-theme"
                   aria-controls={themeOpen ? 'basic-menu-theme' : undefined}
                   aria-haspopup="true"
+                  className='change-font'
                   aria-expanded={themeOpen ? 'true' : undefined}
                   onClick={handleThemeClick}
                   sx={{ my: 1, px: 3, color: 'black', display: 'block', textAlign: "center", width: "100%", textTransform: "capitalize" }}
@@ -460,6 +462,7 @@ const NavbarComponent = () => {
                 id="basic-button-export"
                 aria-controls={exportOpen ? 'basic-menu-export' : undefined}
                 aria-haspopup="true"
+                className='change-font'
                 aria-expanded={exportOpen ? 'true' : undefined}
                 onClick={handleExportClick}
                 sx={{ my: 1, mx: 3, color: 'white', display: 'block', textTransform: "capitalize" }}
@@ -485,6 +488,7 @@ const NavbarComponent = () => {
                 id="basic-button-theme"
                 aria-controls={themeOpen ? 'basic-menu-theme' : undefined}
                 aria-haspopup="true"
+                className='change-font'
                 aria-expanded={themeOpen ? 'true' : undefined}
                 onClick={handleThemeClick}
                 sx={{ my: 1, mx: 3, color: 'white', display: 'block', textTransform: "capitalize" }}
