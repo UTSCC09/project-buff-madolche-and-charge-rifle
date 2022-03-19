@@ -1,0 +1,6 @@
+{
+    "env": {
+        "MONGO_USER":"mdTogether",
+        "MONGO_PASS":"mdTogether"
+    }
+}

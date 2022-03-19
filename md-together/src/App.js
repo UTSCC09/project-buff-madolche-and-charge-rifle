@@ -1,24 +1,20 @@
-import logo from './logo.svg';
 import './App.css';
+import EditorComponent from './components/EditorComponent';
+import NavbarComponent from './components/NavbarComponent';
+import FooterComponent from './components/FooterComponent';
+// import { BrowserRouter, Route } from "react-router-dom";
+import ReactSession from 'react-client-session/dist/ReactSession';
 
 function App() {
+  ReactSession.setStoreType('cookie');
   return (
+    //<BrowserRouter>
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <NavbarComponent />
+      <EditorComponent />
+      <FooterComponent />
     </div>
+    //</BrowserRouter>
   );
 }
 
