@@ -59,7 +59,7 @@ export default function EditorComponent() {
     e.preventDefault();
     const dc = peer.connect(dataConnId);
     setCurrDataConn(dc);
-    console.log("im caller");
+    // console.log("im caller");
     dc.on('data', (data) => {
       setValue(data);
     });
@@ -70,7 +70,7 @@ export default function EditorComponent() {
     dataConn = currDataConn;
 
     peer.on('connection', (dc) => {
-      console.log("im callee");
+      // console.log("im callee");
       setCurrDataConn(dc);
       dc.on('data', (data) => {
         setValue(data);
@@ -103,7 +103,7 @@ export default function EditorComponent() {
       .catch((err) => {
         console.log('Failed to get local stream', err);
       });
-    console.log("im caller");
+    // console.log("im caller");
     setMediaConnId("");
   }
   

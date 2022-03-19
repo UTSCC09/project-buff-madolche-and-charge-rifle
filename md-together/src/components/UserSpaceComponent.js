@@ -348,7 +348,7 @@ function SelectedListItem() {
       }else{
         fetched_inv = data.data.invited;
         setInvitations(fetched_inv);
-        console.log(fetched_inv);
+        // console.log(fetched_inv);
         // console.log(data);
         //projects has format[{_id:"",name:""}]
       }
