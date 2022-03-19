@@ -291,7 +291,7 @@ const NavbarComponent = () => {
 
   return (
     <AppBar 
-      position="static"
+      position="sticky"
       // We may change UI theme here
       sx = {{background: "#8268c9"}}
     >

@@ -30,7 +30,7 @@ function ProjectList(props) {
         {
           props.projects.map((project) => (
             <ListItemButton
-              selected={props.selectedIndex === ReactSession.get("projectId")}
+              selected={props.selectedIndex === project._id}
               onClick={(event) => props.handleListItemClick(event, project._id,props.type)}
             >
               <ListItemIcon>
@@ -104,7 +104,7 @@ function InvitationList(props) {
       // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
       console.log(err)
     });
-    
+    window.location.reload();
   }
 
   function handleDelInv(e, projectId) {
@@ -158,7 +158,7 @@ function InvitationList(props) {
       // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
       console.log(err)
     });
-
+    window.location.reload();
   }
 
   if (props.invitations !== null) {
@@ -195,7 +195,7 @@ function SelectedListItem() {
   const [ownProjects, setOwnProjects] = React.useState(null);
   const [sharedProjects, setSharedProjects] = React.useState(null);
   const [invitations, setInvitations] = React.useState(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [selectedIndex, setSelectedIndex] = React.useState(ReactSession.get("projectId"));
 
   React.useEffect(() => {
     // fetch own projects
@@ -367,9 +367,14 @@ function SelectedListItem() {
     window.location.reload();
   };
 
-  function handleOwnedProjectDelete(e, projectId,type) {
+  function handleOwnedProjectDelete(e, projectId) {
     // onclick function for project deletion
     e.preventDefault();
+    // prevent parent onclick
+    e.stopPropagation();
+    if (selectedIndex === projectId) {
+      ReactSession.set("projectId", null);
+    }
     const body = {
       query:`
       mutation{
@@ -406,7 +411,8 @@ function SelectedListItem() {
         if(backenderr){
           console.log(data.errors[0].message)
         }else{
-          console.log(data.errors[0].message)      }
+          console.log(data.errors[0].message)
+        }
       }else{
         proId = data.data.ownerDelPro;
         console.log(proId);
@@ -418,13 +424,17 @@ function SelectedListItem() {
       // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
       console.log(err)
     });
-
-
+    window.location.reload();
   }
 
-  function handleSharedProjectDelete(e, projectId,type) {
+  function handleSharedProjectDelete(e, projectId) {
     // onclick function for project deletion
     e.preventDefault();
+    // prevent parent onclick
+    e.stopPropagation();
+    if (selectedIndex === projectId) {
+      ReactSession.set("projectId", null);
+    }
     const body = {
       query:`
       mutation{
@@ -473,6 +483,7 @@ function SelectedListItem() {
       // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
       console.log(err)
     });
+    window.location.reload();
   }
 
   // from Transition modal example in MUI documentation
@@ -646,6 +657,7 @@ function SelectedListItem() {
       // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
       console.log(err)
     });
+    handleInviteModalClose();
   }
 
   // from Transition modal example in MUI documentation

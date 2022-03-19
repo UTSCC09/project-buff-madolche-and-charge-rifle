@@ -10,7 +10,7 @@ import Link from '@mui/material/Link';
 
 function Copyright() {
   return (
-    <Typography variant="body2" color="text.secondary">
+    <Typography variant="body2" color="text.secondary" className='change-font'>
       {'Copyright © '}
       <Link color="inherit" href="https://together.md/">
         mdTogether
@@ -35,8 +35,8 @@ export default function StickyFooter() {
             : theme.palette.grey[800],
       }}
     >
-      <Container maxWidth="sm">
-        <Typography variant="body1">
+      <Container maxWidth="md">
+        <Typography variant="body1" className='change-font'>
           mdTogether — Your Theme-able Online Collaborative Markdown Editor
         </Typography>
         <br/>

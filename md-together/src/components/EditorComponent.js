@@ -3,6 +3,7 @@ import MDEditor from '@uiw/react-md-editor';
 // Use Peer.js to realize Web real time communication
 import Peer from 'peerjs';
 import ReactSession from 'react-client-session/dist/ReactSession';
+import Button from '@mui/material/Button';
 
 // Used ImgBB https://imgbb.com/ to host our logo for free
 let defaultWelcome = `# Welcome to mdTogether!
@@ -75,57 +76,6 @@ export default function EditorComponent() {
       });
     });
 
-  });
-
-  React.useEffect(() => {
-    const body = {
-      query:`
-      query{
-        getContent(projectId:"${ReactSession.get("projectId")}",userId:"",type:"${ReactSession.get("type")}")
-      }
-      `
-    }
-    let content_err = false;
-    let content_backenderr = false;
-    let content;
-    fetch("http://localhost:3001/graphql", {
-    method: 'POST',
-    body: JSON.stringify(body),
-    headers:{
-      "Content-Type": 'application/json',
-      "Authorization":'asda '+ ReactSession.get('token')
-    }
-    })
-    .then(res =>{
-      if(res.status !== 200 && res.status !== 201){
-        // need to change this to actual error messages
-        content_err = true;
-        if(res.status === 400){
-          content_backenderr = true;
-        }
-        // console.log("Failed");
-      }
-      return res.json();
-    })
-    .then(data =>{
-      if(content_err){
-        if(content_backenderr){
-          console.log(data.errors[0].message)
-        }else{
-          console.log(data.errors[0].message)      }
-      }else{
-        content = data.data.getContent;
-        setValue(content);
-        // console.log(content);
-        // console.log(data);
-        //projects has format[{_id:"",name:""}]
-      }
-    })
-    .catch(err =>{
-      // need to change this to actual error messages
-      // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
-      console.log(err)
-    });
   }, []);
 
   // codes derived from peer.js video/audio call example
@@ -144,6 +94,7 @@ export default function EditorComponent() {
         let call = peer.call(mediaConnId, stream);
         setCurrMediaConn(call);
         peerVideo = document.getElementById("peer_video");
+        peerVideo.style.display = 'block';
         peerVideo.setAttribute("width", "200");
         peerVideo.setAttribute("height", "200");
         call.on('stream', showVideo);
@@ -160,6 +111,7 @@ export default function EditorComponent() {
     mediaConn = currMediaConn;
     peer.on('call', (call) => {
       setCurrMediaConn(call);
+      peerVideo.style.display = 'block';
       peerVideo.setAttribute("width", "200");
       peerVideo.setAttribute("height", "200");
       navigator.mediaDevices.getUserMedia({video: true, audio: true})
@@ -171,7 +123,7 @@ export default function EditorComponent() {
           console.error('Failed to get local stream', err);
         });
     });
-  });
+  }, []);
 
   function handleEditorChange(value) {
     if (currDataConn) {
@@ -199,6 +151,61 @@ export default function EditorComponent() {
     isLoggedIn = false;
   }
 
+  let editorVisible = ReactSession.get("projectId") !== null;
+
+  React.useEffect(() => {
+    if (isLoggedIn && editorVisible) {
+      const body = {
+        query:`
+        query{
+          getContent(projectId:"${ReactSession.get("projectId")}",userId:"",type:"${ReactSession.get("type")}")
+        }
+        `
+      }
+      let content_err = false;
+      let content_backenderr = false;
+      let content;
+      fetch("http://localhost:3001/graphql", {
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers:{
+        "Content-Type": 'application/json',
+        "Authorization":'asda '+ ReactSession.get('token')
+      }
+      })
+      .then(res =>{
+        if(res.status !== 200 && res.status !== 201){
+          // need to change this to actual error messages
+          content_err = true;
+          if(res.status === 400){
+            content_backenderr = true;
+          }
+          // console.log("Failed");
+        }
+        return res.json();
+      })
+      .then(data =>{
+        if(content_err){
+          if(content_backenderr){
+            console.log(data.errors[0].message)
+          }else{
+            console.log(data.errors[0].message)      }
+        }else{
+          content = data.data.getContent;
+          setValue(content);
+          // console.log(content);
+          // console.log(data);
+          //projects has format[{_id:"",name:""}]
+        }
+      })
+      .catch(err =>{
+        // need to change this to actual error messages
+        // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
+        console.log(err)
+      });
+    }
+  }, []);
+
   let dataIsConnected = currDataConn ? true : false;
   let mediaIsConnected = currMediaConn ? true : false;
 
@@ -219,13 +226,14 @@ export default function EditorComponent() {
       );
     } else {
       return (
-        <form onSubmit={handleDataSubmit}>
+        <form>
           <label>Enter the peer id to collaborate on writing:
             &nbsp;
-            <input id="dataConnId" type="text" value={dataConnId} onChange={(e) => setDataConnId(e.target.value)}></input>
+            <input id="dataConnId" type="text" className="input-box change-font" value={dataConnId} onChange={(e) => setDataConnId(e.target.value)}></input>
             &nbsp;
           </label>
-          <input type="submit"></input>
+          <Button variant="contained" className="save-button" onClick={handleDataSubmit}>Connect</Button>
+          {/* <input type="submit"></input> */}
         </form>
       );
       
@@ -235,6 +243,7 @@ export default function EditorComponent() {
   const disconnectMedia = useCallback(() => {
     currMediaConn.close();
     peerVideo = document.getElementById("peer_video");
+    peerVideo.style.display = "none";
     peerVideo.setAttribute("width", "0");
     peerVideo.setAttribute("height", "0");
     setCurrMediaConn(undefined);
@@ -244,20 +253,22 @@ export default function EditorComponent() {
     const isConnected = props.mediaIsConnected;
     if (isConnected) {
       return (
-        <div>
+        <div style={{marginTop: "18px"}}>
           <label>You are currently calling with: {currMediaConn.peer} </label>
-          <button onClick={disconnectMedia}>Hang up</button>
+          <Button variant="contained" className="save-button" onClick={disconnectMedia} style={{marginLeft: "7px"}}>hang up</Button>
+          {/* <button onClick={disconnectMedia}>Hang up</button> */}
         </div>
       );
     } else {
       return (
-        <form onSubmit={handleMediaSubmit}>
+        <form>
           <label>Enter the peer id to call:
-              &nbsp;
-              <input id="mediaConnId" type="text" value={mediaConnId} onChange={(e) => setMediaConnId(e.target.value)}></input>
-              &nbsp;
-            </label>
-          <input type="submit"></input>
+            &nbsp;
+            <input id="mediaConnId" type="text" className="input-box change-font" value={mediaConnId} onChange={(e) => setMediaConnId(e.target.value)}></input>
+            &nbsp;
+          </label>
+          <Button variant="contained" className="save-button" onClick={handleMediaSubmit}>Call</Button>
+          {/* <input type="submit"></input> */}
         </form>
       );
     }
@@ -265,20 +276,25 @@ export default function EditorComponent() {
   
   function PeerForm() {
     return (
-      <div>
-        <label>Your Current Peer ID is: {currId}</label>
-        <DataForm dataIsConnected={dataIsConnected} />
-        <MediaForm mediaIsConnected={mediaIsConnected} />
+      <div className="peer-section">
+        <div>
+          <label>Your Current Peer ID is: {currId}</label>
+          <DataForm dataIsConnected={dataIsConnected} />
+          <MediaForm mediaIsConnected={mediaIsConnected} />
+        </div>
       </div>
     );
   }
 
   function PeerSection(props) {
     const isLoggedIn = props.isLoggedIn;
-    if (isLoggedIn) {
+    const editorVisible = props.editorVisible;
+    if (isLoggedIn && editorVisible) {
       return <PeerForm />;
+    } else if (isLoggedIn && !editorVisible) {
+      return (<div className="peer-section-message">Select a document in User Space at the top-right corner to start.</div>);
     } else {
-      return (<div>Please sign in first.</div>);
+      return (<div className="peer-section-message">Please sign in first.</div>);
     }
   }
 
@@ -333,25 +349,32 @@ export default function EditorComponent() {
       console.log(err)
     });
   }
-
-  let editorVisible = ReactSession.get("projectId") !== null;
     
   return (
     <div>
-      <PeerSection isLoggedIn={isLoggedIn} />
-      <video id="peer_video" width={0} height={0} autoPlay />
-      <div>
-        <button onClick={handleSave}>Save</button>
+      <div className="whole-peer-section">
+        <PeerSection isLoggedIn={isLoggedIn} editorVisible={editorVisible} />
+        {editorVisible && <video id="peer_video" style={{display: "none"}} autoPlay />}
       </div>
+
+      {editorVisible && 
+        <div className="save-button-div">
+          <Button variant="contained" className="save-button" onClick={handleSave}>Save Change</Button>
+          {/* <button className="save-button" onClick={handleSave}>Save</button> */}
+        </div>
+      }
       {editorVisible && <MDEditor
         value={value}
         onChange={handleEditorChange}
         visiableDragbar={false}
-        height={"90vh"}
+        height={"80vh"}
+        className='change-font'
       />}
-      {!editorVisible && <div id="default_renders">
-        <MDEditor.Markdown source={defaultWelcome} />
-      </div>}
+      {!editorVisible && 
+        <div id="default_renders">
+          <MDEditor.Markdown source={defaultWelcome} />
+        </div>
+      }
     </div>
   );
 }
