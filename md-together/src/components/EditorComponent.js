@@ -4,6 +4,7 @@ import MDEditor from '@uiw/react-md-editor';
 import Peer from 'peerjs';
 import ReactSession from 'react-client-session/dist/ReactSession';
 import Button from '@mui/material/Button';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 // Used ImgBB https://imgbb.com/ to host our logo for free
 let defaultWelcome = `# Welcome to mdTogether!
@@ -48,7 +49,7 @@ export default function EditorComponent() {
   const [currDataConn, setCurrDataConn] = useState(dataConn);
   const [currMediaConn, setCurrMediaConn] = useState(mediaConn);
 
-  // console.log(currConn);
+  const matchesMediaQuery = useMediaQuery('(min-width:600px)');
 
   peer.on('open', (id) => {
     setCurrId(id);
@@ -218,9 +219,10 @@ export default function EditorComponent() {
     const isConnected = props.dataIsConnected;
     if (isConnected) {
       return (
-        <div>
+        <div style={{marginTop: "18px"}}>
           <label>You are currently collaborating with: {currDataConn.peer} </label>
-          <button onClick={disconnectData}>Disconnect</button>
+          <Button variant="contained" className="save-button" onClick={disconnectData} sx={{textTransform: "capitalize"}} style={{marginLeft: "7px"}}>Disconnect</Button>
+          {/* <button onClick={disconnectData}>Disconnect</button> */}
         </div>
 
       );
@@ -280,7 +282,7 @@ export default function EditorComponent() {
         <div>
           <label>Your Current Peer ID is: {currId}</label>
           <DataForm dataIsConnected={dataIsConnected} />
-          <MediaForm mediaIsConnected={mediaIsConnected} />
+          {matchesMediaQuery && <MediaForm mediaIsConnected={mediaIsConnected} />}
         </div>
       </div>
     );
