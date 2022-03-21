@@ -13,10 +13,15 @@
 ## Description
 
 Wanna **Edit & Preview** your markdown documents?
+
 Wanna collaborate in **Real-Time** on your markdown documents?
+
 Wanna start with an **Elegant Markdown Template** every time?
+
 Wanna pick **Colorful Themes** for your markdown editor?
+
 Wanna **Show** your amazing markdown documents **To Public & Get Likes**?
+
 Wanna **Export** your markdown documents **To Various Formats**?
 
 Wanna do all of these but there's ***NO*** such editor?
