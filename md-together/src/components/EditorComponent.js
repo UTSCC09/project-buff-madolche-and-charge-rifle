@@ -2,6 +2,7 @@ import React, { useState, useCallback } from "react";
 import MDEditor from '@uiw/react-md-editor';
 // Use Peer.js to realize Web real time communication
 import Peer from 'peerjs';
+// import PeerServer from 'peerjs';
 import ReactSession from 'react-client-session/dist/ReactSession';
 import Button from '@mui/material/Button';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -21,9 +22,15 @@ let defaultWelcome = `# Welcome to mdTogether!
 
 // let currEmail = ReactSession.get("email");
 
+// const peerServer = PeerServer({ port: 9000, path: '/myapp' });
+
 // Peer.js functionality is referred to Getting started with PeerJS example
 // https://blog.logrocket.com/getting-started-peerjs/
-const peer = new Peer();
+const peer = new Peer(ReactSession.get("userId"), {
+  host: 'localhost',
+  port: 9000,
+  path: '/myapp'
+});
 let dataConn;
 let mediaConn;
 
