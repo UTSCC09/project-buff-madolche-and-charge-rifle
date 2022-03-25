@@ -93,6 +93,41 @@ function UserLogInCorner(props) {
 
   function handleLogOut(event) {
     event.preventDefault();
+    const body = {
+      query:`
+      query{
+        logout(userId:"${ReactSession.get("userId")}")
+      }
+      `
+    }
+    let err = false;
+    let backenderr = false;
+    fetch("http://localhost:3001/graphql", {
+    method: 'POST',
+    body: JSON.stringify(body),
+    headers:{
+      "Content-Type": 'application/json'
+    }
+    })
+    .then(res =>{
+      if(res.status !== 200 && res.status !== 201){
+        // need to change this to actual error messages
+        err = true;
+        if(res.status === 400){
+          backenderr = true;
+        }
+        // console.log("Failed");
+      }
+      return res.json();
+    })
+    .then(data =>{
+      console.log(data);
+    })
+    .catch(err =>{
+      // need to change this to actual error messages
+      // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
+      console.log(err)
+    });
     ReactSession.set('userId', null);
     ReactSession.set('token', null);
     ReactSession.set('email', null);

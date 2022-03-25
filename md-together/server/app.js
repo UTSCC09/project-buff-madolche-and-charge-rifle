@@ -7,6 +7,9 @@ const mySchema = require("./graphql/schema/index");
 const myResolver = require("./graphql/resolver/index");
 const auth = require("./middleware/auth");
 let app = Express();
+
+//the whole backend codes are learned from https://www.youtube.com/playlist?list=PL55RiY5tL51rG1x02Yyj93iypUuHYXcB_
+// great appreciation to academind
 app.use(BodyParser.json());
 app.use((req,res,next) =>{
     //console.log(req);
