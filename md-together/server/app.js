@@ -7,7 +7,6 @@ const mySchema = require("./graphql/schema/index");
 const myResolver = require("./graphql/resolver/index");
 const auth = require("./middleware/auth");
 const { PeerServer } = require('peer');
-const Peer = require("peerjs");
 let app = Express();
 
 //the whole backend codes are learned from https://www.youtube.com/playlist?list=PL55RiY5tL51rG1x02Yyj93iypUuHYXcB_
@@ -37,7 +36,8 @@ mongoose.connect("mongodb+srv://mdTogether:mdTogether@cluster0.sjsbm.mongodb.net
     app.listen(3001,() =>{
         console.log("server running at 3001");
     })
-    const peerServer = PeerServer({port:9000, path:'/myapp'});
+    // running the peer server for peer js connections
+    PeerServer({port:9000, path:'/mdtogether'});
 })
 .catch(err => console.error(err));
 

@@ -23,12 +23,12 @@ let defaultWelcome = `# Welcome to mdTogether!
 
 // Peer.js functionality is referred to Getting started with PeerJS example
 // https://blog.logrocket.com/getting-started-peerjs/
-const peer = new Peer();
-// const peer = new Peer((ReactSession.get("userId"), {
-//   host:'localhost',
-//   port: 9000,
-//   path: '/myapp'
-// });
+// const peer = new Peer();
+const peer = new Peer({
+  host:'localhost',
+  port: 9000,
+  path: '/mdtogether'
+});
 let dataConn;
 let mediaConn;
 
