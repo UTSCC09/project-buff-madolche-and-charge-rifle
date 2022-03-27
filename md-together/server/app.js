@@ -7,6 +7,12 @@ const mySchema = require("./graphql/schema/index");
 const myResolver = require("./graphql/resolver/index");
 const auth = require("./middleware/auth");
 let app = Express();
+
+const cors = require('cors');
+app.use(cors({
+  origin: 'http://mdtogether.live'
+}));
+
 app.use(BodyParser.json());
 app.use((req,res,next) =>{
     //console.log(req);
