@@ -17,7 +17,11 @@ let defaultWelcome = `# Welcome to mdTogether!
 - In **User Space**, manage your own markdown files, collaborations, and invitations.
 - Invite users by clicking the **Invite** button under **Share** tab in the navbar above.
 - You can also **Export** current markdown files into data format you want!
-- Change the **Theme** that best fits your mood today!
+- Change the **Theme** that best fits your mood today! 
+- Please note that changing a theme **WILL CAUSE A PAGE REFRESH**! 
+- Make sure you saved your changes before changing themes.
+
+**Hope you Enjoy it :)**
 `
 
 // let currEmail = ReactSession.get("email");

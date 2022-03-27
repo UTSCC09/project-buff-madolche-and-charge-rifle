@@ -3,7 +3,8 @@
 // https://mui.com/components/menus/#account-menu
 // https://mui.com/components/menus/#basic-menu
 // https://mui.com/components/modal/#transitions
-import * as React from 'react';
+// import * as React from 'react';
+import React, { useState } from "react";
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -26,6 +27,9 @@ import LoginComponent from './LoginComponent';
 import UserSpaceComponent from './UserSpaceComponent';
 import ReactSession from 'react-client-session/dist/ReactSession';
 import navbarLogo from '../navbar_logo.png';
+
+import { useTheme } from '../theme/useTheme';
+import { getFromLS } from '../utils/storage';
 
 // Derived from React official example about conditional rendering
 // https://reactjs.org/docs/conditional-rendering.html
@@ -182,7 +186,7 @@ function UserLogInCorner(props) {
               right: 14,
               width: 10,
               height: 10,
-              bgcolor: 'background.paper',
+              // bgcolor: 'background.paper',
               transform: 'translateY(-50%) rotate(45deg)',
               zIndex: 0,
             },
@@ -300,14 +304,47 @@ const NavbarComponent = () => {
     setAnchorElNav(event.currentTarget);
   };
 
-
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
+  // the code and schema.json in this folder are derived from "Theme Builder" blog by Tapas Adhikary
+  // https://css-tricks.com/theming-and-theme-switching-with-react-and-styled-components/
+  const themesFromStore = getFromLS('all-themes');
+  const [data, setData] = useState(themesFromStore.data);
+  const {setMode} = useTheme();
+
+  const handleLightTheme = () => {
+    setMode(data.light);
+    window.location.reload();
+    // console.log(data.light);
+  }
+
+  const handleSeaWaveTheme = () => {
+    setMode(data.seaWave);
+    window.location.reload();
+  }
+
+  const handleCalmTheme = () => {
+    setMode(data.calm);
+    window.location.reload();
+  }
+
+  const handleDarkTheme = () => {
+    setMode(data.dark);
+    window.location.reload();
+  }
+
+  const handleSharpTheme = () => {
+    setMode(data.sharp);
+    window.location.reload();
+  }
+
+
   return (
     <AppBar 
       position="sticky"
+      id="nav_bar"
       // We may change UI theme here
       sx = {{background: "#8268c9"}}
     >
@@ -377,12 +414,11 @@ const NavbarComponent = () => {
                     'aria-labelledby': 'basic-button-theme',
                   }}
                 >
-                  <MenuItem onClick={handleThemeClose}>Light</MenuItem>
-                  <MenuItem onClick={handleThemeClose}>Dark</MenuItem>
-                  <MenuItem onClick={handleThemeClose}>Spring</MenuItem>
-                  <MenuItem onClick={handleThemeClose}>Summer</MenuItem>
-                  <MenuItem onClick={handleThemeClose}>Fall</MenuItem>
-                  <MenuItem onClick={handleThemeClose}>Winter</MenuItem>
+                  <MenuItem onClick={handleLightTheme}>Light</MenuItem>
+                  <MenuItem onClick={handleDarkTheme}>Dark</MenuItem>
+                  <MenuItem onClick={handleSeaWaveTheme}>SeaWave</MenuItem>
+                  <MenuItem onClick={handleSharpTheme}>Sharp</MenuItem>
+                  <MenuItem onClick={handleCalmTheme}>Calm</MenuItem>
                 </Menu>
               </div>
             </Menu>
@@ -420,12 +456,11 @@ const NavbarComponent = () => {
                   'aria-labelledby': 'basic-button-theme',
                 }}
               >
-                <MenuItem onClick={handleThemeClose}>Light</MenuItem>
-                <MenuItem onClick={handleThemeClose}>Dark</MenuItem>
-                <MenuItem onClick={handleThemeClose}>Spring</MenuItem>
-                <MenuItem onClick={handleThemeClose}>Summer</MenuItem>
-                <MenuItem onClick={handleThemeClose}>Fall</MenuItem>
-                <MenuItem onClick={handleThemeClose}>Winter</MenuItem>
+                <MenuItem onClick={handleLightTheme}>Light</MenuItem>
+                <MenuItem onClick={handleDarkTheme}>Dark</MenuItem>
+                <MenuItem onClick={handleSeaWaveTheme}>SeaWave</MenuItem>
+                <MenuItem onClick={handleSharpTheme}>Sharp</MenuItem>
+                <MenuItem onClick={handleCalmTheme}>Calm</MenuItem>
               </Menu>
             </div>
           </Box>

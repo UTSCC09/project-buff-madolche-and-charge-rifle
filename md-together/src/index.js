@@ -4,11 +4,25 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+// the code is derived from "Theme Builder" blog by Tapas Adhikary
+// https://css-tricks.com/theming-and-theme-switching-with-react-and-styled-components/
+import * as themes from './theme/schema.json';
+import { setToLS } from './utils/storage';
+
+const Index = () => {
+  setToLS('all-themes', themes.default);
+  // console.log(themes.default);
+  return (
+    <App />
+  )
+}
+
 ReactDOM.render(
   //<React.StrictMode>
-    <App />
+    // <App />
   //</React.StrictMode>,
-  ,
+  // ,
+  <Index />,
   document.getElementById('root')
 );
 
