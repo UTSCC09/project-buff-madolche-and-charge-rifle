@@ -26,11 +26,13 @@ import Button from '@mui/material/Button';
 function ProjectList(props) {
 
   if (props.projects !== null) {
+    let i = 0;
     return (
       <div>
         {
           props.projects.map((project) => (
             <ListItemButton
+              key={++i}
               selected={props.selectedIndex === project._id}
               onClick={(event) => props.handleListItemClick(event, project._id,props.type)}
             >
@@ -38,8 +40,8 @@ function ProjectList(props) {
                 <InsertDriveFileIcon />
               </ListItemIcon>
               <ListItemText primary={project.name} />
-              <IconButton>
-                <DeleteIcon onClick={(event) =>props.handleProjectDelete(event,project._id,props.type)} />
+              <IconButton onClick={(event) =>props.handleProjectDelete(event,project._id,props.type)}>
+                <DeleteIcon />
               </IconButton>
             </ListItemButton>
           ))

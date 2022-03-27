@@ -27,7 +27,7 @@ function App() {
 
   useEffect(() => {
     setSelectedTheme(theme);
-   }, [themeLoaded]);
+   }, [themeLoaded, theme]);
 
   // 4: Load all the fonts
   useEffect(() => {
