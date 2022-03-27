@@ -702,6 +702,7 @@ function SelectedListItem() {
   // https://mui.com/components/lists/#selected-listitem
   return (
     <Box 
+      id="userspace_modal"
       sx={{ 
         width: '100%', 
         bgcolor: 'background.paper',

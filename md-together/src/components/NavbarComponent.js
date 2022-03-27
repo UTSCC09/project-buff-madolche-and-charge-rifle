@@ -3,7 +3,8 @@
 // https://mui.com/components/menus/#account-menu
 // https://mui.com/components/menus/#basic-menu
 // https://mui.com/components/modal/#transitions
-import * as React from 'react';
+// import * as React from 'react';
+import React, { useState } from "react";
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -26,6 +27,9 @@ import LoginComponent from './LoginComponent';
 import UserSpaceComponent from './UserSpaceComponent';
 import ReactSession from 'react-client-session/dist/ReactSession';
 import navbarLogo from '../navbar_logo.png';
+
+import { useTheme } from '../theme/useTheme';
+import { getFromLS } from '../utils/storage';
 
 // Derived from React official example about conditional rendering
 // https://reactjs.org/docs/conditional-rendering.html
@@ -93,6 +97,41 @@ function UserLogInCorner(props) {
 
   function handleLogOut(event) {
     event.preventDefault();
+    const body = {
+      query:`
+      query{
+        logout(userId:"${ReactSession.get("userId")}")
+      }
+      `
+    }
+    let err = false;
+    let backenderr = false;
+    fetch("http://localhost:3001/graphql", {
+    method: 'POST',
+    body: JSON.stringify(body),
+    headers:{
+      "Content-Type": 'application/json'
+    }
+    })
+    .then(res =>{
+      if(res.status !== 200 && res.status !== 201){
+        // need to change this to actual error messages
+        err = true;
+        if(res.status === 400){
+          backenderr = true;
+        }
+        // console.log("Failed");
+      }
+      return res.json();
+    })
+    .then(data =>{
+      console.log(data);
+    })
+    .catch(err =>{
+      // need to change this to actual error messages
+      // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
+      console.log(err)
+    });
     ReactSession.set('userId', null);
     ReactSession.set('token', null);
     ReactSession.set('email', null);
@@ -147,7 +186,7 @@ function UserLogInCorner(props) {
               right: 14,
               width: 10,
               height: 10,
-              bgcolor: 'background.paper',
+              // bgcolor: 'background.paper',
               transform: 'translateY(-50%) rotate(45deg)',
               zIndex: 0,
             },
@@ -250,25 +289,6 @@ const NavbarComponent = () => {
 
   // basic menu example in MUI documentation
   // https://mui.com/components/menus/#basic-menu
-  // const [anchorElShare, setAnchorElShare] = React.useState(null);
-  // const shareOpen = Boolean(anchorElShare);
-
-  // const handleShareClick = (event) => {
-  //   setAnchorElShare(event.currentTarget);
-  // };
-  // const handleShareClose = () => {
-  //   setAnchorElShare(null);
-  // };
-
-  const [anchorElExport, setAnchorElExport] = React.useState(null);
-  const exportOpen = Boolean(anchorElExport);
-
-  const handleExportClick = (event) => {
-    setAnchorElExport(event.currentTarget);
-  };
-  const handleExportClose = () => {
-    setAnchorElExport(null);
-  };
 
   const [anchorElTheme, setAnchorElTheme] = React.useState(null);
   const themeOpen = Boolean(anchorElTheme);
@@ -284,14 +304,47 @@ const NavbarComponent = () => {
     setAnchorElNav(event.currentTarget);
   };
 
-
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
+  // the code and schema.json in this folder are derived from "Theme Builder" blog by Tapas Adhikary
+  // https://css-tricks.com/theming-and-theme-switching-with-react-and-styled-components/
+  const themesFromStore = getFromLS('all-themes');
+  const [data, setData] = useState(themesFromStore.data);
+  const {setMode} = useTheme();
+
+  const handleLightTheme = () => {
+    setMode(data.light);
+    window.location.reload();
+    // console.log(data.light);
+  }
+
+  const handleSeaWaveTheme = () => {
+    setMode(data.seaWave);
+    window.location.reload();
+  }
+
+  const handleCalmTheme = () => {
+    setMode(data.calm);
+    window.location.reload();
+  }
+
+  const handleDarkTheme = () => {
+    setMode(data.dark);
+    window.location.reload();
+  }
+
+  const handleSharpTheme = () => {
+    setMode(data.sharp);
+    window.location.reload();
+  }
+
+
   return (
     <AppBar 
       position="sticky"
+      id="nav_bar"
       // We may change UI theme here
       sx = {{background: "#8268c9"}}
     >
@@ -340,56 +393,6 @@ const NavbarComponent = () => {
             >
               {/* basic menu example in MUI documentation
               https://mui.com/components/menus/#basic-menu */}
-              {/* <div>
-                <Button
-                  id="basic-button-share"
-                  aria-controls={shareOpen ? 'basic-menu-share' : undefined}
-                  aria-haspopup="true"
-                  aria-expanded={shareOpen ? 'true' : undefined}
-                  onClick={handleShareClick}
-                  sx={{ my: 1, px: 3, color: 'black', display: 'block', textAlign: "center", width: "100%", textTransform: "capitalize" }}
-                >
-                  Share
-                </Button>
-                <Menu
-                  id="basic-menu-share"
-                  anchorEl={anchorElShare}
-                  open={shareOpen}
-                  onClose={handleShareClose}
-                  MenuListProps={{
-                    'aria-labelledby': 'basic-button-share',
-                  }}
-                >
-                  <MenuItem onClick={handleShareClose}>Link</MenuItem>
-                  <MenuItem onClick={handleShareClose}>Invite</MenuItem>
-                </Menu>
-              </div> */}
-              <div>
-                <Button
-                  id="basic-button-export"
-                  aria-controls={exportOpen ? 'basic-menu-export' : undefined}
-                  aria-haspopup="true"
-                  className='change-font'
-                  aria-expanded={exportOpen ? 'true' : undefined}
-                  onClick={handleExportClick}
-                  sx={{ my: 1, px: 3, color: 'black', display: 'block', textAlign: "center", width: "100%", textTransform: "capitalize" }}
-                >
-                  Export
-                </Button>
-                <Menu
-                  id="basic-menu-export"
-                  anchorEl={anchorElExport}
-                  open={exportOpen}
-                  onClose={handleExportClose}
-                  MenuListProps={{
-                    'aria-labelledby': 'basic-button-export',
-                  }}
-                >
-                  <MenuItem onClick={handleExportClose}>Download PDF</MenuItem>
-                  <MenuItem onClick={handleExportClose}>Download HTML</MenuItem>
-                  <MenuItem onClick={handleExportClose}>Download Markdown</MenuItem>
-                </Menu>
-              </div>
               <div>
                 <Button
                   id="basic-button-theme"
@@ -411,12 +414,11 @@ const NavbarComponent = () => {
                     'aria-labelledby': 'basic-button-theme',
                   }}
                 >
-                  <MenuItem onClick={handleThemeClose}>Light</MenuItem>
-                  <MenuItem onClick={handleThemeClose}>Dark</MenuItem>
-                  <MenuItem onClick={handleThemeClose}>Spring</MenuItem>
-                  <MenuItem onClick={handleThemeClose}>Summer</MenuItem>
-                  <MenuItem onClick={handleThemeClose}>Fall</MenuItem>
-                  <MenuItem onClick={handleThemeClose}>Winter</MenuItem>
+                  <MenuItem onClick={handleLightTheme}>Light</MenuItem>
+                  <MenuItem onClick={handleDarkTheme}>Dark</MenuItem>
+                  <MenuItem onClick={handleSeaWaveTheme}>SeaWave</MenuItem>
+                  <MenuItem onClick={handleSharpTheme}>Sharp</MenuItem>
+                  <MenuItem onClick={handleCalmTheme}>Calm</MenuItem>
                 </Menu>
               </div>
             </Menu>
@@ -433,56 +435,6 @@ const NavbarComponent = () => {
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {/* basic menu example in MUI documentation
             https://mui.com/components/menus/#basic-menu */}
-            {/* <div>
-              <Button
-                id="basic-button-share"
-                aria-controls={shareOpen ? 'basic-menu-share' : undefined}
-                aria-haspopup="true"
-                aria-expanded={shareOpen ? 'true' : undefined}
-                onClick={handleShareClick}
-                sx={{ my: 1, mx: 3, color: 'white', display: 'block', textTransform: "capitalize" }}
-              >
-                Share
-              </Button>
-              <Menu
-                id="basic-menu-share"
-                anchorEl={anchorElShare}
-                open={shareOpen}
-                onClose={handleShareClose}
-                MenuListProps={{
-                  'aria-labelledby': 'basic-button-share',
-                }}
-              >
-                <MenuItem onClick={handleShareClose}>Link</MenuItem>
-                <MenuItem onClick={handleShareClose}>Invite</MenuItem>
-              </Menu>
-            </div> */}
-            <div>
-              <Button
-                id="basic-button-export"
-                aria-controls={exportOpen ? 'basic-menu-export' : undefined}
-                aria-haspopup="true"
-                className='change-font'
-                aria-expanded={exportOpen ? 'true' : undefined}
-                onClick={handleExportClick}
-                sx={{ my: 1, mx: 3, color: 'white', display: 'block', textTransform: "capitalize" }}
-              >
-                Export
-              </Button>
-              <Menu
-                id="basic-menu-export"
-                anchorEl={anchorElExport}
-                open={exportOpen}
-                onClose={handleExportClose}
-                MenuListProps={{
-                  'aria-labelledby': 'basic-button-export',
-                }}
-              >
-                <MenuItem onClick={handleExportClose}>Download PDF</MenuItem>
-                <MenuItem onClick={handleExportClose}>Download HTML</MenuItem>
-                <MenuItem onClick={handleExportClose}>Download Markdown</MenuItem>
-              </Menu>
-            </div>
             <div>
               <Button
                 id="basic-button-theme"
@@ -504,12 +456,11 @@ const NavbarComponent = () => {
                   'aria-labelledby': 'basic-button-theme',
                 }}
               >
-                <MenuItem onClick={handleThemeClose}>Light</MenuItem>
-                <MenuItem onClick={handleThemeClose}>Dark</MenuItem>
-                <MenuItem onClick={handleThemeClose}>Spring</MenuItem>
-                <MenuItem onClick={handleThemeClose}>Summer</MenuItem>
-                <MenuItem onClick={handleThemeClose}>Fall</MenuItem>
-                <MenuItem onClick={handleThemeClose}>Winter</MenuItem>
+                <MenuItem onClick={handleLightTheme}>Light</MenuItem>
+                <MenuItem onClick={handleDarkTheme}>Dark</MenuItem>
+                <MenuItem onClick={handleSeaWaveTheme}>SeaWave</MenuItem>
+                <MenuItem onClick={handleSharpTheme}>Sharp</MenuItem>
+                <MenuItem onClick={handleCalmTheme}>Calm</MenuItem>
               </Menu>
             </div>
           </Box>

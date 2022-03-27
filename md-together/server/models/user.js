@@ -20,6 +20,9 @@ const userSchema = new Schema({
     otherId:{
         type:String,   
     },
+    status:{
+        type:String,
+    },
     owned:[{
         _id:{
         type: Schema.Types.ObjectId,

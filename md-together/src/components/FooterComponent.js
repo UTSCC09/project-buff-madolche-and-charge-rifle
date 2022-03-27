@@ -24,6 +24,7 @@ function Copyright() {
 export default function StickyFooter() {
   return (
     <Box
+      id="footer_section"
       component="footer"
       sx={{
         py: 4,

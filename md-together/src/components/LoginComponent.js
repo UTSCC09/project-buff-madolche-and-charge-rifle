@@ -16,7 +16,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import ReactSession from 'react-client-session/dist/ReactSession';
-const validator = require("validator");
+// const validator = require("validator");
 
 const theme = createTheme();
 
@@ -30,11 +30,6 @@ function SignIn() {
     // eslint-disable-next-line no-console
     let email= data.get('email');
     let password= data.get('password');
-    if(!validator.isEmail(email) || !validator.isAlphanumeric(password)){
-      document.getElementById("Log In Error Box").innerHTML = "** Wrong format of email or password. **";
-      // console.log("Wrong format of email or password");
-      return;
-    }
     event.currentTarget.reset();
     const body = {
       query:`
@@ -161,14 +156,6 @@ function SignUp() {
     let password= data.get('password');
     let firstName = data.get('firstName');
     let lastName = data.get('lastName');
-    if(!validator.isEmail(email) 
-    || !validator.isAlphanumeric(password) 
-    || !validator.isAlpha(firstName) 
-    || !validator.isAlpha(lastName)){
-      document.getElementById("Sign Up Error Box").innerHTML = "** Wrong format of one of email, password, first/last name. **";
-      // console.log("Wrong format of email or password");
-      return;
-    }
     event.currentTarget.reset();
     const body = {
       query:`
