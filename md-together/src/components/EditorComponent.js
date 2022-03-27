@@ -8,8 +8,9 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import showdown from 'showdown';
 
 // Used ImgBB https://imgbb.com/ to host our logo for free
+// ![mdTogetherLogo](https://i.ibb.co/cC52gS3/logo.png)
 let defaultWelcome = `# Welcome to mdTogether!
-![mdTogetherLogo](https://i.ibb.co/cC52gS3/logo.png)
+![mdTogetherLogo](https://i.ibb.co/mBMFxTH/navbar-logo.png)
 
 **You can collaborate on your Markdown files with other users!**
 
