@@ -5,6 +5,7 @@ import Peer from 'peerjs';
 import ReactSession from 'react-client-session/dist/ReactSession';
 import Button from '@mui/material/Button';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import showdown from 'showdown';
 
 // Used ImgBB https://imgbb.com/ to host our logo for free
 let defaultWelcome = `# Welcome to mdTogether!
@@ -41,10 +42,60 @@ export default function EditorComponent() {
 
   // The Current State of Markdown File
   const [value, setValue] = React.useState(defaultWelcome);
-  //get cookie
-  //fetch().then(setValue(content))
-  // console.log(value);
-  // console.log(peer);
+
+  // export to other formats
+  // The code is derived from "downloading a string as .txt file in React on stackoverflow"
+  // https://stackoverflow.com/questions/44656610/download-a-string-as-txt-file-in-react
+  function downloadMD() {
+    const elmt = document.createElement("a");
+    const file = new Blob([value], {type: 'text/plain;charset=UTF-8'});
+    elmt.href = URL.createObjectURL(file);
+    // this is gonna be replaced with actual project name
+    elmt.download = "Current Project.md";
+    document.body.appendChild(elmt); // required for this to work in FireFox
+    elmt.click();
+  }
+
+  function downloadHTML() {
+    const elmt = document.createElement("a");
+    // use showdown to convert markdown to html
+    // https://www.npmjs.com/package/showdown
+    let convertToHTML = new showdown.Converter();
+    let htmlContent = convertToHTML.makeHtml(value);
+    const file = new Blob([htmlContent], {type: 'text/html;charset=UTF-8'});
+    elmt.href = URL.createObjectURL(file);
+    // this is gonna be replaced with actual project name
+    elmt.download = "Current Project.html";
+    document.body.appendChild(elmt);
+    elmt.click();
+  }
+
+  function downloadPDF() {
+    const previewContent = document.querySelector(".w-md-editor-preview").innerHTML;
+    // console.log(previewContent);
+    // this method of printing pdf does not create a new window
+    // the code is derived from a blog "How to print specific part of a web page in javascript"
+    // https://www.etutorialspoint.com/index.php/23-how-to-print-different-section-of-content-using-javascript 
+    var hiddenFrame = document.createElement('iframe');
+    hiddenFrame.name = "hiddenFrame";
+    hiddenFrame.style.position = "absolute";
+    hiddenFrame.style.top = "-1000000px";
+    document.body.appendChild(hiddenFrame);
+    var frameDoc = hiddenFrame.contentWindow ? hiddenFrame.contentWindow : hiddenFrame.contentDocument.document ? hiddenFrame.contentDocument.document : hiddenFrame.contentDocument;
+    frameDoc.document.open();
+    // this is gonna be replaced with actual project name
+    frameDoc.document.write('<html><head><title>Current Project</title>');
+    frameDoc.document.write('</head><body>');
+    frameDoc.document.write(previewContent);
+    frameDoc.document.write('</body></html>');
+    frameDoc.document.close();
+    setTimeout(function () {
+      window.frames["hiddenFrame"].focus();
+      window.frames["hiddenFrame"].print();
+      document.body.removeChild(hiddenFrame);
+    }, 500);
+  }
+
   
   // This form is referred to W3Schools React Form example as a template
   // https://www.w3schools.com/react/react_forms.asp
@@ -210,7 +261,7 @@ export default function EditorComponent() {
         console.log(err)
       });
     }
-  }, []);
+  }, [editorVisible, isLoggedIn]);
 
   let dataIsConnected = currDataConn ? true : false;
   let mediaIsConnected = currMediaConn ? true : false;
@@ -368,6 +419,9 @@ export default function EditorComponent() {
         <div className="save-button-div">
           <Button variant="contained" className="save-button" onClick={handleSave} sx={{textTransform: "capitalize"}}>Save Change</Button>
           {/* <button className="save-button" onClick={handleSave}>Save</button> */}
+          <Button variant="contained" className="save-button" onClick={downloadMD} sx={{textTransform: "capitalize"}}>Download Markdown</Button>
+          <Button variant="contained" className="save-button" onClick={downloadHTML} sx={{textTransform: "capitalize"}}>Download HTML</Button>
+          <Button variant="contained" className="save-button" onClick={downloadPDF} sx={{textTransform: "capitalize"}}>Download PDF</Button>
         </div>
       }
       {editorVisible && <MDEditor

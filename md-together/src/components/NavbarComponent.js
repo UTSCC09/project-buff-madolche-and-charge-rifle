@@ -285,25 +285,6 @@ const NavbarComponent = () => {
 
   // basic menu example in MUI documentation
   // https://mui.com/components/menus/#basic-menu
-  // const [anchorElShare, setAnchorElShare] = React.useState(null);
-  // const shareOpen = Boolean(anchorElShare);
-
-  // const handleShareClick = (event) => {
-  //   setAnchorElShare(event.currentTarget);
-  // };
-  // const handleShareClose = () => {
-  //   setAnchorElShare(null);
-  // };
-
-  const [anchorElExport, setAnchorElExport] = React.useState(null);
-  const exportOpen = Boolean(anchorElExport);
-
-  const handleExportClick = (event) => {
-    setAnchorElExport(event.currentTarget);
-  };
-  const handleExportClose = () => {
-    setAnchorElExport(null);
-  };
 
   const [anchorElTheme, setAnchorElTheme] = React.useState(null);
   const themeOpen = Boolean(anchorElTheme);
@@ -375,56 +356,6 @@ const NavbarComponent = () => {
             >
               {/* basic menu example in MUI documentation
               https://mui.com/components/menus/#basic-menu */}
-              {/* <div>
-                <Button
-                  id="basic-button-share"
-                  aria-controls={shareOpen ? 'basic-menu-share' : undefined}
-                  aria-haspopup="true"
-                  aria-expanded={shareOpen ? 'true' : undefined}
-                  onClick={handleShareClick}
-                  sx={{ my: 1, px: 3, color: 'black', display: 'block', textAlign: "center", width: "100%", textTransform: "capitalize" }}
-                >
-                  Share
-                </Button>
-                <Menu
-                  id="basic-menu-share"
-                  anchorEl={anchorElShare}
-                  open={shareOpen}
-                  onClose={handleShareClose}
-                  MenuListProps={{
-                    'aria-labelledby': 'basic-button-share',
-                  }}
-                >
-                  <MenuItem onClick={handleShareClose}>Link</MenuItem>
-                  <MenuItem onClick={handleShareClose}>Invite</MenuItem>
-                </Menu>
-              </div> */}
-              <div>
-                <Button
-                  id="basic-button-export"
-                  aria-controls={exportOpen ? 'basic-menu-export' : undefined}
-                  aria-haspopup="true"
-                  className='change-font'
-                  aria-expanded={exportOpen ? 'true' : undefined}
-                  onClick={handleExportClick}
-                  sx={{ my: 1, px: 3, color: 'black', display: 'block', textAlign: "center", width: "100%", textTransform: "capitalize" }}
-                >
-                  Export
-                </Button>
-                <Menu
-                  id="basic-menu-export"
-                  anchorEl={anchorElExport}
-                  open={exportOpen}
-                  onClose={handleExportClose}
-                  MenuListProps={{
-                    'aria-labelledby': 'basic-button-export',
-                  }}
-                >
-                  <MenuItem onClick={handleExportClose}>Download PDF</MenuItem>
-                  <MenuItem onClick={handleExportClose}>Download HTML</MenuItem>
-                  <MenuItem onClick={handleExportClose}>Download Markdown</MenuItem>
-                </Menu>
-              </div>
               <div>
                 <Button
                   id="basic-button-theme"
@@ -468,56 +399,6 @@ const NavbarComponent = () => {
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {/* basic menu example in MUI documentation
             https://mui.com/components/menus/#basic-menu */}
-            {/* <div>
-              <Button
-                id="basic-button-share"
-                aria-controls={shareOpen ? 'basic-menu-share' : undefined}
-                aria-haspopup="true"
-                aria-expanded={shareOpen ? 'true' : undefined}
-                onClick={handleShareClick}
-                sx={{ my: 1, mx: 3, color: 'white', display: 'block', textTransform: "capitalize" }}
-              >
-                Share
-              </Button>
-              <Menu
-                id="basic-menu-share"
-                anchorEl={anchorElShare}
-                open={shareOpen}
-                onClose={handleShareClose}
-                MenuListProps={{
-                  'aria-labelledby': 'basic-button-share',
-                }}
-              >
-                <MenuItem onClick={handleShareClose}>Link</MenuItem>
-                <MenuItem onClick={handleShareClose}>Invite</MenuItem>
-              </Menu>
-            </div> */}
-            <div>
-              <Button
-                id="basic-button-export"
-                aria-controls={exportOpen ? 'basic-menu-export' : undefined}
-                aria-haspopup="true"
-                className='change-font'
-                aria-expanded={exportOpen ? 'true' : undefined}
-                onClick={handleExportClick}
-                sx={{ my: 1, mx: 3, color: 'white', display: 'block', textTransform: "capitalize" }}
-              >
-                Export
-              </Button>
-              <Menu
-                id="basic-menu-export"
-                anchorEl={anchorElExport}
-                open={exportOpen}
-                onClose={handleExportClose}
-                MenuListProps={{
-                  'aria-labelledby': 'basic-button-export',
-                }}
-              >
-                <MenuItem onClick={handleExportClose}>Download PDF</MenuItem>
-                <MenuItem onClick={handleExportClose}>Download HTML</MenuItem>
-                <MenuItem onClick={handleExportClose}>Download Markdown</MenuItem>
-              </Menu>
-            </div>
             <div>
               <Button
                 id="basic-button-theme"

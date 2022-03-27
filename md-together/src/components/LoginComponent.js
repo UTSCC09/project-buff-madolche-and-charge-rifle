@@ -16,7 +16,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import ReactSession from 'react-client-session/dist/ReactSession';
-const validator = require("validator");
+// const validator = require("validator");
 
 const theme = createTheme();
 
