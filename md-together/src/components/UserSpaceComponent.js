@@ -21,6 +21,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
 import ReactSession from 'react-client-session/dist/ReactSession';
 import Button from '@mui/material/Button';
+import { ParkOutlined } from '@mui/icons-material';
 
 // render owned and shared projects
 function ProjectList(props) {
@@ -34,7 +35,7 @@ function ProjectList(props) {
             <ListItemButton
               key={++i}
               selected={props.selectedIndex === project._id}
-              onClick={(event) => props.handleListItemClick(event, project._id,props.type)}
+              onClick={(event) => props.handleListItemClick(event, project._id,project.name, props.type)}
             >
               <ListItemIcon>
                 <InsertDriveFileIcon />
@@ -362,10 +363,11 @@ function SelectedListItem() {
     });
   }, []);
 
-  const handleListItemClick = (event, projectId,type) => {
+  const handleListItemClick = (event, projectId, projectName, type) => {
     event.preventDefault();
     setSelectedIndex(projectId);
     ReactSession.set("projectId",projectId);
+    ReactSession.set("projectName",projectName);
     ReactSession.set("type",type);
     window.location.reload();
   };
