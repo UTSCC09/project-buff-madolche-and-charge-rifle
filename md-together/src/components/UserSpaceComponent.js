@@ -71,7 +71,7 @@ function InvitationList(props) {
     let err = false;
     let backenderr = false;
     let proId;
-    fetch("http://localhost:3001/graphql", {
+    fetch("http://mdtogether.live:3001/graphql", {
     method: 'POST',
     body: JSON.stringify(body),
     headers:{
@@ -125,7 +125,7 @@ function InvitationList(props) {
     let err = false;
     let backenderr = false;
     let proId;
-    fetch("http://localhost:3001/graphql", {
+    fetch("http://mdtogether.live:3001/graphql", {
     method: 'POST',
     body: JSON.stringify(body),
     headers:{
@@ -215,7 +215,7 @@ function SelectedListItem() {
     let own_err = false;
     let own_backenderr = false;
     let own_projects;
-    fetch("http://localhost:3001/graphql", {
+    fetch("http://mdtogether.live:3001/graphql", {
     method: 'POST',
     body: JSON.stringify(ownedbody),
     headers:{
@@ -268,7 +268,7 @@ function SelectedListItem() {
     let share_backenderr = false;
     let share_projects;
     
-    fetch("http://localhost:3001/graphql", {
+    fetch("http://mdtogether.live:3001/graphql", {
     method: 'POST',
     body: JSON.stringify(sharedbody),
     headers:{
@@ -322,7 +322,7 @@ function SelectedListItem() {
     let inv_backenderr = false;
     let fetched_inv;
     
-    fetch("http://localhost:3001/graphql", {
+    fetch("http://mdtogether.live:3001/graphql", {
     method: 'POST',
     body: JSON.stringify(invitationbody),
     headers:{
@@ -390,7 +390,7 @@ function SelectedListItem() {
     let err = false;
     let backenderr = false;
     let proId;
-    fetch("http://localhost:3001/graphql", {
+    fetch("http://mdtogether.live:3001/graphql", {
     method: 'POST',
     body: JSON.stringify(body),
     headers:{
@@ -450,7 +450,7 @@ function SelectedListItem() {
     let err = false;
     let backenderr = false;
     let proId;
-    fetch("http://localhost:3001/graphql", {
+    fetch("http://mdtogether.live:3001/graphql", {
     method: 'POST',
     body: JSON.stringify(body),
     headers:{
@@ -527,7 +527,7 @@ function SelectedListItem() {
     let err = false;
     let backenderr = false;
     let proId;
-    fetch("http://localhost:3001/graphql", {
+    fetch("http://mdtogether.live:3001/graphql", {
     method: 'POST',
     body: JSON.stringify(body),
     headers:{
@@ -623,7 +623,7 @@ function SelectedListItem() {
     let err = false;
     let backenderr = false;
     let proId;
-    fetch("http://localhost:3001/graphql", {
+    fetch("http://mdtogether.live:3001/graphql", {
     method: 'POST',
     body: JSON.stringify(body),
     headers:{

@@ -31,7 +31,7 @@ let defaultWelcome = `# Welcome to mdTogether!
 // https://blog.logrocket.com/getting-started-peerjs/
 // const peer = new Peer();
 const peer = new Peer({
-  host:'localhost',
+  host:'mdtogether.live',
   port: 9000,
   path: '/mdtogether'
 });
@@ -227,7 +227,7 @@ export default function EditorComponent() {
       let content_err = false;
       let content_backenderr = false;
       let content;
-      fetch("http://localhost:3001/graphql", {
+      fetch("http://mdtogether.live:3001/graphql", {
       method: 'POST',
       body: JSON.stringify(body),
       headers:{
@@ -374,7 +374,7 @@ export default function EditorComponent() {
     let content_err = false;
     let content_backenderr = false;
     // let content;
-    fetch("http://localhost:3001/graphql", {
+    fetch("http://mdtogether.live:3001/graphql", {
     method: 'POST',
     body: JSON.stringify(body),
     headers:{

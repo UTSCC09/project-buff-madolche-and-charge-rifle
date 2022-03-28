@@ -106,7 +106,7 @@ function UserLogInCorner(props) {
     }
     let err = false;
     let backenderr = false;
-    fetch("http://localhost:3001/graphql", {
+    fetch("http://mdtogether.live:3001/graphql", {
     method: 'POST',
     body: JSON.stringify(body),
     headers:{
