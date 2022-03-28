@@ -88,3 +88,11 @@
 .MuiListItemText-primary {
   font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif !important;
 }
+
+.wmde-markdown {
+  background-color: transparent;
+}
+
+.wmde-markdown img {
+  background-color: transparent;
+}
