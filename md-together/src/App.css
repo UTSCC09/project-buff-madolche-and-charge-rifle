@@ -42,7 +42,7 @@
   margin-top: 30px;
   padding-left: 20px;
   padding-right: 20px;
-  padding-bottom: 20px;
+  /* padding-bottom: 20px; */
 }
 
 @media only screen and (max-width: 600px) {
@@ -87,4 +87,29 @@
 
 .MuiListItemText-primary {
   font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif !important;
+}
+
+.wmde-markdown {
+  background-color: transparent;
+}
+
+.wmde-markdown img {
+  background-color: transparent;
+}
+
+.navbar-username {
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+}
+
+@media only screen and (max-width: 600px) {
+  .navbar-username {
+    display: none;
+  }
+}
+
+.editor-project-name {
+  padding-bottom: 20px;
+  margin-top: -10px;
 }

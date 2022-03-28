@@ -34,7 +34,7 @@ function ProjectList(props) {
             <ListItemButton
               key={++i}
               selected={props.selectedIndex === project._id}
-              onClick={(event) => props.handleListItemClick(event, project._id,props.type)}
+              onClick={(event) => props.handleListItemClick(event, project._id,project.name, props.type)}
             >
               <ListItemIcon>
                 <InsertDriveFileIcon />
@@ -205,7 +205,7 @@ function SelectedListItem() {
     const ownedbody = {
       query:`
       query{
-        owned(userId:"${ReactSession.get("userId")}"){
+        owned(userId:""){
           _id
           name
         }
@@ -257,7 +257,7 @@ function SelectedListItem() {
     const sharedbody = {
       query:`
       query{
-        shared(userId:"${ReactSession.get("userId")}"){
+        shared(userId:""){
           _id
           name
         }
@@ -311,7 +311,7 @@ function SelectedListItem() {
     const invitationbody = {
       query:`
       query{
-        invited(userId:"${ReactSession.get("userId")}"){
+        invited(userId:""){
           _id
           name
         }
@@ -362,10 +362,11 @@ function SelectedListItem() {
     });
   }, []);
 
-  const handleListItemClick = (event, projectId,type) => {
+  const handleListItemClick = (event, projectId, projectName, type) => {
     event.preventDefault();
     setSelectedIndex(projectId);
     ReactSession.set("projectId",projectId);
+    ReactSession.set("projectName",projectName);
     ReactSession.set("type",type);
     window.location.reload();
   };
@@ -713,7 +714,28 @@ function SelectedListItem() {
         overflowY: "scroll"
       }}
     >
-      
+      <Typography
+        variant="h6"
+        noWrap
+        className='change-font'
+        component="div"
+        sx={{ mr: 2, display: 'flex', fontWeight: "bold" }}
+      >
+        Welcome, {ReactSession.get("firstName") + " " + ReactSession.get("lastName")}!
+      </Typography>
+      <Typography 
+        variant="p"
+        noWrap
+        className='change-font'
+        component="div"
+        sx={{ mr: 2, display: 'flex', fontWeight: "bold" }}
+      >
+        <br/>
+        Your Email: <br/>{ReactSession.get("email")}
+      </Typography>
+      <br/>
+      <Divider />
+      <br></br>
       <Typography
         variant="h6"
         noWrap
