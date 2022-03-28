@@ -2,7 +2,7 @@ const User = require("../../models/user");
 const bcrypt = require('bcryptjs');
 const {user, projects, transformProject} = require("./populate");
 const jwt = require('jsonwebtoken');
-const { UsbRounded } = require("@mui/icons-material");
+// const { UsbRounded } = require("@mui/icons-material");
 const validator = require("validator");
 module.exports = {
 
