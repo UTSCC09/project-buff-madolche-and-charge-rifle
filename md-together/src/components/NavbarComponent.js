@@ -144,9 +144,10 @@ function UserLogInCorner(props) {
   }
 
   return (
-    <Box sx={{ flexGrow: 0 }}>
+    <Box sx={{ flexGrow: 0, display: "flex" }}>
+      <div className="navbar-username">{ReactSession.get("firstName") + " " + ReactSession.get("lastName")}</div>
       <Tooltip title="Open User Account Menu">
-        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, display: "flex" }}>
           <Avatar />
         </IconButton>
       </Tooltip>

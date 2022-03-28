@@ -21,7 +21,6 @@ import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
 import ReactSession from 'react-client-session/dist/ReactSession';
 import Button from '@mui/material/Button';
-import { ParkOutlined } from '@mui/icons-material';
 
 // render owned and shared projects
 function ProjectList(props) {
@@ -715,7 +714,28 @@ function SelectedListItem() {
         overflowY: "scroll"
       }}
     >
-      
+      <Typography
+        variant="h6"
+        noWrap
+        className='change-font'
+        component="div"
+        sx={{ mr: 2, display: 'flex', fontWeight: "bold" }}
+      >
+        Welcome, {ReactSession.get("firstName") + " " + ReactSession.get("lastName")}!
+      </Typography>
+      <Typography 
+        variant="p"
+        noWrap
+        className='change-font'
+        component="div"
+        sx={{ mr: 2, display: 'flex', fontWeight: "bold" }}
+      >
+        <br/>
+        Your Email: <br/>{ReactSession.get("email")}
+      </Typography>
+      <br/>
+      <Divider />
+      <br></br>
       <Typography
         variant="h6"
         noWrap
