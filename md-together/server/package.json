@@ -20,6 +20,8 @@
     "graphql": "^16.3.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.4",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "peer": "^0.6.1",
+    "validator": "^13.7.0"
   }
 }

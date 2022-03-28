@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const mySchema = require("./graphql/schema/index");
 const myResolver = require("./graphql/resolver/index");
 const auth = require("./middleware/auth");
+const { PeerServer } = require('peer');
 let app = Express();
 
 const cors = require('cors');
@@ -13,6 +14,8 @@ app.use(cors({
   origin: 'http://mdtogether.live'
 }));
 
+//the whole backend codes are learned from https://www.youtube.com/playlist?list=PL55RiY5tL51rG1x02Yyj93iypUuHYXcB_
+// great appreciation to academind
 app.use(BodyParser.json());
 app.use((req,res,next) =>{
     //console.log(req);
@@ -38,6 +41,8 @@ mongoose.connect("mongodb+srv://mdTogether:mdTogether@cluster0.sjsbm.mongodb.net
     app.listen(3001,() =>{
         console.log("server running at 3001");
     })
+    // running the peer server for peer js connections
+    PeerServer({port:9000, path:'/mdtogether'});
 })
 .catch(err => console.error(err));
 

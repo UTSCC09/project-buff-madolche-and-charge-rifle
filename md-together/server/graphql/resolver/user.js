@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const {user, projects, transformProject} = require("./populate");
 const jwt = require('jsonwebtoken');
 const { UsbRounded } = require("@mui/icons-material");
+const validator = require("validator");
 module.exports = {
 
     // getprojct:() =>{
@@ -33,6 +34,12 @@ module.exports = {
     // },
     createUser: async args => {
         try {
+            if(!validator.isEmail(args.UserInput.email) 
+            || !validator.isAlpha(args.UserInput.firstName) 
+            || !validator.isAlpha(args.UserInput.lastName)){
+              // console.log("Wrong format of email or password");
+              throw new Error("Wrong format of email or name");
+            }
             const user = await User.findOne({ email: args.UserInput.email });
             if (user) {
                 throw new Error("User with email "+ args.UserInput.email+" already exists");
@@ -51,6 +58,7 @@ module.exports = {
                 email: args.UserInput.email,
                 password: pass,
                 otherId: args.UserInput.otherId,
+                status: "login",
                 owned: [],
                 shared: [],
             });
@@ -80,6 +88,10 @@ module.exports = {
         if(!equal){
             throw new Error("Wrong password");
         }
+        await User.updateOne(
+            {email:args.email},
+            {$set:{status:"login"}}
+        );
         const token = jwt.sign({userId: user.id, email:user.email}, 'my token secret', {
             expiresIn:'1h'
         });
@@ -90,4 +102,25 @@ module.exports = {
             tokenExpiration: 1 //time in hour
         }
     },
+    logout: async args =>{
+        const user = await User.findOne({_id:args.userId});
+        if(!user){
+            return ("User not found");
+        }
+        await User.updateOne(
+            {_id:args.userId},
+            {$set:{status:"logout"}}
+        );
+        return "logout";
+    },
+    // checkLogin: async args =>{
+    //     const user = await User.findOne({_id:args.userId});
+    //     if(!user){
+    //         throw new Error("User not found");
+    //     }
+    //     if(user.status == "logout"){
+    //         throw new Error("User logged out");
+    //     }
+    //     return "login";
+    // },
 }
