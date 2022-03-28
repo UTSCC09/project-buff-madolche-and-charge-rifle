@@ -106,8 +106,11 @@ module.exports = {
             tokenExpiration: 1 //time in hour
         }
     },
-    logout: async args =>{
-        const user = await User.findOne({_id:args.userId});
+    logout: async (args,req) =>{
+        if(!req.isAuth){
+            return ("User not found");
+        }
+        const user = await User.findOne({_id:req.userId});
         if(!user){
             return ("User not found");
         }

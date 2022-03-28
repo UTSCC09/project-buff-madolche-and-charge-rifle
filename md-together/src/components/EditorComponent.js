@@ -207,7 +207,7 @@ export default function EditorComponent() {
     cookie[key.trim()] = value;
   });
 
-  if (cookie["__react_session__"] && ReactSession.get("userId") !== null && ReactSession.get("userId") !== undefined) {
+  if (cookie["__react_session__"] && ReactSession.get("token") !== null && ReactSession.get("token") !== undefined) {
     isLoggedIn = true;
   } else {
     isLoggedIn = false;

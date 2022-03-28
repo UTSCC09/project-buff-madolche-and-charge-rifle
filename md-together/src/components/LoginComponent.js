@@ -35,7 +35,6 @@ function SignIn() {
       query:`
       query {
         emailLogin(email:"${email}", password:"${password}"){
-          userId
           email
           token
           firstName
@@ -72,7 +71,6 @@ function SignIn() {
           document.getElementById("Log In Error Box").innerHTML = "** " + data.errors[0].message + " **";
         }
       }else{
-        ReactSession.set('userId',data.data.emailLogin.userId);
         ReactSession.set('email',data.data.emailLogin.email);
         ReactSession.set('token',data.data.emailLogin.token);
         ReactSession.set('firstName',data.data.emailLogin.firstName);
@@ -165,7 +163,6 @@ function SignUp() {
       query:`
       mutation{
         createUser(UserInput:{firstName:"${firstName}", lastName:"${lastName}", email:"${email}",password:"${password}"}){
-          userId
           email
           token
           firstName
@@ -202,7 +199,6 @@ function SignUp() {
           document.getElementById("Sign Up Error Box").innerHTML = "** " + data.errors[0].message + " **";
         }
       }else{
-        ReactSession.set('userId',data.data.createUser.userId);
         ReactSession.set('email',data.data.createUser.email);
         ReactSession.set('token',data.data.createUser.token);
         ReactSession.set('firstName',data.data.createUser.firstName);

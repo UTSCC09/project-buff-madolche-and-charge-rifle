@@ -206,7 +206,7 @@ function SelectedListItem() {
     const ownedbody = {
       query:`
       query{
-        owned(userId:"${ReactSession.get("userId")}"){
+        owned(userId:""){
           _id
           name
         }
@@ -258,7 +258,7 @@ function SelectedListItem() {
     const sharedbody = {
       query:`
       query{
-        shared(userId:"${ReactSession.get("userId")}"){
+        shared(userId:""){
           _id
           name
         }
@@ -312,7 +312,7 @@ function SelectedListItem() {
     const invitationbody = {
       query:`
       query{
-        invited(userId:"${ReactSession.get("userId")}"){
+        invited(userId:""){
           _id
           name
         }

@@ -100,7 +100,7 @@ function UserLogInCorner(props) {
     const body = {
       query:`
       query{
-        logout(userId:"${ReactSession.get("userId")}")
+        logout(userId:"")
       }
       `
     }
@@ -132,7 +132,6 @@ function UserLogInCorner(props) {
       // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
       console.log(err)
     });
-    ReactSession.set('userId', null);
     ReactSession.set('token', null);
     ReactSession.set('email', null);
     ReactSession.set('projectId', null);
@@ -278,10 +277,9 @@ const NavbarComponent = () => {
     cookie[key.trim()] = value;
   })
 
-  if (cookie["__react_session__"] && ReactSession.get("userId") !== null && ReactSession.get("userId") !== undefined) {
+  if (cookie["__react_session__"] && ReactSession.get("token") !== null && ReactSession.get("token") !== undefined) {
     isLoggedIn = true;
   } else {
-    ReactSession.set('userId', null);
     ReactSession.set('token', null);
     ReactSession.set('projectId', null);
     ReactSession.set('email', null);
