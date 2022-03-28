@@ -110,7 +110,8 @@ function UserLogInCorner(props) {
     method: 'POST',
     body: JSON.stringify(body),
     headers:{
-      "Content-Type": 'application/json'
+      "Content-Type": 'application/json',
+      "Authorization":'asda '+ ReactSession.get('token')
     }
     })
     .then(res =>{

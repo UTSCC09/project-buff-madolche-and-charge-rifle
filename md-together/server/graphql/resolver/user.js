@@ -111,11 +111,8 @@ module.exports = {
             return ("User not found");
         }
         const user = await User.findOne({_id:req.userId});
-        if(!user){
-            return ("User not found");
-        }
         await User.updateOne(
-            {_id:args.userId},
+            {_id:req.userId},
             {$set:{status:"logout"}}
         );
         return "logout";
