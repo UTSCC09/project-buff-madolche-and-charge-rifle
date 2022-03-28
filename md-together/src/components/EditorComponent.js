@@ -46,7 +46,7 @@ export default function EditorComponent() {
   let peerVideo;
 
   // The Current State of Markdown File
-  const [value, setValue] = React.useState(defaultWelcome);
+  const [value, setValue] = React.useState("");
 
   // export to other formats
   // The code is derived from "downloading a string as .txt file in React on stackoverflow"
@@ -421,12 +421,15 @@ export default function EditorComponent() {
       </div>
 
       {editorVisible && 
-        <div className="save-button-div">
-          <Button variant="contained" className="save-button" onClick={handleSave} sx={{textTransform: "capitalize"}}>Save Change</Button>
-          {/* <button className="save-button" onClick={handleSave}>Save</button> */}
-          <Button variant="contained" className="save-button" onClick={downloadMD} sx={{textTransform: "capitalize"}}>Download Markdown</Button>
-          <Button variant="contained" className="save-button" onClick={downloadHTML} sx={{textTransform: "capitalize"}}>Download HTML</Button>
-          <Button variant="contained" className="save-button" onClick={downloadPDF} sx={{textTransform: "capitalize"}}>Download PDF</Button>
+        <div>
+          <div className="editor-project-name">You are editing project: {ReactSession.get("projectName")}</div>
+          <div className="save-button-div">
+            <Button variant="contained" className="save-button" onClick={handleSave} sx={{textTransform: "capitalize"}}>Save Change</Button>
+            {/* <button className="save-button" onClick={handleSave}>Save</button> */}
+            <Button variant="contained" className="save-button" onClick={downloadMD} sx={{textTransform: "capitalize"}}>Download Markdown</Button>
+            <Button variant="contained" className="save-button" onClick={downloadHTML} sx={{textTransform: "capitalize"}}>Download HTML</Button>
+            <Button variant="contained" className="save-button" onClick={downloadPDF} sx={{textTransform: "capitalize"}}>Download PDF</Button>
+          </div>
         </div>
       }
       {editorVisible && <MDEditor
