@@ -17,6 +17,8 @@ type Authdata{
     userId: ID!
     email: String!
     token: String!
+    firstName: String!
+    lastName: String!
     tokenExpiration: Int! 
 }
 input userInput {

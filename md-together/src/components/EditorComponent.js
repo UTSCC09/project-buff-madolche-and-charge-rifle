@@ -56,7 +56,7 @@ export default function EditorComponent() {
     const file = new Blob([value], {type: 'text/plain;charset=UTF-8'});
     elmt.href = URL.createObjectURL(file);
     // this is gonna be replaced with actual project name
-    elmt.download = "Current Project.md";
+    elmt.download = ReactSession.get("projectName") + ".md";
     document.body.appendChild(elmt); // required for this to work in FireFox
     elmt.click();
   }
@@ -70,7 +70,7 @@ export default function EditorComponent() {
     const file = new Blob([htmlContent], {type: 'text/html;charset=UTF-8'});
     elmt.href = URL.createObjectURL(file);
     // this is gonna be replaced with actual project name
-    elmt.download = "Current Project.html";
+    elmt.download = ReactSession.get("projectName") + ".html";
     document.body.appendChild(elmt);
     elmt.click();
   }
@@ -89,7 +89,7 @@ export default function EditorComponent() {
     var frameDoc = hiddenFrame.contentWindow ? hiddenFrame.contentWindow : hiddenFrame.contentDocument.document ? hiddenFrame.contentDocument.document : hiddenFrame.contentDocument;
     frameDoc.document.open();
     // this is gonna be replaced with actual project name
-    frameDoc.document.write('<html><head><title>Current Project</title>');
+    frameDoc.document.write('<html><head><title>'+ ReactSession.get("projectName") +'</title>');
     frameDoc.document.write('</head><body>');
     frameDoc.document.write(previewContent);
     frameDoc.document.write('</body></html>');
@@ -207,7 +207,7 @@ export default function EditorComponent() {
     cookie[key.trim()] = value;
   });
 
-  if (cookie["__react_session__"] && ReactSession.get("userId") !== null && ReactSession.get("userId") !== undefined) {
+  if (cookie["__react_session__"] && ReactSession.get("token") !== null && ReactSession.get("token") !== undefined) {
     isLoggedIn = true;
   } else {
     isLoggedIn = false;
@@ -421,12 +421,15 @@ export default function EditorComponent() {
       </div>
 
       {editorVisible && 
-        <div className="save-button-div">
-          <Button variant="contained" className="save-button" onClick={handleSave} sx={{textTransform: "capitalize"}}>Save Change</Button>
-          {/* <button className="save-button" onClick={handleSave}>Save</button> */}
-          <Button variant="contained" className="save-button" onClick={downloadMD} sx={{textTransform: "capitalize"}}>Download Markdown</Button>
-          <Button variant="contained" className="save-button" onClick={downloadHTML} sx={{textTransform: "capitalize"}}>Download HTML</Button>
-          <Button variant="contained" className="save-button" onClick={downloadPDF} sx={{textTransform: "capitalize"}}>Download PDF</Button>
+        <div>
+          <div className="editor-project-name">You are editing project: {ReactSession.get("projectName")}</div>
+          <div className="save-button-div">
+            <Button variant="contained" className="save-button" onClick={handleSave} sx={{textTransform: "capitalize"}}>Save Change</Button>
+            {/* <button className="save-button" onClick={handleSave}>Save</button> */}
+            <Button variant="contained" className="save-button" onClick={downloadMD} sx={{textTransform: "capitalize"}}>Download Markdown</Button>
+            <Button variant="contained" className="save-button" onClick={downloadHTML} sx={{textTransform: "capitalize"}}>Download HTML</Button>
+            <Button variant="contained" className="save-button" onClick={downloadPDF} sx={{textTransform: "capitalize"}}>Download PDF</Button>
+          </div>
         </div>
       }
       {editorVisible && <MDEditor

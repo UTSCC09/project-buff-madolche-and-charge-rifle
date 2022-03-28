@@ -35,9 +35,10 @@ function SignIn() {
       query:`
       query {
         emailLogin(email:"${email}", password:"${password}"){
-          userId
           email
           token
+          firstName
+          lastName
         }
       }
       `
@@ -70,9 +71,10 @@ function SignIn() {
           document.getElementById("Log In Error Box").innerHTML = "** " + data.errors[0].message + " **";
         }
       }else{
-        ReactSession.set('userId',data.data.emailLogin.userId);
         ReactSession.set('email',data.data.emailLogin.email);
         ReactSession.set('token',data.data.emailLogin.token);
+        ReactSession.set('firstName',data.data.emailLogin.firstName);
+        ReactSession.set('lastName',data.data.emailLogin.lastName);
         ReactSession.set('projectId', null);
         ReactSession.set('type', null);
         window.location.reload();
@@ -161,9 +163,10 @@ function SignUp() {
       query:`
       mutation{
         createUser(UserInput:{firstName:"${firstName}", lastName:"${lastName}", email:"${email}",password:"${password}"}){
-          userId
           email
           token
+          firstName
+          lastName
         }
       }
       `
@@ -196,9 +199,10 @@ function SignUp() {
           document.getElementById("Sign Up Error Box").innerHTML = "** " + data.errors[0].message + " **";
         }
       }else{
-        ReactSession.set('userId',data.data.createUser.userId);
         ReactSession.set('email',data.data.createUser.email);
         ReactSession.set('token',data.data.createUser.token);
+        ReactSession.set('firstName',data.data.createUser.firstName);
+        ReactSession.set('lastName',data.data.createUser.lastName);
         window.location.reload();
       }
     })
