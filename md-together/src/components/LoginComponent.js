@@ -38,6 +38,8 @@ function SignIn() {
           userId
           email
           token
+          firstName
+          lastName
         }
       }
       `
@@ -73,6 +75,8 @@ function SignIn() {
         ReactSession.set('userId',data.data.emailLogin.userId);
         ReactSession.set('email',data.data.emailLogin.email);
         ReactSession.set('token',data.data.emailLogin.token);
+        ReactSession.set('firstName',data.data.emailLogin.firstName);
+        ReactSession.set('lastName',data.data.emailLogin.lastName);
         ReactSession.set('projectId', null);
         ReactSession.set('type', null);
         window.location.reload();
@@ -164,6 +168,8 @@ function SignUp() {
           userId
           email
           token
+          firstName
+          lastName
         }
       }
       `
@@ -199,6 +205,8 @@ function SignUp() {
         ReactSession.set('userId',data.data.createUser.userId);
         ReactSession.set('email',data.data.createUser.email);
         ReactSession.set('token',data.data.createUser.token);
+        ReactSession.set('firstName',data.data.createUser.firstName);
+        ReactSession.set('lastName',data.data.createUser.lastName);
         window.location.reload();
       }
     })

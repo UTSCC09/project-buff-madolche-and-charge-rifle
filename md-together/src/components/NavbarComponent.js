@@ -137,6 +137,8 @@ function UserLogInCorner(props) {
     ReactSession.set('email', null);
     ReactSession.set('projectId', null);
     ReactSession.set('type', null);
+    ReactSession.set('firstName', null);
+    ReactSession.set('lastName', null);
     window.location.reload();
   }
 
@@ -283,6 +285,8 @@ const NavbarComponent = () => {
     ReactSession.set('projectId', null);
     ReactSession.set('email', null);
     ReactSession.set('type', null);
+    ReactSession.set('firstName', null);
+    ReactSession.set('lastName', null);
     isLoggedIn = false;
   }
   const [anchorElNav, setAnchorElNav] = React.useState(null);

@@ -71,6 +71,8 @@ module.exports = {
                 userId: result.id,
                 email: result.email,
                 token: token,
+                firstName: result.firstName,
+                lastName: result.lastName,
                 tokenExpiration: 1 //time in hour
             }
             //return { ...result._doc, _id: result.id, password: null };
@@ -99,6 +101,8 @@ module.exports = {
             userId: user.id,
             email: user.email,
             token: token,
+            firstName: user.firstName,
+            lastName: user.lastName,
             tokenExpiration: 1 //time in hour
         }
     },
