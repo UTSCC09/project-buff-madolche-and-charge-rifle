@@ -46,7 +46,7 @@ export default function EditorComponent() {
   let peerVideo;
 
   // The Current State of Markdown File
-  const [value, setValue] = React.useState(defaultWelcome);
+  const [value, setValue] = React.useState("");
 
   // export to other formats
   // The code is derived from "downloading a string as .txt file in React on stackoverflow"
