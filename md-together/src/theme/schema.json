@@ -14,8 +14,7 @@
                     "text": "teal",
                     "opacity": 1
                 }
-            },
-            "font": "Lucida Sans"
+            }
         },
         "dark" : {
             "id": "T_002",
@@ -34,8 +33,7 @@
                 "footer": "#525252",
                 "navbar": "#525252",
                 "other": "#323232"
-            },
-            "font": "Roboto"
+            }
         },
         "sharp" : {
             "id": "T_003",
@@ -54,8 +52,7 @@
                 "navbar": "#D82148",
                 "footer": "#D82148",
                 "other": "#A63EC5"
-            },
-            "font": "Ubuntu"
+            }
         },
         "calm" : {
             "id": "T_004",
@@ -74,8 +71,7 @@
                 "navbar": "#BB9981",
                 "footer": "#C5D8A4",
                 "other": "#F4FCD9"
-            },
-            "font": "Nunito Sans"
+            }
         },
         "seaWave" : {
             "id": "T_005",
@@ -94,8 +90,7 @@
                 "navbar": "#94B3FD",
                 "other": "#EFFFFD",
                 "footer": "#B5DEFF"
-            },
-            "font": "Ubuntu"
+            }
         }
     }
 }

@@ -7,7 +7,7 @@ export const GlobalStyles = createGlobalStyle`
   body {
     background: ${({ theme }) => theme.colors.body};
     color: ${({ theme }) => theme.colors.text};
-    font-family: ${({ theme }) => theme.font};
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif !important;
     // transition: all 0.50s linear;
   }
   a {
@@ -36,7 +36,7 @@ export const GlobalStyles = createGlobalStyle`
     cursor: pointer;
     background-color: #1064EA;
     color: #FFFFFF;
-    font-family: ${({ theme }) => theme.font};
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif !important;
   }
   #footer_section {
     background-color: ${({ theme }) => theme.colors.footer};

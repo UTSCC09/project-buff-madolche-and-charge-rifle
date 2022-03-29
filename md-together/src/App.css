@@ -90,11 +90,11 @@
 }
 
 .wmde-markdown {
-  background-color: transparent;
+  background-color: transparent !important;
 }
 
 .wmde-markdown img {
-  background-color: transparent;
+  background-color: transparent !important;
 }
 
 .navbar-username {
