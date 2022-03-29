@@ -12,6 +12,9 @@ docker run -d --rm -p 3001:3001 -p 9000:9000 ghcr.io/utscc09/backend-mdtogether
 
 docker stop $(docker ps -f ancestor=ghcr.io/utscc09/frontend-mdtogether:latest -q)
 
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
+
 node -v
 12.18.1
 
