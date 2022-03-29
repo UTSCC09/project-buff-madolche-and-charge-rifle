@@ -11,7 +11,7 @@ let app = Express();
 
 const cors = require('cors');
 app.use(cors({
-  origin: ['http://www.mdtogether.live', 'http://api.mdtogether.live', 'https://www.mdtogether.live', 'https://api.mdtogether.live']
+  origin: ['https://www.mdtogether.live', 'https://api.mdtogether.live']
 }));
 
 //the whole backend codes are learned from https://www.youtube.com/playlist?list=PL55RiY5tL51rG1x02Yyj93iypUuHYXcB_

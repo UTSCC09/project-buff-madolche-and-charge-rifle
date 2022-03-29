@@ -227,7 +227,7 @@ export default function EditorComponent() {
       let content_err = false;
       let content_backenderr = false;
       let content;
-      fetch("http://mdtogether.live:3001/graphql", {
+      fetch("https://api.mdtogether.live:3001/graphql", {
       method: 'POST',
       body: JSON.stringify(body),
       headers:{
@@ -374,7 +374,7 @@ export default function EditorComponent() {
     let content_err = false;
     let content_backenderr = false;
     // let content;
-    fetch("http://mdtogether.live:3001/graphql", {
+    fetch("https://api.mdtogether.live:3001/graphql", {
     method: 'POST',
     body: JSON.stringify(body),
     headers:{

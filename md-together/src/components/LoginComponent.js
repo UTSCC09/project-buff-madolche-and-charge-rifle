@@ -45,7 +45,7 @@ function SignIn() {
     }
     let err = false;
     let backenderr = false;
-    fetch("http://mdtogether.live:3001/graphql", {
+    fetch("https://api.mdtogether.live:3001/graphql", {
     method: 'POST',
     body: JSON.stringify(body),
     headers:{
@@ -173,7 +173,7 @@ function SignUp() {
     }
     let err = false;
     let backenderr = false;
-    fetch("http://mdtogether.live:3001/graphql", {
+    fetch("https://api.mdtogether.live:3001/graphql", {
     method: 'POST',
     body: JSON.stringify(body),
     headers:{
@@ -222,7 +222,7 @@ function SignUp() {
     //     }
     //     `
     //   }
-    //   return fetch("http://mdtogether.live:3001/graphql", {
+    //   return fetch("https://api.mdtogether.live:3001/graphql", {
     //     method: 'POST',
     //     body: JSON.stringify(signin),
     //     headers:{
