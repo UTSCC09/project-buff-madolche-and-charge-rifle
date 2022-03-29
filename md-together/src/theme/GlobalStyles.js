@@ -58,5 +58,8 @@ export const GlobalStyles = createGlobalStyle`
   .css-1et9cd0 {
     background: ${({ theme }) => theme.colors.other} !important;
   }
+  .css-p3apin {
+    background: ${({ theme }) => theme.colors.other} !important;
+  }
 
 `;
