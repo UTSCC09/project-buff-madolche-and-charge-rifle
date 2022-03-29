@@ -71,7 +71,7 @@ function InvitationList(props) {
     let err = false;
     let backenderr = false;
     let proId;
-    fetch("https://api.mdtogether.live:3001/graphql", {
+    fetch("https://api.mdtogether.live/graphql", {
     method: 'POST',
     body: JSON.stringify(body),
     headers:{
@@ -125,7 +125,7 @@ function InvitationList(props) {
     let err = false;
     let backenderr = false;
     let proId;
-    fetch("https://api.mdtogether.live:3001/graphql", {
+    fetch("https://api.mdtogether.live/graphql", {
     method: 'POST',
     body: JSON.stringify(body),
     headers:{
@@ -215,7 +215,7 @@ function SelectedListItem() {
     let own_err = false;
     let own_backenderr = false;
     let own_projects;
-    fetch("https://https://api.mdtogether.live:3001/graphql", {
+    fetch("https://https://api.mdtogether.live/graphql", {
     method: 'POST',
     body: JSON.stringify(ownedbody),
     headers:{
@@ -268,7 +268,7 @@ function SelectedListItem() {
     let share_backenderr = false;
     let share_projects;
     
-    fetch("https://api.mdtogether.live:3001/graphql", {
+    fetch("https://api.mdtogether.live/graphql", {
     method: 'POST',
     body: JSON.stringify(sharedbody),
     headers:{
@@ -322,7 +322,7 @@ function SelectedListItem() {
     let inv_backenderr = false;
     let fetched_inv;
     
-    fetch("https://api.mdtogether.live:3001/graphql", {
+    fetch("https://api.mdtogether.live/graphql", {
     method: 'POST',
     body: JSON.stringify(invitationbody),
     headers:{
@@ -391,7 +391,7 @@ function SelectedListItem() {
     let err = false;
     let backenderr = false;
     let proId;
-    fetch("https://api.mdtogether.live:3001/graphql", {
+    fetch("https://api.mdtogether.live/graphql", {
     method: 'POST',
     body: JSON.stringify(body),
     headers:{
@@ -451,7 +451,7 @@ function SelectedListItem() {
     let err = false;
     let backenderr = false;
     let proId;
-    fetch("https://api.mdtogether.live:3001/graphql", {
+    fetch("https://api.mdtogether.live/graphql", {
     method: 'POST',
     body: JSON.stringify(body),
     headers:{
@@ -528,7 +528,7 @@ function SelectedListItem() {
     let err = false;
     let backenderr = false;
     let proId;
-    fetch("https://api.mdtogether.live:3001/graphql", {
+    fetch("https://api.mdtogether.live/graphql", {
     method: 'POST',
     body: JSON.stringify(body),
     headers:{
@@ -624,7 +624,7 @@ function SelectedListItem() {
     let err = false;
     let backenderr = false;
     let proId;
-    fetch("https://api.mdtogether.live:3001/graphql", {
+    fetch("https://api.mdtogether.live/graphql", {
     method: 'POST',
     body: JSON.stringify(body),
     headers:{
