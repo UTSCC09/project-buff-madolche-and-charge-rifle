@@ -23,25 +23,26 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./acme:/etc/acme.sh
     environment:
-        - DEFAULT_EMAIL=<your_email>
+        - DEFAULT_EMAIL=jingrun.long@mail.utoronto.ca
         
   frontend:
-    image: ghcr.io/UTSCC09/frontend-<your github username>
+    image: ghcr.io/UTSCC09/frontend-mdtogether
     container_name: frontend
     restart: always
     expose:
       - 80
     environment:
-      - VIRTUAL_HOST=<your_domain>
-      - LETSENCRYPT_HOST=<your_domain>
+      - VIRTUAL_HOST=mdtogether.live
+      - LETSENCRYPT_HOST=mdtogether.live
       
   backend:
-    image: ghcr.io/UTSCC09/backend-<your github username>
+    image: ghcr.io/UTSCC09/backend-mdtogether
     container_name: backend
     restart: always
     expose:
-      - 3000
+      - 3001
+      - 9000
     environment:
-      - VIRTUAL_HOST=api.<your_domain>
-      - LETSENCRYPT_HOST=api.<your_domain>
+      - VIRTUAL_HOST=api.mdtogether.live
+      - LETSENCRYPT_HOST=api.mdtogether.live
      
