@@ -66,5 +66,5 @@ jobs:
         passphrase: ${{ secrets.PASSPHRASE }}
         port: ${{ secrets.PORT }}
         script: |
-          'docker stop $(docker ps -f ancestor=ghcr.io/cscc09/backend-mdtogether:latest -q)'
-          'docker run -d --rm -p 3001:3001 -p 9000:9000 ghcr.io/utscc09/backend-mdtogether'
+          docker stop $(docker ps -f ancestor=ghcr.io/utscc09/backend-mdtogether:latest -q)
+          docker run -d --rm -p 3001:3001 -p 9000:9000 ghcr.io/utscc09/backend-mdtogether
