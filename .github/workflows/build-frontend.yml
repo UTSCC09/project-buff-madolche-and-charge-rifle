@@ -49,7 +49,9 @@ jobs:
           docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
 
-  # Re-deploy newly built frontend image to VM.
+  # Re-deploy newly built frontend image to VM. Only runs if successfully built.
+  # Used https://stackoverflow.com/questions/62750603/github-actions-trigger-another-action-after-one-action-is-completed
+  # and https://github.com/marketplace/actions/ssh-remote-commands
   deploy:
     name: Deploy frontend
     needs: push
@@ -64,5 +66,5 @@ jobs:
         passphrase: ${{ secrets.PASSPHRASE }}
         port: ${{ secrets.PORT }}
         script: |
-          echo "hi"
-          echo "bye"
+          docker stop $(docker ps -f ancestor=ghcr.io/cscc09/frontend-mdtogether:latest -q)
+          docker run -d --rm -p 80:80 ghcr.io/utscc09/frontend-mdtogether

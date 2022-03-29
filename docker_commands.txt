@@ -10,6 +10,8 @@ docker build -t mdtogetherbackend .
 docker run -d --rm -p 3001:3001 -p 9000:9000 mdtogetherbackend
 docker run -d --rm -p 3001:3001 -p 9000:9000 ghcr.io/utscc09/backend-mdtogether
 
+docker stop $(docker ps -f ancestor=ghcr.io/cscc09/frontend-mdtogether:latest -q)
+
 node -v
 12.18.1
 
