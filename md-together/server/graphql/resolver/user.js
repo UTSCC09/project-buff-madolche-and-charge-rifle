@@ -44,21 +44,30 @@ module.exports = {
             if (user) {
                 throw new Error("User with email "+ args.UserInput.email+" already exists");
             }
-            if(args.UserInput.otherId){
-                const otherUser = await User.findOne({ otherId: args.UserInput.otherId });
-                //console.log("here");
-                if(otherUser){
-                    throw new Error("User already signed up by third party");
-                }
-            }
             const pass = await bcrypt.hash(args.UserInput.password, 12);
+            // generate ramdom peerId function found at https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
+            let peerId = '';
+            let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let charactersLength = characters.length;
+            let sameId = true;
+            while(sameId){
+                peerId = '';
+                for ( var i = 0; i < 36; i++ ) {
+                    peerId += characters.charAt(Math.floor(Math.random() * 
+                    charactersLength));
+                }
+                const samePeerId = await User.findOne({ peerId: peerId });
+                if (!samePeerId) {
+                    sameId = false;
+                } 
+            }
             const newUser = new User({
                 firstName: args.UserInput.firstName,
                 lastName: args.UserInput.lastName,
                 email: args.UserInput.email,
                 password: pass,
-                otherId: args.UserInput.otherId,
                 status: "login",
+                peerId: peerId,
                 owned: [],
                 shared: [],
             });
@@ -110,21 +119,35 @@ module.exports = {
         if(!req.isAuth){
             return ("User not found");
         }
+        try{
         const user = await User.findOne({_id:req.userId});
+        if(!user){
+            return ("User not found"); 
+        }
         await User.updateOne(
             {_id:req.userId},
             {$set:{status:"logout"}}
         );
         return "logout";
+        }catch(err){
+            return err;
+        }
     },
-    // checkLogin: async args =>{
-    //     const user = await User.findOne({_id:args.userId});
-    //     if(!user){
-    //         throw new Error("User not found");
-    //     }
-    //     if(user.status == "logout"){
-    //         throw new Error("User logged out");
-    //     }
-    //     return "login";
-    // },
+    getPeerId: async (args,req) =>{
+        if(!req.isAuth){
+            throw new Error("User not authenticated");
+        }
+        try{
+        const user = await User.findOne({email:args.email});
+        if (!user) {
+            throw new Error("User with email: "+args.email + " not found");
+        }
+        if(user.status !== "login"){
+            throw new Error("User with email: "+args.email + " is not online");
+        }
+        return user.peerId;
+        }catch(err){
+            throw err;
+        }
+    },
 }

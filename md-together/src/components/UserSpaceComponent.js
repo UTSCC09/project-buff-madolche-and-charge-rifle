@@ -521,6 +521,7 @@ function SelectedListItem() {
       mutation{
         createProject(ProjectInput:{owner:"", name:"${name}"}){
           _id
+          name
         }
       }
       `
@@ -528,6 +529,7 @@ function SelectedListItem() {
     let err = false;
     let backenderr = false;
     let proId;
+    let proName;
     fetch("http://localhost:3001/graphql", {
     method: 'POST',
     body: JSON.stringify(body),
@@ -555,7 +557,9 @@ function SelectedListItem() {
           console.log(data.errors[0].message)      }
       }else{
         proId = data.data.createProject._id;
+        proName = data.data.createProject.name;
         ReactSession.set("projectId",proId);
+        ReactSession.set("projectName",proName);
         ReactSession.set("type","owned");
         window.location.reload();
         //projects has format[{_id:"",name:""}]

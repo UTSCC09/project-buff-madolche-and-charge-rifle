@@ -7,11 +7,11 @@ type user {
     lastName: String!
     email: String!
     password: String
-    otherId: String
     status: String
     owned: [liteProject!]
     shared: [liteProject!]
     invited: [liteProject!]
+    peerId: String
 }
 type Authdata{
     userId: ID!
@@ -26,7 +26,6 @@ input userInput {
     lastName: String!
     email: String!
     password: String
-    otherId: String
 }
 type project{
     _id: ID!
@@ -50,10 +49,11 @@ type RootQuery {
     emailLogin(email: String!, password: String!): Authdata!
     getContent(projectId:ID!, userId:ID!, type: String!): String!
     logout(userId: ID!): String!
+    getPeerId(email: String!): String!
 }
 type RootMutation {
     createUser(UserInput: userInput!): Authdata!
-    createProject(ProjectInput: projectInput!): project!
+    createProject(ProjectInput: projectInput!): liteProject!
     createInv(owner: ID!, email: String!, projectId: ID!): [liteProject!]
     acceptInv(userId: ID!, projectId: ID!): [liteProject!]
     rejectInv(userId: ID!, projectId: ID!): [liteProject!]

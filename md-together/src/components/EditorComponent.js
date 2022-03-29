@@ -37,6 +37,47 @@ const peer = new Peer({
 });
 let dataConn;
 let mediaConn;
+// const body = {
+//   query:`
+//   query{
+//      getPeerId(email:"${ReactSession.get("email")}")
+//   }
+//   `
+// }
+// let peer_err = false;
+// let peer_backenderr = false;
+// let peerId;
+// fetch("http://localhost:3001/graphql", {
+// method: 'POST',
+// body: JSON.stringify(body),
+// headers:{
+//   "Content-Type": 'application/json',
+//   "Authorization":'asda '+ ReactSession.get('token')
+// }
+// })
+// .then(res =>{
+//   if(res.status !== 200 && res.status !== 201){
+//     // need to change this to actual error messages
+//     peer_err = true;
+//     if(res.status === 400){
+//       peer_backenderr = true;
+//     }
+//     // console.log("Failed");
+//   }
+//   return res.json();
+// })
+// .then(data =>{
+//   if(peer_err){
+//       console.log(data.errors[0].message)
+//   }else{
+//     peerId = data.data.getPeerId;
+//   }
+// })
+// .catch(err =>{
+//   // need to change this to actual error messages
+//   // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
+//   console.log(err)
+// });
 
 // using react-md-editor as the markdown editor
 // this component is built on the top of example given in react-md-editor documentation

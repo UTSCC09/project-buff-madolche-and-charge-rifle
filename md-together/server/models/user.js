@@ -17,7 +17,7 @@ const userSchema = new Schema({
         type:String,
         
     },
-    otherId:{
+    peerId:{
         type:String,   
     },
     status:{
