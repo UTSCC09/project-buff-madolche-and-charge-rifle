@@ -97,7 +97,7 @@ export default function EditorComponent() {
     const file = new Blob([value], {type: 'text/plain;charset=UTF-8'});
     elmt.href = URL.createObjectURL(file);
     // this is gonna be replaced with actual project name
-    elmt.download = "Current Project.md";
+    elmt.download = ReactSession.get("projectName") + ".md";
     document.body.appendChild(elmt); // required for this to work in FireFox
     elmt.click();
   }
@@ -111,7 +111,7 @@ export default function EditorComponent() {
     const file = new Blob([htmlContent], {type: 'text/html;charset=UTF-8'});
     elmt.href = URL.createObjectURL(file);
     // this is gonna be replaced with actual project name
-    elmt.download = "Current Project.html";
+    elmt.download = ReactSession.get("projectName") + ".html";
     document.body.appendChild(elmt);
     elmt.click();
   }
@@ -130,7 +130,7 @@ export default function EditorComponent() {
     var frameDoc = hiddenFrame.contentWindow ? hiddenFrame.contentWindow : hiddenFrame.contentDocument.document ? hiddenFrame.contentDocument.document : hiddenFrame.contentDocument;
     frameDoc.document.open();
     // this is gonna be replaced with actual project name
-    frameDoc.document.write('<html><head><title>Current Project</title>');
+    frameDoc.document.write('<html><head><title>'+ ReactSession.get("projectName") +'</title>');
     frameDoc.document.write('</head><body>');
     frameDoc.document.write(previewContent);
     frameDoc.document.write('</body></html>');
