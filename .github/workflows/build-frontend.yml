@@ -8,6 +8,8 @@ on:
     # Only run this workflow if the commit has modified files from frontend
     paths:
       - md-together/**
+    paths-ignore:
+      - md-together/server/**
 
 
 env:
