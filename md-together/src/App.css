@@ -90,9 +90,26 @@
 }
 
 .wmde-markdown {
-  background-color: transparent;
+  background-color: transparent !important;
 }
 
 .wmde-markdown img {
-  background-color: transparent;
+  background-color: transparent !important;
+}
+
+.navbar-username {
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+}
+
+@media only screen and (max-width: 600px) {
+  .navbar-username {
+    display: none;
+  }
+}
+
+.editor-project-name {
+  padding-bottom: 20px;
+  margin-top: -10px;
 }
