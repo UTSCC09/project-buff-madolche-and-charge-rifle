@@ -51,7 +51,7 @@ jobs:
 
   # Re-deploy newly built frontend image to VM.
   deploy:
-  name: Deploy frontend
+    name: Deploy frontend
     needs: push
     runs-on: ubuntu-latest
     steps:
