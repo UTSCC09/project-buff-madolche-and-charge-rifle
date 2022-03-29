@@ -7,7 +7,7 @@ on:
       - master
     # Only run this workflow if the commit has modified files from backend
     paths:
-      - md-together/server/**
+      - server/**
 
 
 env:

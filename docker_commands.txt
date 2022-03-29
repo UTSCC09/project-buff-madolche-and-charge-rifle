@@ -1,0 +1,16 @@
+frontend:
+in ~/mdtogether/p-b-m-a-c-r/mdtogether/
+docker build -t mdtogetherfrontend .
+docker run -d --rm -p 80:80 mdtogetherfrontend
+docker run -d --rm -p 80:80 ghcr.io/utscc09/frontend-mdtogether
+
+backend:
+in ~/mdtogether/p-b-m-a-c-r/server/
+docker build -t mdtogetherbackend .
+docker run -d --rm -p 3001:3001 -p 9000:9000 mdtogetherbackend
+docker run -d --rm -p 3001:3001 -p 9000:9000 ghcr.io/utscc09/backend-mdtogether
+
+node -v
+12.18.1
+
+use npm n

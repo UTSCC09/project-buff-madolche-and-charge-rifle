@@ -7,4 +7,3 @@ Dockerfile.prod
 .git
 .gitignore
 .cache
-**/server
