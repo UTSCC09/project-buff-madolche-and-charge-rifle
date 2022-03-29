@@ -6,7 +6,7 @@ import { createGlobalStyle } from "styled-components";
 export const GlobalStyles = createGlobalStyle`
   body {
     background: ${({ theme }) => theme.colors.body};
-    color: ${({ theme }) => theme.colors.text};
+    color: ${({ theme }) => theme.colors.text} !important;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif !important;
     // transition: all 0.50s linear;
   }
