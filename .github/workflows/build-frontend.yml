@@ -31,7 +31,7 @@ jobs:
 
       - name: Log into GitHub Container Registry
         # TODO: Create a Personal Access Tokens (PAT) with `read:packages` and `write:packages` scopes and save it as an Actions secret `CR_PAT`
-        run: echo "${{ secrets.CR_PAT }}" | docker login https://ghcr.io -u nurgnij --password-stdin
+        run: echo "${{ secrets.CR_PAT }}" | docker login https://ghcr.io -u ${{ secrets.USERNAME }} --password-stdin
 
       - name: Push image to GitHub Container Registry
         run: |
@@ -48,3 +48,21 @@ jobs:
           echo VERSION=$VERSION
           docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
+
+  # Re-deploy newly built frontend image to VM.
+  deploy:
+  name: Deploy frontend
+    needs: push
+    runs-on: ubuntu-latest
+    steps:
+    - name: executing remote ssh commands
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.VM_USERNAME }}
+        key: ${{ secrets.PRIVATE_KEY }}
+        passphrase: ${{ secrets.PASSPHRASE }}
+        port: ${{ secrets.PORT }}
+        script: |
+          echo "hi"
+          echo "bye"
