@@ -27,6 +27,14 @@ let defaultWelcome = `# Welcome to mdTogether!
 
 // let currEmail = ReactSession.get("email");
 
+// Peer.js functionality is referred to Getting started with PeerJS example
+// https://blog.logrocket.com/getting-started-peerjs/
+// const peer = new Peer();
+const peer = new Peer({
+  host:'localhost',
+  port: 9000,
+  path: '/mdtogether'
+});
 let dataConn;
 let mediaConn;
 
@@ -92,64 +100,6 @@ export default function EditorComponent() {
       document.body.removeChild(hiddenFrame);
     }, 500);
   }
-
-  const [peerId, setPeerId] = useState("");
-
-  React.useEffect(() => {
-    const body = {
-      query:`
-      query{
-        getPeerId(email:"${ReactSession.get("email")}")
-      }
-      `
-    }
-    let peer_err = false;
-    let peer_backenderr = false;
-    let peerId;
-    fetch("http://localhost:3001/graphql", {
-    method: 'POST',
-    body: JSON.stringify(body),
-    headers:{
-      "Content-Type": 'application/json',
-      "Authorization":'asda '+ ReactSession.get('token')
-    }
-    })
-    .then(res =>{
-      if(res.status !== 200 && res.status !== 201){
-        // need to change this to actual error messages
-        peer_err = true;
-        if(res.status === 400){
-          peer_backenderr = true;
-        }
-        // console.log("Failed");
-      }
-      return res.json();
-    })
-    .then(data =>{
-      if(peer_err){
-        console.log(data.errors[0].message)
-      }else{
-        peerId = data.data.getPeerId;
-        console.log(peerId);
-        setPeerId(peerId);
-      }
-    })
-    .catch(err =>{
-      // need to change this to actual error messages
-      // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
-      console.log(err)
-    });
-
-  }, []);
-
-  // Peer.js functionality is referred to Getting started with PeerJS example
-  // https://blog.logrocket.com/getting-started-peerjs/
-  // const peer = new Peer();
-  const peer = new Peer(peerId, {
-    host:'localhost',
-    port: 9000,
-    path: '/mdtogether'
-  });
 
   
   // This form is referred to W3Schools React Form example as a template
