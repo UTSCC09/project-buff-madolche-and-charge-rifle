@@ -215,7 +215,7 @@ function SelectedListItem() {
     let own_err = false;
     let own_backenderr = false;
     let own_projects;
-    fetch("https://https://api.mdtogether.live/graphql", {
+    fetch("https://api.mdtogether.live/graphql", {
     method: 'POST',
     body: JSON.stringify(ownedbody),
     headers:{
