@@ -20,7 +20,7 @@ app,use(cors());
 app.use(BodyParser.json());
 app.use((req,res,next) =>{
     //console.log(req);
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    // res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods',"POST,GET,OPTIONS");
     res.setHeader('Access-Control-Allow-Headers',"Content-Type, Authorization");
     if(req.method === 'OPTIONS'){
@@ -37,6 +37,12 @@ app.use("/graphql", graphqlHTTP({
     rootValue: myResolver,
     graphiql: true
 }));
+app.use("/", (req,res,next) => {
+  console.log(req);
+  console.log(res);
+  next();
+});
+
 mongoose.connect("mongodb+srv://mdTogether:mdTogether@cluster0.sjsbm.mongodb.net/mdTogether?retryWrites=true&w=majority")
 .then(() => {
     app.listen(3001,() =>{
