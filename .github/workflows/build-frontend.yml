@@ -65,6 +65,14 @@ jobs:
         key: ${{ secrets.PRIVATE_KEY }}
         passphrase: ${{ secrets.PASSPHRASE }}
         port: ${{ secrets.PORT }}
+        # http version
+        # script: |
+        #   docker stop $(docker ps -f ancestor=ghcr.io/utscc09/frontend-mdtogether:latest -q)
+        #   docker run -d --rm -p 80:80 ghcr.io/utscc09/frontend-mdtogether
+        # https version
         script: |
-          docker stop $(docker ps -f ancestor=ghcr.io/utscc09/frontend-mdtogether:latest -q)
-          docker run -d --rm -p 80:80 ghcr.io/utscc09/frontend-mdtogether
+          cd ${{ secrets.WORKING_DIR }}
+          docker kill $(docker ps -a -q)
+          docker rm $(docker ps -a -q)
+          docker-compose pull
+          docker-compose up -d

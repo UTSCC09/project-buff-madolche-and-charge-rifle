@@ -1,7 +1,7 @@
 const Express = require("express");
 const BodyParser = require("body-parser");
 const {graphqlHTTP} = require("express-graphql");
-const { buildSchema, isNonNullType } = require("graphql");
+// const { buildSchema, isNonNullType } = require("graphql");
 const mongoose = require("mongoose");
 const mySchema = require("./graphql/schema/index");
 const myResolver = require("./graphql/resolver/index");
@@ -11,7 +11,7 @@ let app = Express();
 
 const cors = require('cors');
 app.use(cors({
-  origin: ['https://www.mdtogether.live', 'https://api.mdtogether.live/graphql']
+  origin: ['https://mdtogether.live', 'https://www.mdtogether.live', 'https://api.mdtogether.live']
 }));
 
 //the whole backend codes are learned from https://www.youtube.com/playlist?list=PL55RiY5tL51rG1x02Yyj93iypUuHYXcB_
