@@ -31,25 +31,34 @@ app.use(BodyParser.json());
 app.use(auth);
 //cannot change the name "schema" but can change name "RootQuery" "RootMutation"
 //[user!]! means it must return an array(maybe empty array) and the element inside array must be user if we have element
-app.use("/graphql", graphqlHTTP({
-    schema: mySchema,
-    //rootValue is resolver for schema
-    rootValue: myResolver,
-    graphiql: true
-}));
+// app.use("/graphql", graphqlHTTP({
+//     schema: mySchema,
+//     //rootValue is resolver for schema
+//     rootValue: myResolver,
+//     graphiql: true
+// }));
 app.use("/", (req,res,next) => {
   console.log(req);
   console.log(res);
+  res.send('testtt');
   next();
 });
 
-mongoose.connect("mongodb+srv://mdTogether:mdTogether@cluster0.sjsbm.mongodb.net/mdTogether?retryWrites=true&w=majority")
-.then(() => {
-    app.listen(3001,() =>{
-        console.log("server running at 3001");
-    })
-    // running the peer server for peer js connections
-    PeerServer({port:9000, path:'/mdtogether'});
+const http = require('http');
+const PORT = 3001;
+http.createServer(app).listen(PORT, (err) => {
+  if (err) console.log(err);
+  else console.log("HTTP server on http://localhost:%s", PORT);
 })
-.catch(err => console.error(err));
+
+
+// mongoose.connect("mongodb+srv://mdTogether:mdTogether@cluster0.sjsbm.mongodb.net/mdTogether?retryWrites=true&w=majority")
+// .then(() => {
+//     app.listen(3001,() =>{
+//         console.log("server running at 3001");
+//     })
+//     // running the peer server for peer js connections
+//     PeerServer({port:9000, path:'/mdtogether'});
+// })
+// .catch(err => console.error(err));
 
