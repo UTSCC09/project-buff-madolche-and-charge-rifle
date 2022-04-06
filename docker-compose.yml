@@ -34,7 +34,7 @@ services:
     environment:
       - VIRTUAL_HOST=mdtogether.live
       - LETSENCRYPT_HOST=mdtogether.live
-    network_mode: bridge
+    # network_mode: bridge
       
   backend:
     image: ghcr.io/utscc09/backend-mdtogether
@@ -47,5 +47,5 @@ services:
       - VIRTUAL_HOST=api.mdtogether.live
       - LETSENCRYPT_HOST=api.mdtogether.live
     # network_mode: project-buff-madolche-and-charge-rifle_default
-    network_mode: bridge
+    # network_mode: bridge
      
