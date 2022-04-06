@@ -3,6 +3,7 @@
 const Project = require("../../models/project");
 const User = require("../../models/user");
 const {user, projects, transformProject} = require("./populate");
+const validator = require("validator");
 module.exports = {
 
     // getprojct:() =>{
@@ -289,7 +290,7 @@ module.exports = {
                 throw new Error("User not found");
             } 
             const project = Project({
-                name:args.ProjectInput.name, 
+                name:validator.escape(args.ProjectInput.name), 
                 owner:req.userId,
                 //owner:args.ProjectInput.owner,
                 content:"Hello world",
