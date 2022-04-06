@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const mySchema = require("./graphql/schema/index");
 const myResolver = require("./graphql/resolver/index");
 const auth = require("./middleware/auth");
-const { PeerServer } = require('peer');
+const { ExpressPeerServer } = require('peer');
 let app = Express();
 
 const cors = require('cors');
@@ -48,13 +48,19 @@ app.use("/graphql", graphqlHTTP({
 
 const http = require('http');
 const PORT = 3000;
-http.createServer(app).listen(PORT, (err) => {
+const server = http.createServer(app);
+
+// const peerServer = PeerServer({port: PORT, path:'/peer', proxied: true});
+const peerServer = ExpressPeerServer(server, {
+  debug: true
+});
+
+app.use('/peer', peerServer);
+
+server.listen(PORT, (err) => {
   if (err) console.log(err);
   else console.log("HTTP server on http://localhost:%s", PORT);
 })
-
-// const peerServer = PeerServer({port: PORT, path:'/peer', proxied: true});
-const peerServer = PeerServer({port: PORT, path:'/peer'});
 
 mongoose.connect("mongodb+srv://mdTogether:mdTogether@cluster0.sjsbm.mongodb.net/mdTogether?retryWrites=true&w=majority")
 .then(() => {
