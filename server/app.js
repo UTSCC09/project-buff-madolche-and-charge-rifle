@@ -13,7 +13,7 @@ const cors = require('cors');
 // app.use(cors({
 //   origin: ['https://mdtogether.live', 'https://www.mdtogether.live', 'https://api.mdtogether.live']
 // }));
-app.use(cors());
+// app.use(cors());
 
 //the whole backend codes are learned from https://www.youtube.com/playlist?list=PL55RiY5tL51rG1x02Yyj93iypUuHYXcB_
 // great appreciation to academind
