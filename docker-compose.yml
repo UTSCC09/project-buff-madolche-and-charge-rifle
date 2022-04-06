@@ -40,9 +40,10 @@ services:
     container_name: backend
     restart: always
     expose:
-      - 3001
+      - 80
     #  - 9000
     environment:
       - VIRTUAL_HOST=api.mdtogether.live
       - LETSENCRYPT_HOST=api.mdtogether.live
+    network_mode: project-buff-madolche-and-charge-rifle_default
      
