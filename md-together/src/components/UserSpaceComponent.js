@@ -529,6 +529,7 @@ function SelectedListItem() {
     let err = false;
     let backenderr = false;
     let proId;
+    let proName;
     fetch("https://api.mdtogether.live/graphql", {
     method: 'POST',
     body: JSON.stringify(body),
