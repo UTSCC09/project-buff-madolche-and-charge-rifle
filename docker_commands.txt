@@ -20,6 +20,9 @@ docker-compose down
 docker-compose pull
 docker-compose up -d
 
+https://stackoverflow.com/questions/36445551/502-bad-gateway-when-accessing-virtual-host-via-jwilders-nginx-proxy
+docker network ls -f driver=bridge --format "{{.ID}}" | xargs docker network inspect | grep Name
+
 node -v
 12.18.1
 
