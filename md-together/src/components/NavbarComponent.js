@@ -142,8 +142,10 @@ function UserLogInCorner(props) {
     // reload before setting name to null
     // avoid display null in navbar
     window.location.reload();
-    ReactSession.set('firstName', null);
-    ReactSession.set('lastName', null);
+    setTimeout(function () {
+      ReactSession.set('firstName', null);
+      ReactSession.set('lastName', null);
+    }, 500);
   }
 
   return (

@@ -23,6 +23,17 @@ docker-compose up -d
 https://stackoverflow.com/questions/36445551/502-bad-gateway-when-accessing-virtual-host-via-jwilders-nginx-proxy
 docker network ls -f driver=bridge --format "{{.ID}}" | xargs docker network inspect | grep Name
 
+to fix slow docker-compose:
+https://github.com/docker/compose/issues/6552
+https://github.com/docker/compose/issues/6678
+cat /proc/sys/kernel/random/entropy_avail
+should be large (4 digits), if small (2 digits) then run:
+sudo apt install -y haveged
+https://serverfault.com/questions/172337/explain-in-plain-english-about-entropy-available
+
+do not cat /dev/random, drains entropy
+
+
 node -v
 12.18.1
 
