@@ -46,23 +46,22 @@ app.use("/graphql", graphqlHTTP({
 //   next();
 // });
 
-// const http = require('http');
-// const PORT = 3000;
-// http.createServer(app).listen(PORT, (err) => {
-//   if (err) console.log(err);
-//   else console.log("HTTP server on http://localhost:%s", PORT);
-// })
-
+const http = require('http');
 const PORT = 3000;
+http.createServer(app).listen(PORT, (err) => {
+  if (err) console.log(err);
+  else console.log("HTTP server on http://localhost:%s", PORT);
+})
 
 // const peerServer = PeerServer({port: PORT, path:'/peer', proxied: true});
 const peerServer = PeerServer({port: PORT, path:'/peer'});
 
 mongoose.connect("mongodb+srv://mdTogether:mdTogether@cluster0.sjsbm.mongodb.net/mdTogether?retryWrites=true&w=majority")
 .then(() => {
-    app.listen(PORT,() =>{
-        console.log("server running at %s", PORT);
-    })
+    console.log("Connected to mongodb on port %s", PORT);
+    // app.listen(PORT,() =>{
+    //     console.log("server running at %s", PORT);
+    // })
     // running the peer server for peer js connections
     // PeerServer({port:9000, path:'/mdtogether'});
 })
