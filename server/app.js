@@ -40,12 +40,12 @@ app.use(auth);
 app.use("/", (req,res,next) => {
   console.log(req);
   console.log(res);
-  res.send('testtt');
+  res.send('<p>testtt</p>');
   next();
 });
 
 const http = require('http');
-const PORT = 3001;
+const PORT = 3000;
 http.createServer(app).listen(PORT, (err) => {
   if (err) console.log(err);
   else console.log("HTTP server on http://localhost:%s", PORT);
