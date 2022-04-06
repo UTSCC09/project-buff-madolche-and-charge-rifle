@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const mySchema = require("./graphql/schema/index");
 const myResolver = require("./graphql/resolver/index");
 const auth = require("./middleware/auth");
-// const { PeerServer } = require('peer');
+const { PeerServer } = require('peer');
 let app = Express();
 
 const cors = require('cors');
@@ -60,6 +60,7 @@ mongoose.connect("mongodb+srv://mdTogether:mdTogether@cluster0.sjsbm.mongodb.net
     })
     // running the peer server for peer js connections
     // PeerServer({port:9000, path:'/mdtogether'});
+    PeerServer({port:3000, path:'/mdtogether'});
 })
 .catch(err => console.error(err));
 
