@@ -138,10 +138,12 @@ function UserLogInCorner(props) {
     ReactSession.set('email', null);
     ReactSession.set('projectId', null);
     ReactSession.set('type', null);
+    ReactSession.set('projectName', null);
+    // reload before setting name to null
+    // avoid display null in navbar
+    window.location.reload();
     ReactSession.set('firstName', null);
     ReactSession.set('lastName', null);
-    ReactSession.set('projectName', null);
-    // window.location.reload();
   }
 
   return (
