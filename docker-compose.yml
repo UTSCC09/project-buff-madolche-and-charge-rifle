@@ -41,7 +41,7 @@ services:
     container_name: backend
     restart: always
     expose:
-      - 80
+      - 3001
     #  - 9000
     environment:
       - VIRTUAL_HOST=api.mdtogether.live
