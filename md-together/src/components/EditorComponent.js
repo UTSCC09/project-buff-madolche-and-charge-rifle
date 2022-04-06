@@ -33,7 +33,7 @@ let defaultWelcome = `# Welcome to mdTogether!
 const peer = new Peer({
   host:'api.mdtogether.live',
   port: 443,
-  path: '/mdtogether'
+  path: '/peer'
 });
 let dataConn;
 let mediaConn;
