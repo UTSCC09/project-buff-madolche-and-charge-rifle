@@ -45,5 +45,5 @@ services:
     environment:
       - VIRTUAL_HOST=api.mdtogether.live
       - LETSENCRYPT_HOST=api.mdtogether.live
-    network_mode: project-buff-madolche-and-charge-rifle_default
+    # network_mode: project-buff-madolche-and-charge-rifle_default
      
