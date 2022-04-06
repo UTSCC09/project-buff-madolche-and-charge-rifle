@@ -31,8 +31,8 @@ let defaultWelcome = `# Welcome to mdTogether!
 // https://blog.logrocket.com/getting-started-peerjs/
 // const peer = new Peer();
 const peer = new Peer({
-  host:'mdtogether.live',
-  port: 9000,
+  host:'api.mdtogether.live',
+  port: 443,
   path: '/mdtogether'
 });
 let dataConn;

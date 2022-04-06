@@ -10,10 +10,10 @@ const { PeerServer } = require('peer');
 let app = Express();
 
 const cors = require('cors');
-// app.use(cors({
-//   origin: ['https://mdtogether.live', 'https://www.mdtogether.live', 'https://api.mdtogether.live']
-// }));
-app.use(cors());
+app.use(cors({
+  origin: ['https://mdtogether.live', 'https://www.mdtogether.live', 'https://api.mdtogether.live']
+}));
+// app.use(cors());
 
 //the whole backend codes are learned from https://www.youtube.com/playlist?list=PL55RiY5tL51rG1x02Yyj93iypUuHYXcB_
 // great appreciation to academind
@@ -60,7 +60,7 @@ mongoose.connect("mongodb+srv://mdTogether:mdTogether@cluster0.sjsbm.mongodb.net
     })
     // running the peer server for peer js connections
     // PeerServer({port:9000, path:'/mdtogether'});
-    PeerServer({port:3000, path:'/mdtogether'});
+    PeerServer({port:3000, path:'/mdtogether', proxied: true});
 })
 .catch(err => console.error(err));
 
