@@ -141,7 +141,7 @@ function UserLogInCorner(props) {
     ReactSession.set('firstName', null);
     ReactSession.set('lastName', null);
     ReactSession.set('projectName', null);
-    window.location.reload();
+    // window.location.reload();
   }
 
   return (
