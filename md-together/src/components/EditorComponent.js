@@ -268,6 +268,19 @@ export default function EditorComponent() {
     }
   }, [editorVisible, isLoggedIn]);
 
+  const handlePeerIdCopy = () => {
+    navigator.clipboard.writeText(currId);
+  }
+
+  function PeerIdLabel() {
+    return (
+      <div>
+        <label>Your Current Peer ID is: {currId}</label>
+        <Button variant="contained" className="save-button" onClick={handlePeerIdCopy} sx={{textTransform: "capitalize"}}>Copy</Button>
+      </div>
+    );
+  }
+
   let dataIsConnected = currDataConn ? true : false;
   let mediaIsConnected = currMediaConn ? true : false;
 
@@ -336,12 +349,14 @@ export default function EditorComponent() {
       );
     }
   }
+
+  
   
   function PeerForm() {
     return (
       <div className="peer-section">
         <div>
-          <label>Your Current Peer ID is: {currId}</label>
+          <PeerIdLabel />
           <DataForm dataIsConnected={dataIsConnected} />
           {matchesMediaQuery && <MediaForm mediaIsConnected={mediaIsConnected} />}
         </div>
