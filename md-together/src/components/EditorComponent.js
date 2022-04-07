@@ -276,7 +276,7 @@ export default function EditorComponent() {
     return (
       <div>
         <label>Your Current Peer ID is: {currId}</label>
-        <Button variant="contained" className="save-button" onClick={handlePeerIdCopy} sx={{textTransform: "capitalize"}}>Copy</Button>
+        <Button variant="contained" className="save-button" onClick={handlePeerIdCopy} sx={{textTransform: "capitalize"}} style={{marginLeft: "7px"}}>Copy</Button>
       </div>
     );
   }
