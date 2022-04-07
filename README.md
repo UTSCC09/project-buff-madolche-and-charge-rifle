@@ -34,7 +34,7 @@ There are several libraries being used during the development:
 * There are several libraries/api/ being used during the development:
 * [mongoose](https://www.npmjs.com/package/mongoose), we use this package in npm to connect our backend and mongoose database
 ### Database
-* [MongoDB]() for storing user-generated data.
+* [MongoDB]() for storing user-generated data. We can set IP whitelist for our database so anywhere outside this list cannot connect to our backend.
 
 
 ## Deployment
