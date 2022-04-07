@@ -49,7 +49,7 @@ There are several libraries being used during the development:
 
 **Task:** What is the top 3 most challenging things that you have learned/developed for you app? Please restrict your answer to only three items. 
 
-1.
+1.Writting graphql. This is my first time to write graphql so I spent a lot of time on learning it, I need to write a safe and correct schema for the whole backend and  resolvers for each method in schema. Also I need write a coresponding mongodb operation inside each resolver which takes a lot of time on implementing the security part.
 2.
 3. 
 
