@@ -19,16 +19,15 @@ app.use(cors({
 //the whole backend codes are learned from https://www.youtube.com/playlist?list=PL55RiY5tL51rG1x02Yyj93iypUuHYXcB_
 // great appreciation to academind
 app.use(BodyParser.json());
-// app.use((req,res,next) =>{
-//     //console.log(req);
-//     res.setHeader('Access-Control-Allow-Origin', '*');
-//     res.setHeader('Access-Control-Allow-Methods',"POST,GET,OPTIONS");
-//     res.setHeader('Access-Control-Allow-Headers',"Content-Type, Authorization");
-//     if(req.method === 'OPTIONS'){
-//         return res.sendStatus(200);
-//     }
-//     next();
-// });
+app.use((req,res,next) =>{
+    //res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods',"POST,GET,OPTIONS");
+    res.setHeader('Access-Control-Allow-Headers',"Content-Type, Authorization");
+    if(req.method === 'OPTIONS'){
+        return res.sendStatus(200);
+    }
+    next();
+});
 app.use(auth);
 app.use("/graphql", graphqlHTTP({
     schema: mySchema,
