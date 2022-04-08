@@ -27,7 +27,7 @@ There are several libraries being used during the development:
 * [GraphQL](https://graphql.org/) This is a very safe API because the frontend can only call to the backend with several defined methods, if the method is not defined in the backend schema, the frontend won't be able to get data from the database. This makes the website more safer. We built some authorization methods to verify users in the middleware folder in the backend server; these will protect data from being given to unauthorized users in the many requests required. Most handlers are written in GraphQL/resolver to provide corresponding responses to the frontend.
 
 ### Backend
-We used Express to build the backend because we can separate the authorization and handler into different parts which makes testing much easier. We followed the tutorial [Build a Complete App with GraphQL, Node.js, MongoDB and React.js](https://www.youtube.com/playlist?list=PL55RiY5tL51rG1x02Yyj93iypUuHYXcB_) to build our backend, and most of the time spent on the backend was to build a safe and useful api which will be talked in the API part. We have a field called status in the MongoDB database to store if the user is logged in or not. This protects users' info/work from being stolen by a JWT leak.
+We used Express to build the backend because we can separate the authorization and handler into different parts which makes testing much easier. We followed the tutorial [Build a Complete App with GraphQL, Node.js, MongoDB and React.js](https://www.youtube.com/playlist?list=PL55RiY5tL51rG1x02Yyj93iypUuHYXcB_) to build our backend, and most of the time spent on the backend was to build a safe and useful API which will be talked in the API part. We have a field called status in the MongoDB database to store if the user is logged in or not. This protects users' info/work from being stolen by a JWT leak.
 
 There are several libraries/api/package being used during development:
 * [Mongoose](https://www.npmjs.com/package/mongoose), we use this package in npm to connect our backend and MongoDB database
@@ -40,21 +40,27 @@ There are several libraries/api/package being used during development:
 
 ## Deployment
 
-**Task:** Explain how you have deployed your application. 
+We obtained a domain from [Name.com](https://www.name.com/) and deployed our application on a [Digital Ocean](https://www.digitalocean.com/) droplet. The cloud firewall was configured so that only needed ports were open for inbound traffic for the whole droplet, and SSHing into the droplet was set to not allow passwords, only the use of whitelisted public and private keys.
+
+Starting from the Lab 10 code, [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/) were used to containerize the frontend and backend, and [jwilder/nginx-proxy](https://hub.docker.com/r/jwilder/nginx-proxy) and [nginxproxy/acme-companion](https://hub.docker.com/r/nginxproxy/acme-companion) were used as a reverse proxy and certificate manager.
+
+[GitHub Actions](https://github.com/features/actions) were also created for automatically building the frontend and backend containers and re-deploying them on the droplet when changes are made to those files on master.
 
 ## Maintenance
 
-**Task:** Explain how you monitor your deployed app to make sure that everything is working as expected.
+Information was available on DigitalOcean's control panel about the droplet's resource usage, and on MongoDB Atlas' web GUI about database usage which helped inform us about the current and maximum capacities for our application.
+
+[Locust](https://locust.io/) was used for basic stress testing of the application such as getting the home page and logging in. We chose not to deploy Locust on the droplet because of concerns about resource usage and instead ran it locally.
 
 ## Challenges
 
-**Task:** What is the top 3 most challenging things that you have learned/developed for you app? Please restrict your answer to only three items. 
+**Task:** What is the top 3 most challenging things that you have learned/developed for your app? Please restrict your answer to only three items. 
 
 1. Coding GraphQL. This is my first time to write GraphQL so I spent a lot of time on learning it, I needed to write a safe and correct schema for the whole backend as well as resolvers for each method in the schema. Also I needed to write a coresponding MongoDB operation inside each resolver which takes a lot of time on implementing the security part.
 
-2. Peer.js is challenging since I have not dealt with WebRTC before. I needed to read the documentation of methods and parameters carefully so that it can work as expected. The night before our Beta version demo, the peerjs server was down according to their [GitHub issue thread](https://github.com/peers/peerjs/issues/939). We had to set up our own peer server locally for the beta version demo. For final version, we deployed the peer server using ExpressPeerServer. It is new to all of us but I am glad we got it working.
+2. Peer.js is challenging since I have not dealt with WebRTC before. I needed to read the documentation of methods and parameters carefully so that it can work as expected. The night before our Beta version demo, the peerjs server was down according to their [GitHub issue thread](https://github.com/peers/peerjs/issues/939). We had to set up our own peer server locally for the beta version demo. For the final version, we deployed the peer server using ExpressPeerServer. It is new to all of us but I am glad we got it working.
 
-3. 
+3. Transitioning from a simple development app running locally to a fully deployed app had many challenges, and the biggest challenge was getting the Nginx reverse proxy to work correctly with the backend. When the app was initially deployed, we were getting CORS errors even though the backend was set to fully open CORS. Further investigation found that this was a side effect of backend requests resulting in a 502 Bad Gateway Error from Nginx which did not include the header needed for CORS. After many tutorials and documentation reading, one of us pointed out that there were more ports than expected open in the backend container even though the docker-compose.yml file specified to expose only one port. It turned out that the Dockerfile for the backend which was based on deploying without the Nginx proxy still exposed multiple ports, and the Nginx proxy defaulted to port 80 with multiple ports available instead of the intended port. Once the Dockerfile was fixed, the proxy finally worked and the CORS issues were resolved.
 
 ## Contributions
 
