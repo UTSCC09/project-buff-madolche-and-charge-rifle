@@ -67,3 +67,4 @@ Each teammate contributed equally.
 # One more thing? 
 
 **Task:** Any additional comment you want to share with the course staff? 
+- We did not add a link to the logo in the navigation bar because we do not want user lose changes because they accidentally clicked the logo.

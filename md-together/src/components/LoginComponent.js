@@ -54,12 +54,10 @@ function SignIn() {
     })
     .then(res =>{
       if(res.status !== 200 && res.status !== 201){
-        // need to change this to actual error messages
         err = true;
         if(res.status === 400){
           backenderr = true;
         }
-        // console.log("Failed");
       }
       return res.json();
     })
@@ -78,12 +76,9 @@ function SignIn() {
         ReactSession.set('projectId', null);
         ReactSession.set('type', null);
         window.location.reload();
-        //console.log(data);
       }
     })
     .catch(err =>{
-      // need to change this to actual error messages
-      // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
       console.log(err)
     });
   };
@@ -182,12 +177,10 @@ function SignUp() {
     })
     .then(res =>{
       if(res.status !== 200 && res.status !== 201){
-        // need to change this to actual error messages
         err = true;
         if(res.status === 400){
           backenderr = true;
         }
-        // console.log("Failed");
       }
       return res.json();
     })
@@ -207,48 +200,8 @@ function SignUp() {
       }
     })
     .catch(err =>{
-      // need to change this to actual error messages
-      // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
       console.log(err)
     });
-    // .then(data =>{
-    //   const signin = {
-    //     query:`
-    //     query {
-    //       emailLogin(email:"${email}", password:"${password}"){
-    //         userId
-    //         token
-    //       }
-    //     }
-    //     `
-    //   }
-    //   return fetch("https://api.mdtogether.live/graphql", {
-    //     method: 'POST',
-    //     body: JSON.stringify(signin),
-    //     headers:{
-    //       "Content-Type": 'application/json'
-    //     }
-    //   })
-    // })
-    // .then(res =>{
-    //   if(res.status !== 200 && res.status !== 201) {
-    //     // need to change this to actual error messages
-    //     document.getElementById("Sign Up Error Box").innerHTML = res.statusText;
-    //     // console.log("Failed");
-    //     return res.json();
-    //   }
-    //   window.location.reload();
-    //   return res.json();
-    // })
-    // .then(data =>{
-    //   ReactSession.set('userId',data.data.emailLogin.userId);
-    //   ReactSession.set('token',data.data.emailLogin.token);
-    // })
-    // .catch(err =>{
-    //   // need to change this to actual error messages
-    //   // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
-    //   console.log(err)
-    // });
   };
 
   function handleFormChange() {

@@ -10,18 +10,14 @@ import * as themes from './theme/schema.json';
 import { setToLS } from './utils/storage';
 
 const Index = () => {
+  // get all the themes
   setToLS('all-themes', themes.default);
-  // console.log(themes.default);
   return (
     <App />
   )
 }
 
 ReactDOM.render(
-  //<React.StrictMode>
-    // <App />
-  //</React.StrictMode>,
-  // ,
   <Index />,
   document.getElementById('root')
 );

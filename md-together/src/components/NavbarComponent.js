@@ -3,7 +3,6 @@
 // https://mui.com/components/menus/#account-menu
 // https://mui.com/components/menus/#basic-menu
 // https://mui.com/components/modal/#transitions
-// import * as React from 'react';
 import React, { useState } from "react";
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -117,12 +116,10 @@ function UserLogInCorner(props) {
     })
     .then(res =>{
       if(res.status !== 200 && res.status !== 201){
-        // need to change this to actual error messages
         err = true;
         if(res.status === 400){
           backenderr = true;
         }
-        // console.log("Failed");
       }
       return res.json();
     })
@@ -130,8 +127,6 @@ function UserLogInCorner(props) {
       console.log(data);
     })
     .catch(err =>{
-      // need to change this to actual error messages
-      // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
       console.log(err)
     });
     ReactSession.set('token', null);
@@ -139,9 +134,8 @@ function UserLogInCorner(props) {
     ReactSession.set('projectId', null);
     ReactSession.set('type', null);
     ReactSession.set('projectName', null);
-    // reload before setting name to null
-    // avoid display null in navbar
     window.location.reload();
+    // avoid display null in navbar
     setTimeout(function () {
       ReactSession.set('firstName', null);
       ReactSession.set('lastName', null);
@@ -195,7 +189,6 @@ function UserLogInCorner(props) {
               right: 14,
               width: 10,
               height: 10,
-              // bgcolor: 'background.paper',
               transform: 'translateY(-50%) rotate(45deg)',
               zIndex: 0,
             },
@@ -235,9 +228,6 @@ function GuestLogInCorner(props) {
   const handleLoginModalOpen = () => setLoginModalOpen(true);
   const handleLoginModalClose = () => setLoginModalOpen(false);
 
-  // from Transition modal example in MUI documentation
-  // https://mui.com/components/modal/#transitions
-  // function TransitionsLoginModal() {
   return (
     <div>
       <Button onClick={handleLoginModalOpen} sx={{color: "white", mr: 1, textTransform: "capitalize"}} className="change-font">Log in / Sign up</Button>
@@ -328,7 +318,6 @@ const NavbarComponent = () => {
   const handleLightTheme = () => {
     setMode(data.light);
     window.location.reload();
-    // console.log(data.light);
   }
 
   const handleSeaWaveTheme = () => {
@@ -356,7 +345,6 @@ const NavbarComponent = () => {
     <AppBar 
       position="sticky"
       id="nav_bar"
-      // We may change UI theme here
       sx = {{background: "#8268c9"}}
     >
       <Container maxWidth="xl">
@@ -367,9 +355,6 @@ const NavbarComponent = () => {
             component="div"
             sx={{ mr: 2, display: { xs: 'none', md: 'flex' }, fontWeight: "bold" }}
           >
-            {/* Do we need to put a link in the logo? it might cause users to lose changes accidentally click on it */}
-            {/* <a href="/" style={{textDecoration: "none", color: "white"}}>mdTogether</a> */}
-            {/* mdTogether */}
             <img style={{height: "40px"}} src={navbarLogo} alt="mdTogether logo" />
           </Typography>
 

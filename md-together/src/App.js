@@ -2,7 +2,6 @@ import './App.css';
 import EditorComponent from './components/EditorComponent';
 import NavbarComponent from './components/NavbarComponent';
 import FooterComponent from './components/FooterComponent';
-// import { BrowserRouter, Route } from "react-router-dom";
 import ReactSession from 'react-client-session/dist/ReactSession';
 
 
@@ -30,7 +29,6 @@ function App() {
   );
 
   return (
-    //<BrowserRouter>
     <div className="App">
       {themeLoaded && <ThemeProvider theme={ selectedTheme }>
           <GlobalStyles/>
@@ -43,7 +41,6 @@ function App() {
       }
       
     </div>
-    //</BrowserRouter>
   );
 }
 
