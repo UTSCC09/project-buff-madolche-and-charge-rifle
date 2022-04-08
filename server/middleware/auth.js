@@ -3,7 +3,7 @@ const User = require("../models/user");
 module.exports = async (req,res,next) =>{
     const authHeader = req.get('Authorization');
     if(!authHeader){
-        req.isAuth = false; //we can rename isAuth whatever we want
+        req.isAuth = false;
         return next();
     }
     const token = authHeader.split(' ')[1];//we have "Authorization: Bear token" in the req, we want to get token here
@@ -11,13 +11,11 @@ module.exports = async (req,res,next) =>{
         req.isAuth = false;
         return next();
     }
-    //console.log(token);
     let Token;
     try{
         Token = jwt.verify(token, 'my token secret');
     }catch (err){
         req.isAuth = false;
-        //console.log(err);
         return next();
     }
     if(!Token){
@@ -34,7 +32,6 @@ module.exports = async (req,res,next) =>{
         }
     }catch(err){
         req.isAuth = false;
-        //console.log(err);
         return next();
     }
     req.isAuth = true;

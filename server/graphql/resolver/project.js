@@ -1,5 +1,3 @@
-// const { async } = require("jshint/src/prod-params");
-// const { RequestPage } = require("@mui/icons-material");
 const Project = require("../../models/project");
 const User = require("../../models/user");
 const {user, projects, transformProject} = require("./populate");
@@ -279,7 +277,6 @@ module.exports = {
             throw err;
         }
     },
-    // "6227f6c796810c0a56f8b0c3"
     createProject: async (args,req)=>{
         if(!req.isAuth){
             throw new Error("User not authenticated");
@@ -292,7 +289,6 @@ module.exports = {
             const project = Project({
                 name:validator.escape(args.ProjectInput.name), 
                 owner:req.userId,
-                //owner:args.ProjectInput.owner,
                 content:"Hello world",
              });
             await project.save();

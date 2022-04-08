@@ -30,27 +30,16 @@ app.use(BodyParser.json());
 //     next();
 // });
 app.use(auth);
-//cannot change the name "schema" but can change name "RootQuery" "RootMutation"
-//[user!]! means it must return an array(maybe empty array) and the element inside array must be user if we have element
 app.use("/graphql", graphqlHTTP({
     schema: mySchema,
-    //rootValue is resolver for schema
     rootValue: myResolver,
     graphiql: true
 }));
-
-// app.use("/", (req,res,next) => {
-//   console.log(req);
-//   console.log(res);
-//   res.send('<p>testtt</p>');
-//   next();
-// });
 
 const http = require('http');
 const PORT = 3000;
 const server = http.createServer(app);
 
-// const peerServer = PeerServer({port: PORT, path:'/peer', proxied: true});
 const peerServer = ExpressPeerServer(server, {
   debug: true
 });
@@ -65,10 +54,5 @@ server.listen(PORT, (err) => {
 mongoose.connect("mongodb+srv://mdTogether:mdTogether@cluster0.sjsbm.mongodb.net/mdTogether?retryWrites=true&w=majority")
 .then(() => {
     console.log("Connected to mongodb on port %s", PORT);
-    // app.listen(PORT,() =>{
-    //     console.log("server running at %s", PORT);
-    // })
-    // running the peer server for peer js connections
-    // PeerServer({port:9000, path:'/mdtogether'});
 })
 .catch(err => console.error(err));

@@ -2,7 +2,6 @@ const User = require("../../models/user");
 const bcrypt = require('bcryptjs');
 const {user, projects, transformProject} = require("./populate");
 const jwt = require('jsonwebtoken');
-// const { UsbRounded } = require("@mui/icons-material");
 const validator = require("validator");
 module.exports = {
 
@@ -37,7 +36,6 @@ module.exports = {
             if(!validator.isEmail(args.UserInput.email) 
             || !validator.isAlpha(args.UserInput.firstName) 
             || !validator.isAlpha(args.UserInput.lastName)){
-              // console.log("Wrong format of email or password");
               throw new Error("Wrong format of email or name");
             }
             const user = await User.findOne({ email: args.UserInput.email });
@@ -46,7 +44,6 @@ module.exports = {
             }
             if(args.UserInput.otherId){
                 const otherUser = await User.findOne({ otherId: args.UserInput.otherId });
-                //console.log("here");
                 if(otherUser){
                     throw new Error("User already signed up by third party");
                 }
@@ -63,7 +60,6 @@ module.exports = {
                 shared: [],
             });
             const result = await newUser.save();
-            //console.log(result._doc);
             const token = jwt.sign({userId: result.id, email:result.email}, 'my token secret', {
                 expiresIn:'1h'
             });
@@ -73,11 +69,9 @@ module.exports = {
                 token: token,
                 firstName: result.firstName,
                 lastName: result.lastName,
-                tokenExpiration: 1 //time in hour
+                tokenExpiration: 1
             }
-            //return { ...result._doc, _id: result.id, password: null };
         } catch (err) {
-            //console.log(err);
             throw err;
         }
     },
@@ -103,7 +97,7 @@ module.exports = {
             token: token,
             firstName: user.firstName,
             lastName: user.lastName,
-            tokenExpiration: 1 //time in hour
+            tokenExpiration: 1
         }
     },
     logout: async (args,req) =>{
@@ -117,14 +111,4 @@ module.exports = {
         );
         return "logout";
     },
-    // checkLogin: async args =>{
-    //     const user = await User.findOne({_id:args.userId});
-    //     if(!user){
-    //         throw new Error("User not found");
-    //     }
-    //     if(user.status == "logout"){
-    //         throw new Error("User logged out");
-    //     }
-    //     return "login";
-    // },
 }
