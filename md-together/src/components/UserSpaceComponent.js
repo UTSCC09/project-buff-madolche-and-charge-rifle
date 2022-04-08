@@ -81,12 +81,10 @@ function InvitationList(props) {
     })
     .then(res =>{
       if(res.status !== 200 && res.status !== 201){
-        // need to change this to actual error messages
         err = true;
         if(res.status === 400){
           backenderr = true;
         }
-        // console.log("Failed");
       }
       return res.json();
     })
@@ -99,12 +97,9 @@ function InvitationList(props) {
       }else{
         proId = data.data.acceptInv;
         console.log(proId);
-        //projects has format[{_id:"",name:""}]
       }
     })
     .catch(err =>{
-      // need to change this to actual error messages
-      // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
       console.log(err)
     });
     window.location.reload();
@@ -135,12 +130,10 @@ function InvitationList(props) {
     })
     .then(res =>{
       if(res.status !== 200 && res.status !== 201){
-        // need to change this to actual error messages
         err = true;
         if(res.status === 400){
           backenderr = true;
         }
-        // console.log("Failed");
       }
       return res.json();
     })
@@ -153,12 +146,9 @@ function InvitationList(props) {
       }else{
         proId = data.data.rejectInv;
         console.log(proId);
-        //projects has format[{_id:"",name:""}]
       }
     })
     .catch(err =>{
-      // need to change this to actual error messages
-      // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
       console.log(err)
     });
     window.location.reload();
@@ -193,8 +183,6 @@ function InvitationList(props) {
 function SelectedListItem() {
   //in restrict mode the following fetch will be sent twice, so I comment restrict mode in index.js
   //or we can write a handle and put the following fetch inside handle
-  //I also write create/accpet/reject invitation and create/delete/ownerdelete project in the backend, 
-  //please provide the corresponding button(I can see the button right now but there is no js function) in frontend
   const [ownProjects, setOwnProjects] = React.useState(null);
   const [sharedProjects, setSharedProjects] = React.useState(null);
   const [invitations, setInvitations] = React.useState(null);
@@ -225,12 +213,10 @@ function SelectedListItem() {
     })
     .then(res =>{
       if(res.status !== 200 && res.status !== 201){
-        // need to change this to actual error messages
         own_err = true;
         if(res.status === 400){
           own_backenderr = true;
         }
-        // console.log("Failed");
       }
       return res.json();
     })
@@ -243,13 +229,9 @@ function SelectedListItem() {
       }else{
         own_projects = data.data.owned;
         setOwnProjects(own_projects);
-        // console.log(data);
-        //projects has format[{_id:"",name:""}]
       }
     })
     .catch(own_err =>{
-      // need to change this to actual error messages
-      // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
       console.log(own_err)
     });
 
@@ -278,12 +260,10 @@ function SelectedListItem() {
     })
     .then(res =>{
       if(res.status !== 200 && res.status !== 201){
-        // need to change this to actual error messages
         share_err = true;
         if(res.status === 400){
           share_backenderr = true;
         }
-        // console.log("Failed");
       }
       return res.json();
     })
@@ -296,13 +276,9 @@ function SelectedListItem() {
       }else{
         share_projects = data.data.shared;
         setSharedProjects(share_projects);
-        // console.log(data);
-        //projects has format[{_id:"",name:""}]
       }
     })
     .catch(share_err =>{
-      // need to change this to actual error messages
-      // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
       console.log(share_err)
     });
 
@@ -332,12 +308,10 @@ function SelectedListItem() {
     })
     .then(res =>{
       if(res.status !== 200 && res.status !== 201){
-        // need to change this to actual error messages
         inv_err = true;
         if(res.status === 400){
           inv_backenderr = true;
         }
-        // console.log("Failed");
       }
       return res.json();
     })
@@ -350,14 +324,9 @@ function SelectedListItem() {
       }else{
         fetched_inv = data.data.invited;
         setInvitations(fetched_inv);
-        // console.log(fetched_inv);
-        // console.log(data);
-        //projects has format[{_id:"",name:""}]
       }
     })
     .catch(inv_err =>{
-      // need to change this to actual error messages
-      // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
       console.log(inv_err)
     });
   }, []);
@@ -401,12 +370,10 @@ function SelectedListItem() {
     })
     .then(res =>{
       if(res.status !== 200 && res.status !== 201){
-        // need to change this to actual error messages
         err = true;
         if(res.status === 400){
           backenderr = true;
         }
-        // console.log("Failed");
       }
       return res.json();
     })
@@ -420,12 +387,9 @@ function SelectedListItem() {
       }else{
         proId = data.data.ownerDelPro;
         console.log(proId);
-        //projects has format[{_id:"",name:""}]
       }
     })
     .catch(err =>{
-      // need to change this to actual error messages
-      // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
       console.log(err)
     });
     window.location.reload();
@@ -461,12 +425,10 @@ function SelectedListItem() {
     })
     .then(res =>{
       if(res.status !== 200 && res.status !== 201){
-        // need to change this to actual error messages
         err = true;
         if(res.status === 400){
           backenderr = true;
         }
-        // console.log("Failed");
       }
       return res.json();
     })
@@ -479,12 +441,9 @@ function SelectedListItem() {
       }else{
         proId = data.data.deleteProject;
         console.log(proId);
-        //projects has format[{_id:"",name:""}]
       }
     })
     .catch(err =>{
-      // need to change this to actual error messages
-      // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
       console.log(err)
     });
     window.location.reload();
@@ -540,12 +499,10 @@ function SelectedListItem() {
     })
     .then(res =>{
       if(res.status !== 200 && res.status !== 201){
-        // need to change this to actual error messages
         err = true;
         if(res.status === 400){
           backenderr = true;
         }
-        // console.log("Failed");
       }
       return res.json();
     })
@@ -562,12 +519,9 @@ function SelectedListItem() {
         ReactSession.set("projectName",proName);
         ReactSession.set("type","owned");
         window.location.reload();
-        //projects has format[{_id:"",name:""}]
       }
     })
     .catch(err =>{
-      // need to change this to actual error messages
-      // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
       console.log(err)
     });
 
@@ -599,7 +553,6 @@ function SelectedListItem() {
                   &nbsp;
                 </label>
                 <Button variant="contained" className="save-button" onClick={handleCreateSubmit} sx={{textTransform: "capitalize"}}>Create</Button>
-                {/* <input type="submit" value="Create"></input> */}
               </form>
             </Box>
           </Fade>
@@ -638,12 +591,10 @@ function SelectedListItem() {
     })
     .then(res =>{
       if(res.status !== 200 && res.status !== 201){
-        // need to change this to actual error messages
         err = true;
         if(res.status === 400){
           backenderr = true;
         }
-        // console.log("Failed");
       }
       return res.json();
     })
@@ -656,12 +607,9 @@ function SelectedListItem() {
       }else{
         proId = data.data.createInv;
         console.log(proId);
-        //projects has format[{_id:"",name:""}]
       }
     })
     .catch(err =>{
-      // need to change this to actual error messages
-      // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
       console.log(err)
     });
     handleInviteModalClose();
@@ -673,9 +621,6 @@ function SelectedListItem() {
     return (
       <div>
         <Button onClick={handleInviteModalOpen} variant="contained" sx={{textTransform: "capitalize"}} className="save-button">Invite User</Button>
-        {/* <button onClick={handleInviteModalOpen}>
-          <div sx={{ color: "#000000DE", textTransform: "capitalize" }}>Invite User</div>
-        </button> */}
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
@@ -696,7 +641,6 @@ function SelectedListItem() {
                   &nbsp;
                 </label>
                 <Button variant="contained" className="save-button" onClick={handleInviteSubmit} sx={{textTransform: "capitalize"}}>Invite</Button>
-                {/* <input type="submit" value="Invite"></input> */}
               </form>
             </Box>
           </Fade>

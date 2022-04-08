@@ -25,11 +25,8 @@ let defaultWelcome = `# Welcome to mdTogether!
 **Hope you Enjoy it :)**
 `
 
-// let currEmail = ReactSession.get("email");
-
 // Peer.js functionality is referred to Getting started with PeerJS example
 // https://blog.logrocket.com/getting-started-peerjs/
-// const peer = new Peer();
 const peer = new Peer({
   host:'api.mdtogether.live',
   port: 443,
@@ -148,9 +145,7 @@ export default function EditorComponent() {
 
   const handleMediaSubmit = (e) => {
     e.preventDefault();
-    // peer.connect(mediaConnId);
-    // setCurrMediaConn(mediaConn);
-    // console.log(mediaConn);
+    // making a video call
     navigator.mediaDevices.getUserMedia({video: true, audio: true})
       .then((stream) => {
         let call = peer.call(mediaConnId, stream);
@@ -164,7 +159,6 @@ export default function EditorComponent() {
       .catch((err) => {
         console.log('Failed to get local stream', err);
       });
-    // console.log("im caller");
     setMediaConnId("");
   }
   
@@ -178,7 +172,7 @@ export default function EditorComponent() {
       peerVideo.setAttribute("height", "200");
       navigator.mediaDevices.getUserMedia({video: true, audio: true})
         .then((stream) => {
-          call.answer(stream); // Answer the call with an A/V stream.
+          call.answer(stream); // Answer the call with an Video/Audio stream.
           call.on('stream', showVideo);
         })
         .catch((err) => {
@@ -242,7 +236,6 @@ export default function EditorComponent() {
           if(res.status === 400){
             content_backenderr = true;
           }
-          // console.log("Failed");
         }
         return res.json();
       })
@@ -255,14 +248,9 @@ export default function EditorComponent() {
         }else{
           content = data.data.getContent;
           setValue(content);
-          // console.log(content);
-          // console.log(data);
-          //projects has format[{_id:"",name:""}]
         }
       })
       .catch(err =>{
-        // need to change this to actual error messages
-        // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
         console.log(err)
       });
     }
@@ -296,7 +284,6 @@ export default function EditorComponent() {
         <div style={{marginTop: "18px"}}>
           <label>You are currently collaborating with: {currDataConn.peer} </label>
           <Button variant="contained" className="save-button" onClick={disconnectData} sx={{textTransform: "capitalize"}} style={{marginLeft: "7px"}}>Disconnect</Button>
-          {/* <button onClick={disconnectData}>Disconnect</button> */}
         </div>
 
       );
@@ -309,7 +296,6 @@ export default function EditorComponent() {
             &nbsp;
           </label>
           <Button variant="contained" className="save-button" onClick={handleDataSubmit} sx={{textTransform: "capitalize"}}>Connect</Button>
-          {/* <input type="submit"></input> */}
         </form>
       );
       
@@ -332,7 +318,6 @@ export default function EditorComponent() {
         <div style={{marginTop: "18px"}}>
           <label>You are currently calling with: {currMediaConn.peer} </label>
           <Button variant="contained" className="save-button" onClick={disconnectMedia} style={{marginLeft: "7px"}} sx={{textTransform: "capitalize"}}>hang up</Button>
-          {/* <button onClick={disconnectMedia}>Hang up</button> */}
         </div>
       );
     } else {
@@ -344,7 +329,6 @@ export default function EditorComponent() {
             &nbsp;
           </label>
           <Button variant="contained" className="save-button" onClick={handleMediaSubmit} sx={{textTransform: "capitalize"}}>Call</Button>
-          {/* <input type="submit"></input> */}
         </form>
       );
     }
@@ -388,7 +372,6 @@ export default function EditorComponent() {
     }
     let content_err = false;
     let content_backenderr = false;
-    // let content;
     fetch("https://api.mdtogether.live/graphql", {
     method: 'POST',
     body: JSON.stringify(body),
@@ -399,12 +382,10 @@ export default function EditorComponent() {
     })
     .then(res =>{
       if(res.status !== 200 && res.status !== 201){
-        // need to change this to actual error messages
         content_err = true;
         if(res.status === 400){
           content_backenderr = true;
         }
-        // console.log("Failed");
       }
       return res.json();
     })
@@ -422,8 +403,6 @@ export default function EditorComponent() {
       }
     })
     .catch(err =>{
-      // need to change this to actual error messages
-      // document.getElementById("Sign Up Error Box").innerHTML += "<p></p>"+ err;
       console.log(err)
     });
   }
