@@ -61,7 +61,7 @@ Information was available on DigitalOcean's control panel about the droplet's re
 
 **Task:** What is the top 3 most challenging things that you have learned/developed for your app? Please restrict your answer to only three items. 
 
-1. Coding GraphQL. This is my first time to write GraphQL so I spent a lot of time on learning it, I needed to write a safe and correct schema for the whole backend as well as resolvers for each method in the schema. Also I needed to write a coresponding MongoDB operation inside each resolver which takes a lot of time on implementing the security part.
+1. Coding GraphQL. This is my first time to write GraphQL so I spent a lot of time on learning how does it work, I needed to write a safe and correct schema for the whole backend as well as resolvers for each method in the schema. Also I needed to write a coresponding MongoDB operation inside each resolver which takes a lot of time on implementing the security part. Also, to make jwt safer, I set a field in database to store the status of each user, so when the users logged out, hacker cannot use their token to do some operation(create,modify,etc).
 
 2. Peer.js is challenging since I have not dealt with WebRTC before. I needed to read the documentation of methods and parameters carefully so that it can work as expected. The night before our Beta version demo, the peerjs server was down according to their [GitHub issue thread](https://github.com/peers/peerjs/issues/939). We had to set up our own peer server locally for the beta version demo. For the final version, we deployed the peer server using ExpressPeerServer. It is new to all of us but I am glad we got it working.
 
