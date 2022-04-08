@@ -22,6 +22,11 @@ There are several libraries being used during the development:
 * [Styled Components](https://styled-components.com/) is for changing the style of components based on the selected theme.
 * [Showdown](http://showdownjs.com/) is for converting Markdown documents to HTML format.
 
+There are also some valuable tutorials being referred during the development:
+* [Theming and Theme Switching with React and styled-components](https://css-tricks.com/theming-and-theme-switching-with-react-and-styled-components/), the source code is released under [MIT License](https://github.com/atapas/theme-builder)
+* [Downloading a string as .txt file in React](https://stackoverflow.com/questions/44656610/download-a-string-as-txt-file-in-react) on StackOverflow
+* [How to print specific part of a web page in javascript](https://www.etutorialspoint.com/index.php/23-how-to-print-different-section-of-content-using-javascript)
+
 ### APIs
 * [Peer JS](https://github.com/peers/peerjs#readme) is the WebRTC peer-to-peer communication API we used for the video calling & real-time collaborating features.
 * [GraphQL](https://graphql.org/) This is a very safe API because the frontend can only call to the backend with several defined methods, if the method is not defined in the backend schema, the frontend won't be able to get data from the database. This makes the website more safer. We built some authorization methods to verify users in the middleware folder in the backend server; these will protect data from being given to unauthorized users in the many requests required. Most handlers are written in GraphQL/resolver to provide corresponding responses to the frontend.
