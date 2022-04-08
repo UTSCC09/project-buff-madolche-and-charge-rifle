@@ -29,10 +29,12 @@ There are several libraries being used during the development:
 * [GraphQL](https://graphql.org/) This is a very safe API because the fonrtend can only call to the backend with several defined methods, if the mehtod is not defined in the backend schema, the frontend won't be able to get data from database. This makes thw website much safer. I built some authorization methods to verify user in the middleware folder in the backend server, this will protect data not being given to unauth users in the most fetches. Most handlers are written in graphql/resolver to provide corresponding responses to the frontend.
 * [Apollo GraphQL](https://www.apollographql.com/)
 ### Back-End
-* [Node.js](https://nodejs.org/)
 * We use express to build backend because we can write authorization and handler into different parts, it makes testing much easier. I followed the [Build a Complete App with GraphQL, Node.js, MongoDB and React.js](https://www.youtube.com/playlist?list=PL55RiY5tL51rG1x02Yyj93iypUuHYXcB_) to build our backend, the most time we spending on backend is how to build a safe and useful api, which will be talked in the API part. We have a field called status in mongoose database to store the user is logging-in or not. This protect users' info/working being stolen by jwt leak.
-* There are several libraries/api/ being used during the development:
+* There are several libraries/api/package being used during the development:
 * [mongoose](https://www.npmjs.com/package/mongoose), we use this package in npm to connect our backend and mongoose database
+* [bcryptjs](https://www.npmjs.com/package/bcryptjs), we use this package for generate hashed password
+* [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken), we use this package for setting/getting cookies
+* [validator](https://www.npmjs.com/package/validator), we use this for verify user's input
 ### Database
 * [MongoDB]() for storing user-generated data. We can set IP whitelist for our database so anywhere outside this list cannot connect to our backend.
 
